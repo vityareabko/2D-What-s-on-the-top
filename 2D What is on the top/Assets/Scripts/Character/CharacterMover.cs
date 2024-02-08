@@ -6,18 +6,25 @@ using UnityEngine;
 public class CharacterMover : MonoBehaviour
 {
     private const float _radiusOverlap = 0.2f; // вынести можно в константу - но пока пусть сидить
-    
-    [SerializeField] private CharacterData _characterData;
 
     [SerializeField] private LayerMask _platformLayer;
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private Transform _overlapChecker;
 
+    private CharacterData _characterData;
+    private Stamina _stamina;
+    
     private bool isFacingRight = true;
     private bool IsSlowdown;
     private bool isPlatform;
     private bool isRoll;
-    
+
+    public void Initialize(CharacterData characterData ,Stamina stamina)
+    {
+        _characterData = characterData;
+        _stamina = stamina;
+    }
+
     private void Update()
     {
         CheckOnPlatformOnPlatform();
@@ -26,14 +33,15 @@ public class CharacterMover : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_stamina.isEnough() == false)
+            return;
+        
         if (isPlatform && IsSlowdown == false  && isRoll == false)
             MoveUpward();
 
         if (IsSlowdown)
             SlowDown();
     }
-    
-    public void SetToDefaultSpeed(bool isSlowDown) => IsSlowdown = isSlowDown;
     
     public void Jump(bool isRightWall)
     {
@@ -47,19 +55,25 @@ public class CharacterMover : MonoBehaviour
         float jumpDirection = isFacingRight ? 1 : -1;
 
         _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, _rb.velocity.y);
-
+        
+        _stamina.DrainStamina(_characterData.StaminaDrainRateJumping);
+        
         FlipCharacter();
     }
+    
+    public void SlowDownFlag(bool isSlowDown) => IsSlowdown = isSlowDown;
     
     public void PerformRoll()
     {
         StartCoroutine(RollCoroutine());
+        _stamina.DrainStamina(_characterData.StaminaDrainRateRoll);
+        SlowDownFlag(false); 
     }
     
     private void ResetSlowDownToTouch()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            IsSlowdown = false;
+            SlowDownFlag(false); 
     }
 
     private void SlowDown()
@@ -67,11 +81,21 @@ public class CharacterMover : MonoBehaviour
         float newVerticalSpeed = Mathf.Max(_characterData.MinVerticalSpeed, _rb.velocity.y - _characterData.DecelerationRate * Time.fixedDeltaTime);
         newVerticalSpeed = Mathf.Max(newVerticalSpeed, _characterData.MinVerticalSpeed);
         _rb.velocity = new Vector2(_rb.velocity.x, newVerticalSpeed);
+        
+        _stamina.DrainStamina(_characterData.StaminaDrainRateWalking * Time.deltaTime);
+        
+        SlowDownFlag(true); 
     }
     
     private void MoveUpward()
     {
+        if (_stamina is null)
+            return;
+        
         _rb.velocity = new Vector2(_rb.velocity.x, _characterData.DefaultSpeed);
+        _stamina.DrainStamina(_characterData.StaminaDrainRateRunning * Time.deltaTime);
+        
+        SlowDownFlag(false); 
     }
     
     private void FlipCharacter()
@@ -84,6 +108,7 @@ public class CharacterMover : MonoBehaviour
         transformRotation.z *= -1;
         transform.rotation = transformRotation;
     }
+    
     
     private IEnumerator RollCoroutine()
     {
@@ -109,7 +134,6 @@ public class CharacterMover : MonoBehaviour
             _rb.velocity = new Vector2(transform.position.x, _characterData.DefaultSpeed);
         }
     }
-    
 
     #endregion
     

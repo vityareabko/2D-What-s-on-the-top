@@ -1,18 +1,30 @@
+using System;
 using UnityEngine;
 
 namespace Score
 {
     public class HeightTracker
     {
-        private Transform _character;
-        private float _startHeght;
+        public event Action<int> HeightTrackerChange;
 
-        public HeightTracker(Transform character, float startHeght)
+        private float _currentHeight;
+
+        public HeightTracker(float currentHeight)
         {
-            _character = character;
-            _startHeght = startHeght;
+            _currentHeight = currentHeight + 1;
         }
 
-        public int CalculateHeight() => Mathf.FloorToInt(_character.position.y);
+        public void CalculateHeight(float amount)
+        {
+            if (_currentHeight > amount)
+                return;
+            
+            _currentHeight = amount;
+            
+            var heigh = Mathf.FloorToInt(amount);
+            HeightTrackerChange?.Invoke(heigh);
+        }
+
+        public int GetCurrentHeight() => Mathf.FloorToInt(_currentHeight);
     }
 }

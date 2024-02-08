@@ -1,10 +1,11 @@
 using System;
-using UnityEngine;
 
-namespace Controllers.Died
+namespace Character.Deafet
 {
-    public class CharacterDied : MonoBehaviour
+    public class CharacterDeafet 
     {
-        public event Action CharacterDeafet 
+        public event Action CharacterDead;
+
+        public void CharacterDefeat() => CharacterDead?.Invoke();
     }
 }
