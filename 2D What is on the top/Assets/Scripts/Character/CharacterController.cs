@@ -1,76 +1,52 @@
-using System;
 using System.Collections;
-using Character.Deafet;
 using GG.Infrastructure.Utils.Swipe;
+using UI.GameScreenDefeatView;
 using UnityEngine;
-
+using Zenject;
 
 public class CharacterController : MonoBehaviour
 {
-    public event Action ChareacterLose; // Это для бутстрапа где будет камера отвязыватся от игрока 
-    
-    [SerializeField] private CharacterData _characterData;
-    
     [SerializeField] private SwipeListener _swipeListener;
-    
     [SerializeField] private CharacterMover _characterMover;
-    
-    [SerializeField] private StaminaView _staminaView;
-    
+
+    private GameScreenDefeatPresenter _defeatPresenter;
+    private CharacterData _characterData;
     private Stamina _stamina;
-    private CharacterDeafet _characterDeafet;
-
-    public bool aaaaSuka { get; }
-
-    private void Awake()
+    
+    [Inject] private void Construct(CharacterData characterData, Stamina stamina, GameScreenDefeatPresenter DefeatPresenter)
     {
-        _characterDeafet = new CharacterDeafet();
-        _stamina = new Stamina(_characterData._staminaData);
-        _staminaView.Initialize(_characterData._staminaData.MinStamina, _characterData._staminaData.MaxStamina);
-        _characterMover.Initialize(_characterData, _stamina);
+        _characterData = characterData;
+        _stamina = stamina;
+        _defeatPresenter = DefeatPresenter;
     }
-
-    private void Update()
-    {
-        if (_stamina.isEnough() == false)
-        {
-            _characterDeafet.CharacterDefeat();
-            return;
-        }
-    }
+    
 
     private void OnEnable()
     {
-        _swipeListener.OnSwipe.AddListener(OnJumpedSwiped);
-        _stamina.StaminaChange += OnStaminaChange;
-        _characterDeafet.CharacterDead += OnCharacterDefeat;
+        _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
+        _characterMover.DrainStaminaRunningWalking += OnDrainStaminaRunningWalking;
     }
 
     private void OnDisable()
     {
-        _swipeListener.OnSwipe.RemoveListener(OnJumpedSwiped);
-        _stamina.StaminaChange -= OnStaminaChange;
-        _characterDeafet.CharacterDead -= OnCharacterDefeat;
+        _swipeListener.OnSwipe.RemoveListener(OnSwipeHandler);
+        _characterMover.DrainStaminaRunningWalking -= OnDrainStaminaRunningWalking;
     }
-    
-    private void OnCharacterDefeat()
+
+    private void OnDrainStaminaRunningWalking(float amount)
     {
-
-        StartCoroutine(DefeatCoroutine());
-        
-        // показывать popup поражения
-        
-        // нужно сделать боотстрап уровня чтобы взять к примеру Score и иницализировать попуп 
-        
-        Debug.Log("игрок проиграл");
-    }
-    
-    private void OnStaminaChange(float staminaValue)
-    { 
-        _staminaView.SetStaminaValue(staminaValue);
+        if (_stamina.isEnough())
+        {
+            _stamina.DrainStamina(amount * Time.deltaTime);
+        }
+        else
+        {
+            _characterMover.StaminaIsEnough(false);
+            StartCoroutine(DefeatCoroutine());
+        }
     }
 
-    private void OnJumpedSwiped(string swipe)
+    private void OnSwipeHandler(string swipe)
     {
         if (_stamina.isEnough() == false)
             return;
@@ -79,29 +55,34 @@ public class CharacterController : MonoBehaviour
         if (swipe == DirectionId.ID_LEFT)
         {
             _characterMover.Jump(false);
+            _stamina.DrainStamina(_characterData.StaminaData.StaminaDrainRateJumping);
         }
 
         if (swipe == DirectionId.ID_RIGHT)
         {
             _characterMover.Jump(true);
+            _stamina.DrainStamina(_characterData.StaminaData.StaminaDrainRateJumping);
         }
 
         if (swipe == DirectionId.ID_DOWN)
         {
             _characterMover.SlowDownFlag(true);
+            _stamina.DrainStamina(_characterData.StaminaData.StaminaDrainRateWalking * Time.deltaTime);
         }
 
         if (swipe == DirectionId.ID_UP)
         {
             _characterMover.PerformRoll();
+            _stamina.DrainStamina(_characterData.StaminaData.StaminaDrainRateRoll);
         }
     }
 
     private IEnumerator DefeatCoroutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0.5f);
+        _defeatPresenter.Show();
+        
+        yield return new WaitForSeconds(2f);
         _characterMover.gameObject.SetActive(false);
-        ChareacterLose?.Invoke();
-
     }
 }

@@ -53,7 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hideOnAwake: 0
-  _scoreText: {fileID: 1732215596232606238}
+  _heightScoreText: {fileID: 1732215596232606238}
+  _stamina: {fileID: 8121219736005404692}
 --- !u!1 &2883502171738405921
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +66,6 @@ GameObject:
   - component: {fileID: 5690353725825107742}
   - component: {fileID: 6667547213868711546}
   - component: {fileID: 1732215596232606238}
-  - component: {fileID: 837155941723893711}
   m_Layer: 0
   m_Name: HeightText
   m_TagString: Untagged
@@ -190,18 +190,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &837155941723893711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2883502171738405921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a65223f6834c4bc0baf5e0d5b5a887f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4133874516153013279
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,6 +429,14 @@ PrefabInstance:
       propertyPath: m_MaxValue
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 1135553669604794104, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1135553669604794105, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1135553669604794106, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
       propertyPath: m_Name
       value: StaminaSlider
@@ -536,40 +532,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1135553669604794106, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8384940770885767257}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
 --- !u!114 &8121219736005404692 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1135553669604794104, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
   m_PrefabInstance: {fileID: 9184548666471429868}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8121219736005404694}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8121219736005404694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1135553669604794106, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
-  m_PrefabInstance: {fileID: 9184548666471429868}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8384940770885767257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8121219736005404694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cf821e982d697e44b31c724e99d3d89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _staminaSlider: {fileID: 8121219736005404692}
 --- !u!224 &8121219736005404695 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1135553669604794107, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}

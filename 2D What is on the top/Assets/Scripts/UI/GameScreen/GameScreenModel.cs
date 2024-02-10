@@ -1,41 +1,43 @@
 using System;
 using UI.MVP;
-using UnityEngine;
 
 namespace UI
 {
     public interface IGameScreenModel : IModel
     {
-        public event Action<int> ScoreChange;
-        public int Score { get; }
+        public event Action<int> HightScoreChange;
+        public event Action<float> StaminaChange;
+
+        public int Score { get; set; }
+        public float Stamina { get; set; }
     }
 
     public class GameScreenModel : IGameScreenModel
     {
-        public event Action<int> ScoreChange;
+        public event Action<float> StaminaChange;
+        public event Action<int> HightScoreChange;
         
-        private int _score;
-
-        public GameScreenModel(int score)
-        {
-            _score = score;
-        }
+        private int _hightScore;
+        private float _stamina;
 
         public int Score 
         { 
-            get => _score;
+            get => _hightScore;
             set
             {
-                _score = value;
-                Debug.Log("event next step");
-                ScoreChange?.Invoke(_score);
+                _hightScore = value;
+                HightScoreChange?.Invoke(_hightScore);
             }
         }
         
-        // Метод для добавления очков к текущему счёту
-        public void AddScore(int amount)
+        public float Stamina 
         {
-            Score += amount; // Это автоматически вызовет ScoreChange?.Invoke(_score);
+            get => _stamina;
+            set
+            {
+                _stamina = value;
+                StaminaChange?.Invoke(_stamina);
+            }
         }
     }
 }

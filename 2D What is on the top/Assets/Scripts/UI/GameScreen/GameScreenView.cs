@@ -1,39 +1,40 @@
+using System;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
-    public interface IGameSreenView : IView<IGameScreenPresenter>
+    public interface IGameSreenView : IView//<IGameScreenPresenter>
     {
-        public void SetScore(int score);
+        public void Initialize(StaminaData data);
+        public void SetHightScore(int score);
+        public void SetStaminaValue(float currentStamina);
     }
 
     public class GameScreenView : BaseScreenView, IGameSreenView
     {
-        [SerializeField] private TMP_Text _scoreText;
-        
         public override ScreenType ScreenType { get; } = ScreenType.GameScreen;
         
-        public IGameScreenPresenter Presentor { get; private set; }
-
-        private string _scoreFormat;
-
-        public void SetScore(int score)
+        [SerializeField] private TMP_Text _heightScoreText;
+        [SerializeField] private Slider _stamina;
+        
+        public void Initialize(StaminaData data)
         {
-            Debug.Log(score);
-            _scoreText.text = string.Format(_scoreFormat, score);
-        }
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-            _scoreFormat = _scoreText.text;
+            _stamina.minValue = data.MinStamina;
+            _stamina.maxValue = data.MaxStamina;
+            _stamina.value = _stamina.maxValue;
         }
         
-        public void InitPresentor(IGameScreenPresenter presentor)
+        public void SetHightScore(int score) => _heightScoreText.text = $"{score.ToString()}m";
+        
+        public void SetStaminaValue(float currentStamina)
         {
-            Presentor = presentor;
+            _stamina.value = currentStamina;
         }
     }
 }

@@ -5,26 +5,20 @@ namespace Score
 {
     public class HeightTracker
     {
-        public event Action<int> HeightTrackerChange;
-
         private float _currentHeight;
 
         public HeightTracker(float currentHeight)
         {
-            _currentHeight = currentHeight + 1;
+            _currentHeight = currentHeight;
         }
 
-        public void CalculateHeight(float amount)
+        public int CalculateHeight(float amount)
         {
             if (_currentHeight > amount)
-                return;
-            
-            _currentHeight = amount;
-            
-            var heigh = Mathf.FloorToInt(amount);
-            HeightTrackerChange?.Invoke(heigh);
-        }
+                return Mathf.FloorToInt(_currentHeight);
 
-        public int GetCurrentHeight() => Mathf.FloorToInt(_currentHeight);
+            _currentHeight = amount;
+            return Mathf.FloorToInt(amount);
+        }
     }
 }

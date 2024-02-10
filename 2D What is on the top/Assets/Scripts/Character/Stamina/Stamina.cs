@@ -1,18 +1,17 @@
-
-using System;
+using UI;
 
 public class Stamina
 {
-    public event Action<float> StaminaChange;
-
     private StaminaData _staminaData;
+    private GameScreenPresenter _gameScreenPresenter;
     
     private float _currentStamin;
 
-    public Stamina(StaminaData staminaData)
+    public Stamina(CharacterData characterData, GameScreenPresenter gameScreenPresenter)
     {
-        _staminaData = staminaData;
+        _staminaData = characterData.StaminaData;
         _currentStamin = _staminaData.MaxStamina;
+        _gameScreenPresenter = gameScreenPresenter;
     }
 
     public void DrainStamina(float amount)
@@ -21,7 +20,7 @@ public class Stamina
             return;
         
         _currentStamin -= amount;
-        StaminaChange?.Invoke(_currentStamin);
+        _gameScreenPresenter.UpdateStamina(_currentStamin);
     }
 
     public void RegenerateStamina(float amount)
@@ -30,8 +29,9 @@ public class Stamina
             return;
 
         _currentStamin += amount;
-        StaminaChange?.Invoke(_currentStamin);
+        _gameScreenPresenter.UpdateStamina(_currentStamin);
     }
 
     public bool isEnough() => _currentStamin > _staminaData.MinStamina;
+    
 }

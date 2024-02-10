@@ -25,7 +25,7 @@ namespace GG.Infrastructure.Utils.Swipe {
 
       private bool _waitForSwipe = true ;
 
-      private float _minMoveDistance = 0.1f ;
+       private float _minMoveDistance = 0.1f ;
 
       private Vector3 _swipeStartPoint ;
 
