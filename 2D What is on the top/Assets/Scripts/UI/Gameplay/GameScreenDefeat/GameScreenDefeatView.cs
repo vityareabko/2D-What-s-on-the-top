@@ -3,7 +3,7 @@ using UI.MVP;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.GameScreenDefeatView
+namespace UI
 {
     public interface IGameScreenDefeatView: IView<IGameScreenDefeatPresenter>
     {

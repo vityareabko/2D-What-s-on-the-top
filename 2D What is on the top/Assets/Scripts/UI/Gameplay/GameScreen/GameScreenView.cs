@@ -1,15 +1,12 @@
-using System;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
 namespace UI
 {
-    public interface IGameSreenView : IView//<IGameScreenPresenter>
+    public interface IGameSreenView : IView<IGameScreenPresenter>
     {
         public void Initialize(StaminaData data);
         public void SetHightScore(int score);
@@ -21,7 +18,12 @@ namespace UI
         public override ScreenType ScreenType { get; } = ScreenType.GameScreen;
         
         [SerializeField] private TMP_Text _heightScoreText;
+        [SerializeField] private Button _pauseButton;
         [SerializeField] private Slider _stamina;
+        
+        public IGameScreenPresenter Presentor { get; private set; }
+        
+        public void InitPresentor(IGameScreenPresenter presentor) => Presentor = presentor;
         
         public void Initialize(StaminaData data)
         {
@@ -29,12 +31,15 @@ namespace UI
             _stamina.maxValue = data.MaxStamina;
             _stamina.value = _stamina.maxValue;
         }
+
+        private void OnEnable() => _pauseButton.onClick.AddListener(OnButtonPauseClick);
+        
+        private void OnDisable() => _pauseButton.onClick.RemoveListener(OnButtonPauseClick);
+        
+        private void OnButtonPauseClick() => Presentor.OnPauseButtonClicked();
         
         public void SetHightScore(int score) => _heightScoreText.text = $"{score.ToString()}m";
         
-        public void SetStaminaValue(float currentStamina)
-        {
-            _stamina.value = currentStamina;
-        }
+        public void SetStaminaValue(float currentStamina) => _stamina.value = currentStamina;
     }
 }

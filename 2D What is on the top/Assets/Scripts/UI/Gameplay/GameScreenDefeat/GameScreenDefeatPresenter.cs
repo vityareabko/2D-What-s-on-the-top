@@ -2,9 +2,9 @@ using UI.MVP;
 using UnityEngine;
 using Zenject;
 
-namespace UI.GameScreenDefeatView
+namespace UI
 {
-    public interface IGameScreenDefeatPresenter : IPresenter<IGameScreenDefeatModel, IGameScreenDefeatView>
+    public interface IGameScreenDefeatPresenter : IPresenter<IGameScreenDefeatView>
     {
         public void OnHomeButtonClicked();
         public void OnAgainButtonClicked();
@@ -13,15 +13,15 @@ namespace UI.GameScreenDefeatView
 
     public class GameScreenDefeatPresenter : IGameScreenDefeatPresenter
     {
-        public IGameScreenDefeatModel Model { get; }
         public IGameScreenDefeatView View { get; }
 
         public bool _isInit = false;
 
-        [Inject] public GameScreenDefeatPresenter(IGameScreenDefeatModel model, IGameScreenDefeatView view)
+        [Inject] public GameScreenDefeatPresenter(IGameScreenDefeatView view)
         {
-            Model = model;
             View = view;
+
+            
             
             Init();
         }

@@ -14,7 +14,14 @@ public class Stamina
         _gameScreenPresenter = gameScreenPresenter;
     }
 
-    public void DrainStamina(float amount)
+    public void DrainStaminaRun(float deltaTime) => DrainStamina(_staminaData.StaminaDrainRateRunning * deltaTime);
+    public void DrainStaminaWalking(float deltaTime) => DrainStamina(_staminaData.StaminaDrainRateWalking * deltaTime);
+    public void DrainStaminaJump() => DrainStamina(_staminaData.StaminaDrainRateJumping);
+    public void DrainStaminaUpwardRoll() => DrainStamina(_staminaData.StaminaDrainRateRoll);
+    
+    public bool isEnough() => _currentStamin > _staminaData.MinStamina;
+
+    private void DrainStamina(float amount)
     {
         if (_currentStamin <= _staminaData.MinStamina) 
             return;
@@ -23,7 +30,7 @@ public class Stamina
         _gameScreenPresenter.UpdateStamina(_currentStamin);
     }
 
-    public void RegenerateStamina(float amount)
+    private void RegenerateStamina(float amount)
     {
         if (_currentStamin >= _staminaData.MaxStamina)
             return;
@@ -32,6 +39,5 @@ public class Stamina
         _gameScreenPresenter.UpdateStamina(_currentStamin);
     }
 
-    public bool isEnough() => _currentStamin > _staminaData.MinStamina;
     
 }

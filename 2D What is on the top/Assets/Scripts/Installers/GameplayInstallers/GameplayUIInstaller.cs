@@ -1,5 +1,5 @@
 using UI;
-using UI.GameScreenDefeatView;
+using UI.GameScreenPause;
 using UnityEngine;
 using Zenject;
 
@@ -7,12 +7,14 @@ public class GameplayUIInstaller : MonoInstaller
 {
     [SerializeField] private GameScreenView _gameScreenPrefab;
     [SerializeField] private GameScreenDefeatView _defeatScreenPrefab;
+    [SerializeField] private GameScreenPauseView _pauseScreenPrefab;
     [SerializeField] private Transform _parentGameScreenView;
     
     public override void InstallBindings()
     {
         BindGameplayScreenMVP();
         BindDefeatScreenMVP();
+        BindPauseScreenMVP();
     }
 
     private void BindGameplayScreenMVP()
@@ -24,8 +26,13 @@ public class GameplayUIInstaller : MonoInstaller
 
     private void BindDefeatScreenMVP()
     {
-        Container.Bind<IGameScreenDefeatModel>().To<GameScreenDefeatModel>().AsSingle();
         Container.Bind<IGameScreenDefeatView>().FromComponentInNewPrefab(_defeatScreenPrefab).UnderTransform(_parentGameScreenView).AsSingle();
         Container.BindInterfacesAndSelfTo<GameScreenDefeatPresenter>().AsSingle();
+    }
+
+    private void BindPauseScreenMVP()
+    {
+        Container.Bind<IGameScreenPauseVIew>().FromComponentInNewPrefab(_pauseScreenPrefab).UnderTransform(_parentGameScreenView).AsSingle();
+        Container.BindInterfacesAndSelfTo<GameScreenPausePresenter>().AsSingle();
     }
 }
