@@ -36,7 +36,7 @@ namespace Gley.MobileAds.Internal
         PlistElementDict plistRoot = plistObj.root;
 
         // Set the description key-value in the plist:
-        plistRoot.SetString("NSUserTrackingUsageDescription", Resources.Load<MobileAdsData>(Constants.DATA_NAME_RUNTIME).nativePopupText);
+        plistRoot.SetString("NSUserTrackingUsageDescription", ResourcesContainer.Load<MobileAdsData>(Constants.DATA_NAME_RUNTIME).nativePopupText);
 
         // Save changes to the plist:
         File.WriteAllText(plistPath, plistObj.WriteToString());

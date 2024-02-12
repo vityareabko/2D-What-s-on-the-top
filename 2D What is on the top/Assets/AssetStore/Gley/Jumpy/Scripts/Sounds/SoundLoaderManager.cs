@@ -356,7 +356,7 @@ namespace Gley.Jumpy
 
 
         /// <summary>
-        /// Load an audio clip from Resources
+        /// Load an audio clip from ResourcesContainer
         /// </summary>
         /// <param name="soundName">name of the sound</param>
         /// <param name="folderName">path to resources folder</param>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using GG.Infrastructure.Utils.Swipe;
+using TriggersScripts;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, ICharacterEvents
@@ -14,26 +15,41 @@ public class PlayerController : MonoBehaviour, ICharacterEvents
     
     [SerializeField] private SwipeListener _swipeListener;
     [SerializeField] private PlayerMover _playerMover;
+    [SerializeField] private TriggerWinLevel _triggerWinLevel;
 
     private bool _isEnableSwiping = true;
+    private bool _isBlockMovement = false;
     
     private void OnEnable()
     {
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
         _playerMover.RanOutOfStamin += OnRanOutOfStamin;
+        _triggerWinLevel.LevelWin += OnPlayerWin;
     }
 
-    
     private void OnDisable()
     {
         _swipeListener.OnSwipe.RemoveListener(OnSwipeHandler);
         _playerMover.RanOutOfStamin -= OnRanOutOfStamin;
+        _triggerWinLevel.LevelWin -= OnPlayerWin;
     }
-    
+
+    private void Update() =>_playerMover.ProcessCheckingToPlayerAction();
+
+    private void FixedUpdate() => _playerMover.ProcessMovement(_isBlockMovement);
+
+    public void BlockSwipe(bool isEnableSwiping) => _isEnableSwiping = isEnableSwiping;
+
     private void OnRanOutOfStamin()
     {
         _isEnableSwiping = false;
         StartCoroutine(DefeatCoroutine());
+    }
+
+    private void OnPlayerWin()
+    {
+        _isBlockMovement = true;
+        _playerMover.FreezePlayer(true);
     }
 
     private void OnSwipeHandler(string swipe)
@@ -61,7 +77,6 @@ public class PlayerController : MonoBehaviour, ICharacterEvents
             _playerMover.PerformRoll();
         }
     }
-    
     
     private IEnumerator DefeatCoroutine()
     {

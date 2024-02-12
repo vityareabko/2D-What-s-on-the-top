@@ -1,5 +1,3 @@
-using Services;
-using UnityEngine;
 using Zenject;
 
 namespace Installers
@@ -8,12 +6,6 @@ namespace Installers
     {
         public override void InstallBindings()
         {
-            BindPause();
-        }
-
-        private void BindPause()
-        {
-            Container.Bind<IPause>().To<PauseHandler>().AsSingle();
         }
     }
 }

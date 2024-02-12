@@ -78,7 +78,7 @@ namespace Gley.EasyIAP.Internal
 
         public void Initialize(UnityAction<IAPOperationStatus, string, List<StoreProduct>> initComplete)
         {
-            EasyIAPData settings = Resources.Load<EasyIAPData>(Constants.DATA_NAME_RUNTIME);
+            EasyIAPData settings = ResourcesContainer.Load<EasyIAPData>(Constants.DATA_NAME_RUNTIME);
             if (settings == null)
             {
                 Debug.LogError("No products available -> Go to Tools->Gley->Easy IAP and define your products");

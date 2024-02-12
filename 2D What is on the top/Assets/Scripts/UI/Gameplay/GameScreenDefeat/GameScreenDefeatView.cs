@@ -27,9 +27,11 @@ namespace UI
             _startAgainButton.onClick.AddListener(OnStartAgainButton);
             _homeButton.onClick.AddListener(OnHomeButton);
         }
-
-        public void InitPresentor(IGameScreenDefeatPresenter presentor) => Presentor = presentor;
         
+        public void InitPresentor(IGameScreenDefeatPresenter presentor) => Presentor = presentor;
+
+        public void SetCoins(int amount) => _amountConis.text = amount.ToString();
+
         private void OnStartAgainButton() => Presentor.OnAgainButtonClicked();
        
         private void OnHomeButton() => Presentor.OnHomeButtonClicked();

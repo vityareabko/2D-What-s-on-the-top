@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace Systems
+namespace ResourceCollector
 {
     public class ResourceCollector : IResourceCollector
     {
-        public event Action<Dictionary<ResourceType, int>> ResourcesContainerChange;
+        public event Action<Dictionary<ResourceTypes, int>> ResourcesContainerChange;
 
-        public Dictionary<ResourceType, int> ResourcesContainer { get; } = new();
-
-
-        public void AddResource(IPickable ressource)
+        public Dictionary<ResourceTypes, int> ResourcesContainer { get; } = new();
+        
+        public void AddResource(IPickUp ressource)
         {
             if (ResourcesContainer.ContainsKey(ressource.Type) == false)
                 ResourcesContainer[ressource.Type] = ressource.GetValue();
@@ -20,7 +19,7 @@ namespace Systems
             ResourcesContainerChange?.Invoke(ResourcesContainer);
         }
 
-        public void Remove(IPickable ressource)
+        public void Remove(IPickUp ressource)
         {
             if (ResourcesContainer.ContainsKey(ressource.Type) == false)
                 ResourcesContainer[ressource.Type] = ressource.GetValue();

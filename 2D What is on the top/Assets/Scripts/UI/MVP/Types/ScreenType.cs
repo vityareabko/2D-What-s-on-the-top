@@ -5,6 +5,7 @@ namespace UI.MVP
         GameScreen,
         GameScreenDefeat,
         GameScreenPause,
+        GameScreenLevelWin,
         LoadingScreen,
         MainMenuScreen,
         PauseScreen,

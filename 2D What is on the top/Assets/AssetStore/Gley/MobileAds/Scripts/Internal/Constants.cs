@@ -9,6 +9,6 @@ namespace Gley.MobileAds.Internal
         public const string DATA_NAME_RUNTIME = "MobileAdsDataRuntime";
         public const string DATA_NAME_EDITOR = "MobileAdsDataEditor";
         public const string DATA_PATH_EDITOR = "Scripts/Editor/EditorSave";
-        public const string RESOURCES_FOLDER = "Resources";
+        public const string RESOURCES_FOLDER = "ResourcesContainer";
     }
 }

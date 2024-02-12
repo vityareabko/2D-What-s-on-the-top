@@ -35,20 +35,25 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
 
     private void Awake() => _rb = GetComponent<Rigidbody2D>(); 
 
-    private void Update()
-    {
-        TriggerDefeatOnStaminaDepletion();
-        CheckOnPlatformOnPlatform();
-        ResetSlowDownToTouch();
-    }
-
-    private void FixedUpdate()
-    {
-        ProcessMovement();
-    }
+    // private void Update()
+    // {
+    //     // TriggerDefeatOnStaminaDepletion();
+    //     // CheckOnPlatformOnPlatform();
+    //     // ResetSlowDownToTouch();
+    // }
+    //
+    // private void FixedUpdate()
+    // {
+    //     // ProcessMovement();
+    // }
     
-    private void ProcessMovement()
+    public void ProcessMovement(bool isBlockMovemnt)
     {
+        if (isBlockMovemnt) return;
+        
+        if (_isDefeat)
+            return;
+        
         if (ShouldMoveUpward())
         {
             MoveUpward();
@@ -59,6 +64,21 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
         {
             SlowDown();
         }
+    }
+
+    public void ProcessCheckingToPlayerAction()
+    {
+        TriggerDefeatOnStaminaDepletion();
+        CheckOnPlatformOnPlatform();
+        ResetSlowDownToTouch();
+    }
+    
+    public void FreezePlayer(bool _isFreeze)
+    {
+        if (_isFreeze)
+            _rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        else
+            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
     
     public void Jump(bool isRightWall)
@@ -84,15 +104,6 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
     {
         StartCoroutine(RollCoroutine());
         SlowDownFlag(false); 
-    }
-
-    private void TriggerDefeatOnStaminaDepletion()
-    {
-        if (_stamina.isEnough() == false && _isDefeat == false)
-        {
-            _isDefeat = true;
-            RanOutOfStamin?.Invoke();
-        }
     }
     
     private void UpwardRoll()
@@ -125,6 +136,15 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             SlowDownFlag(false); 
+    }
+    
+    private void TriggerDefeatOnStaminaDepletion()
+    {
+        if (_stamina.isEnough() == false && _isDefeat == false)
+        {
+            _isDefeat = true;
+            RanOutOfStamin?.Invoke();
+        }
     }
     
     private void FlipCharacter()

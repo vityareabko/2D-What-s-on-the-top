@@ -1,7 +1,7 @@
 namespace Helper
 {
-    public class ConstVar
+    public static class ConstTags
     {
-        
+        public static string Player = "Player";
     }
 }

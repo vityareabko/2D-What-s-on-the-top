@@ -7,7 +7,7 @@ namespace UI.GameScreenPause
     public interface IGameScreenPausePresenter : IPresenter<IGameScreenPauseVIew>
     {
         public event Action OnRestartGameClicked;
-        public event Action OnResumeGameClicked;
+        public event Action OnResumeGameClicked; 
         public void OnRestartGameButtonClicked();
         public void OnResumeGameButtondClicked();
         
@@ -19,6 +19,7 @@ namespace UI.GameScreenPause
         public event Action OnResumeGameClicked;
         
         public IGameScreenPauseVIew View { get; }
+        
         public IGameScreenPresenter _gameScreenPresenter;
 
         public bool _isInit = false;

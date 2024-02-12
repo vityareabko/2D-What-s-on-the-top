@@ -20,9 +20,6 @@ namespace UI
         [Inject] public GameScreenDefeatPresenter(IGameScreenDefeatView view)
         {
             View = view;
-
-            
-            
             Init();
         }
 

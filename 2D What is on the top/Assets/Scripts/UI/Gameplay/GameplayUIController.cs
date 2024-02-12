@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Game.Gameplay;
+using UI.GameScreenLevelWinn;
 using UI.GameScreenPause;
 using UI.MVP;
 using UnityEngine;
@@ -8,54 +11,55 @@ namespace UI
 {
     public class GameplayUIController : MonoBehaviour
     {
-
+        [SerializeField] private GameplayController _gameplay;
+        
         private List<IPresenter> _presenters = new();
         
         private IGameScreenPresenter _gameScreenPresenter;
         private IGameScreenDefeatPresenter _gameScreenDefeatPresenter;
         private IGameScreenPausePresenter _gameScreenPausePresenter;
+        private IGameScreenLevelWinPresenter _gameScreenLevelWinPresenter;
         
-        private ICharacterEvents characterEvents;
         
         [Inject] private void Construct(
             ICharacterEvents characterEvents,
             IGameScreenPresenter gameScreenPresenter,
             IGameScreenDefeatPresenter gameScreenDefeatPresenter,
-            IGameScreenPausePresenter gameScreenPausePresenter
+            IGameScreenPausePresenter gameScreenPausePresenter,
+            IGameScreenLevelWinPresenter gameScreenLevelWinPresenter
             )
-        {
-            this.characterEvents = characterEvents;
-            
+        { 
             _gameScreenPresenter = gameScreenPresenter;
             _gameScreenDefeatPresenter = gameScreenDefeatPresenter;
             _gameScreenPausePresenter = gameScreenPausePresenter;
-            
-            Debug.Log($"is {gameScreenPresenter}");
-            Debug.Log($"is {gameScreenDefeatPresenter}");
-            Debug.Log($"is {gameScreenPausePresenter}");
+            _gameScreenLevelWinPresenter = gameScreenLevelWinPresenter;
             
             _presenters.Add(_gameScreenPresenter);
             _presenters.Add(_gameScreenDefeatPresenter);
             _presenters.Add(_gameScreenPausePresenter);
+            _presenters.Add(_gameScreenLevelWinPresenter);
         }
-
+        
         private void OnEnable()
         {
-            characterEvents.CharacterDefeat += OnDefaet;
+            _gameplay.PlayerWin += OnPlayerWin;
+            _gameplay.PlayerDefeat += OnPlayerDefeat;
             _gameScreenPresenter.OnPauseClicked += OnPauseGame;
             _gameScreenPausePresenter.OnResumeGameClicked += OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked += OnRestartGame;
         }
 
+
         private void OnDisable()
         {
-            characterEvents.CharacterDefeat -= OnDefaet;
+            _gameplay.PlayerWin -= OnPlayerWin;
+            _gameplay.PlayerDefeat -= OnPlayerDefeat;
             _gameScreenPresenter.OnPauseClicked -= OnPauseGame;
             _gameScreenPausePresenter.OnResumeGameClicked -= OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked -= OnRestartGame;
         }
 
-        private void HideOtherViewsAndShow(IPresenter presenter)
+        public void HideOtherViewsAndShow(IPresenter presenter)
         {
             foreach (var presntr in _presenters)
             {
@@ -66,14 +70,14 @@ namespace UI
             presenter.Show();
         }
 
-        private void OnDefaet() => HideOtherViewsAndShow(_gameScreenDefeatPresenter);
+        private void OnPlayerDefeat() => HideOtherViewsAndShow(_gameScreenDefeatPresenter);
 
-        private void OnRestartGame() => Debug.Log("Restart game logic");
+        private void OnPlayerWin() => HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
         
-        private void OnResumeGame() => Time.timeScale = 1;
+        private void OnRestartGame() => Debug.Log("Restart game logic");
 
-        private void OnPauseGame() => Time.timeScale = 0;
+        private void OnResumeGame() => _gameplay.ResumeGame();
 
-
+        private void OnPauseGame() => _gameplay.PauseGame();
     }
 }

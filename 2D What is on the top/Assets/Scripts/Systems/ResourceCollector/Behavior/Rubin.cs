@@ -3,16 +3,24 @@ using UnityEngine;
 
 namespace ResourceCollector
 {
-    public class Rubin : MonoBehaviour, IPickable
+    public class Rubin : MonoBehaviour, IPickUp
     {
-        public ResourceType Type { get; } = ResourceType.Rubin;
+        public ResourceTypes Type { get; } = ResourceTypes.Rubin;
 
-        public event Action<ResourceType> PickUP;
+        public event Action<IPickUp> PickUP;
 
         [SerializeField] private int CoinsValue = 1;
-
+        
         public int GetValue() => CoinsValue;
+        
+        private void Hide() => gameObject.SetActive(false);
 
-        public void OnTriggerEnter(Collider colider) => PickUP?.Invoke(Type);
+        public void OnTriggerEnter2D(Collider2D colider)
+        {
+            PickUP?.Invoke(this);
+            
+            Hide();
+
+        }
     }
 }

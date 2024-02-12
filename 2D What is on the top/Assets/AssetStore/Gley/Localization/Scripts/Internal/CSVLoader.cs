@@ -50,7 +50,7 @@ namespace Gley.Localization.Internal
                 allWords.allText[i].translations = allWords.allText[i].translations.OrderBy(cond => cond.language).ToList();
             }
 
-            File.WriteAllText($"{Application.dataPath}/{rootWithoutAssets}/Resources/{Constants.LOCALIZATION_FILE}.json", JsonUtility.ToJson(allWords));
+            File.WriteAllText($"{Application.dataPath}/{rootWithoutAssets}/ResourcesContainer/{Constants.LOCALIZATION_FILE}.json", JsonUtility.ToJson(allWords));
         }
 
 

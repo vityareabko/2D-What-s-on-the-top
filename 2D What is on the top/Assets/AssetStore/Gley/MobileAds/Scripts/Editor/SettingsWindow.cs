@@ -402,7 +402,7 @@ namespace Gley.MobileAds.Editor
                         popup
                         );
 
-                    EditorUtilities.CreateDataAsset(mobileAdsData, rootFolder, "Resources", Internal.Constants.DATA_NAME_RUNTIME);
+                    EditorUtilities.CreateDataAsset(mobileAdsData, rootFolder, "ResourcesContainer", Internal.Constants.DATA_NAME_RUNTIME);
                     mobileAdsData = Resources.Load<MobileAdsData>(Internal.Constants.DATA_NAME_RUNTIME);
                     EditorUtility.SetDirty(mobileAdsData);
                     AssetDatabase.Refresh();
