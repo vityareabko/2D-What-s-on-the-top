@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class FollowCamera : MonoBehaviour
@@ -9,13 +10,12 @@ public class FollowCamera : MonoBehaviour
     [SerializeField] private float _followSpeed = 10f; // Скорость, с которой камера следует за целью.
     [SerializeField] private float _smoothness = 0.125f; // Плавность следования камеры (значение между 0 и 1).
 
-    [SerializeField] private PlayerController _playerController;
+    [FormerlySerializedAs("_playerController")] [SerializeField] private Player player;
 
     private bool _isStopFollowing = false;
     
-    private void OnEnable() => _playerController.CharacterDefeat += OnPlayerDefeat;
-
-    private void OnDisable() => _playerController.CharacterDefeat -= OnPlayerDefeat;
+    private void OnEnable() => player.LevelDefeat += OnPlayerDefeat;
+    private void OnDisable() => player.LevelDefeat -= OnPlayerDefeat;
     
     private void LateUpdate()
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Gameplay;
+using ResourcesCollector;
 using UI.GameScreenLevelWinn;
 using UI.GameScreenPause;
 using UI.MVP;
@@ -11,18 +12,20 @@ namespace UI
 {
     public class GameplayUIController : MonoBehaviour
     {
-        [SerializeField] private GameplayController _gameplay;
-        
         private List<IPresenter> _presenters = new();
         
         private IGameScreenPresenter _gameScreenPresenter;
         private IGameScreenDefeatPresenter _gameScreenDefeatPresenter;
         private IGameScreenPausePresenter _gameScreenPausePresenter;
         private IGameScreenLevelWinPresenter _gameScreenLevelWinPresenter;
-        
+
+        private IResourceCollector _resourceCollector;
+        private IGameplay _gameplay;
         
         [Inject] private void Construct(
-            ICharacterEvents characterEvents,
+            IGameplay gameplay,
+            IResourceCollector resourceCollector,
+            
             IGameScreenPresenter gameScreenPresenter,
             IGameScreenDefeatPresenter gameScreenDefeatPresenter,
             IGameScreenPausePresenter gameScreenPausePresenter,
@@ -38,6 +41,9 @@ namespace UI
             _presenters.Add(_gameScreenDefeatPresenter);
             _presenters.Add(_gameScreenPausePresenter);
             _presenters.Add(_gameScreenLevelWinPresenter);
+
+            _resourceCollector = resourceCollector;
+            _gameplay = gameplay;
         }
         
         private void OnEnable()
@@ -47,9 +53,10 @@ namespace UI
             _gameScreenPresenter.OnPauseClicked += OnPauseGame;
             _gameScreenPausePresenter.OnResumeGameClicked += OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked += OnRestartGame;
+
+            _resourceCollector.ResourcesContainerChange += OnResourcesContainerChanged;
         }
-
-
+        
         private void OnDisable()
         {
             _gameplay.PlayerWin -= OnPlayerWin;
@@ -57,6 +64,8 @@ namespace UI
             _gameScreenPresenter.OnPauseClicked -= OnPauseGame;
             _gameScreenPausePresenter.OnResumeGameClicked -= OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked -= OnRestartGame;
+            
+            _resourceCollector.ResourcesContainerChange -= OnResourcesContainerChanged;
         }
 
         public void HideOtherViewsAndShow(IPresenter presenter)
@@ -76,8 +85,34 @@ namespace UI
         
         private void OnRestartGame() => Debug.Log("Restart game logic");
 
-        private void OnResumeGame() => _gameplay.ResumeGame();
+        private void OnResumeGame()
+        {
+            _gameplay.ResumeGame();
+            _gameScreenPausePresenter.Hide();
+        }
 
-        private void OnPauseGame() => _gameplay.PauseGame();
+        private void OnPauseGame()
+        {
+            _gameplay.PauseGame();
+            _gameScreenPausePresenter.Show();
+        }
+
+        private void OnResourcesContainerChanged(Dictionary<ResourceTypes, int> data)
+        {
+            foreach (var (key, value) in data)
+            {
+                switch (key)
+                {
+                    case ResourceTypes.Coin:
+                        _gameScreenPresenter.SetAmountCoins(value);
+                        break;
+                    case ResourceTypes.Rubin:
+                        Debug.Log("Пока что рубин стоит только для пример - его пока еще нету");
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
     }
 }

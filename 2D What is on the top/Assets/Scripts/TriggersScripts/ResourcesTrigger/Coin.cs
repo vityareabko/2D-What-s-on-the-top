@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ResourceCollector
+namespace ResourcesCollector
 {
     public class Coin : MonoBehaviour, IPickUp
     {
@@ -13,12 +13,15 @@ namespace ResourceCollector
 
         private void Hide() => gameObject.SetActive(false);
 
-        public int GetValue() => CoinsValue;
+        public int GetCoinsValue() => CoinsValue;
 
         public void OnTriggerEnter2D(Collider2D colider)
         {
-            PickUP?.Invoke(this);
-            Hide();
+            if (colider.CompareTag(ConstTags.Player))
+            {
+                PickUP?.Invoke(this);
+                Hide();
+            }
         }
     }
 }

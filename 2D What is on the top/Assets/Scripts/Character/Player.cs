@@ -4,20 +4,19 @@ using GG.Infrastructure.Utils.Swipe;
 using TriggersScripts;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, ICharacterEvents
+public class Player : MonoBehaviour, IPlayer
 {
-    // можно вынести swiping и вообще весь инпут в инпут класс какой-нибудь 
-    
     private const float DefeatDelay = 0.7f;
     private const float CharacterHideDelay = 2f;
     
-    public event Action CharacterDefeat; 
+    public event Action LevelDefeat; 
+    public event Action LevelWin; 
     
     [SerializeField] private SwipeListener _swipeListener;
     [SerializeField] private PlayerMover _playerMover;
     [SerializeField] private TriggerWinLevel _triggerWinLevel;
 
-    private bool _isEnableSwiping = true;
+    private bool _isBlockSpwipe = false;
     private bool _isBlockMovement = false;
     
     private void OnEnable()
@@ -34,27 +33,25 @@ public class PlayerController : MonoBehaviour, ICharacterEvents
         _triggerWinLevel.LevelWin -= OnPlayerWin;
     }
 
-    private void Update() =>_playerMover.ProcessCheckingToPlayerAction();
+    private void Update()
+    {
+        ResetSlowDownToTouch();
+        _playerMover.ProcessCheckingToPlayerAction();
+    }
 
     private void FixedUpdate() => _playerMover.ProcessMovement(_isBlockMovement);
 
-    public void BlockSwipe(bool isEnableSwiping) => _isEnableSwiping = isEnableSwiping;
-
-    private void OnRanOutOfStamin()
+    public void BlockSwipe(bool isBlock) => _isBlockSpwipe = isBlock;
+    
+    private void ResetSlowDownToTouch()
     {
-        _isEnableSwiping = false;
-        StartCoroutine(DefeatCoroutine());
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            _playerMover.SlowDownFlag(false); 
     }
-
-    private void OnPlayerWin()
-    {
-        _isBlockMovement = true;
-        _playerMover.FreezePlayer(true);
-    }
-
+    
     private void OnSwipeHandler(string swipe)
     {
-        if (_isEnableSwiping == false)
+        if (_isBlockSpwipe)
             return;
 
         if (swipe == DirectionId.ID_LEFT)
@@ -78,10 +75,23 @@ public class PlayerController : MonoBehaviour, ICharacterEvents
         }
     }
     
+    private void OnRanOutOfStamin()
+    {
+        _isBlockSpwipe = true;
+        StartCoroutine(DefeatCoroutine());
+    }
+
+    private void OnPlayerWin()
+    {
+        _isBlockMovement = true;
+        _playerMover.FreezePlayer(true);
+        LevelWin?.Invoke();
+    }
+    
     private IEnumerator DefeatCoroutine()
     {
         yield return new WaitForSeconds(DefeatDelay);
-        CharacterDefeat?.Invoke();
+        LevelDefeat?.Invoke();
         
         yield return new WaitForSeconds(CharacterHideDelay);
         _playerMover.gameObject.SetActive(false);

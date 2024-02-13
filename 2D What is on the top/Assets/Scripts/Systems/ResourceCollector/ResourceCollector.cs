@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ResourceCollector
+namespace ResourcesCollector
 {
     public class ResourceCollector : IResourceCollector
     {
@@ -12,9 +12,9 @@ namespace ResourceCollector
         public void AddResource(IPickUp ressource)
         {
             if (ResourcesContainer.ContainsKey(ressource.Type) == false)
-                ResourcesContainer[ressource.Type] = ressource.GetValue();
+                ResourcesContainer[ressource.Type] = ressource.GetCoinsValue();
             else
-                ResourcesContainer[ressource.Type] += ressource.GetValue();
+                ResourcesContainer[ressource.Type] += ressource.GetCoinsValue();
 
             ResourcesContainerChange?.Invoke(ResourcesContainer);
         }
@@ -22,9 +22,9 @@ namespace ResourceCollector
         public void Remove(IPickUp ressource)
         {
             if (ResourcesContainer.ContainsKey(ressource.Type) == false)
-                ResourcesContainer[ressource.Type] = ressource.GetValue();
+                ResourcesContainer[ressource.Type] = ressource.GetCoinsValue();
             else
-                ResourcesContainer[ressource.Type] -= ressource.GetValue();
+                ResourcesContainer[ressource.Type] -= ressource.GetCoinsValue();
 
             ResourcesContainerChange?.Invoke(ResourcesContainer);
         }

@@ -1,7 +1,6 @@
 using System;
-using TriggersScripts;
-using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Game.Gameplay
 {
@@ -9,6 +8,8 @@ namespace Game.Gameplay
     {
         public event Action PlayerWin;
         public event Action PlayerDefeat;
+        public void PauseGame();
+        public void ResumeGame();
     }
 
     public class GameplayController : MonoBehaviour, IGameplay
@@ -16,45 +17,47 @@ namespace Game.Gameplay
         public event Action PlayerWin;
         public event Action PlayerDefeat;
 
-        [SerializeField] private PlayerController _playerController;
-        [SerializeField] private TriggerWinLevel _triggerWinLevel;
+        private IPlayer _player;
         
-        
-        private void OnEnable()
+        [Inject] private void Construct(IPlayer player)
         {
-            _triggerWinLevel.LevelWin += OnLevelWinHandler;
-            _playerController.CharacterDefeat += OnLevelDefeatHandler;
+            _player = player;
         }
 
+        private void OnEnable()
+        {
+            _player.LevelWin += OnLevelWinHandler;
+            _player.LevelDefeat += OnLevelDefeatHandler;
+        }
+        
         private void OnDisable()
         {
-            _triggerWinLevel.LevelWin -= OnLevelWinHandler;
-            _playerController.CharacterDefeat -= OnLevelDefeatHandler;
+            _player.LevelWin -= OnLevelWinHandler;
+            _player.LevelDefeat -= OnLevelDefeatHandler;
         }
 
         public void PauseGame()
         {
             Time.timeScale = 0;
-            _playerController.BlockSwipe(false);
+            _player.BlockSwipe(true);
         }
 
         public void ResumeGame()
         {
             Time.timeScale = 1;
-            _playerController.BlockSwipe(true);
+            _player.BlockSwipe(false);
         }
 
         private void OnLevelDefeatHandler()
         {
-            // сдесь в action можно передать кол-во заработаных монет или еще что-то чтобы передать въюхе эти данные
             PlayerDefeat?.Invoke();
+            _player.BlockSwipe(true);
         }
         
         private void OnLevelWinHandler()
         {
-            // сдесь по-хорошому надо бы передать награды за уровенеь которые будут братся из конфига к примеру за прохождения 1-ого уровня дают 1000 монет и еще что-то
             PlayerWin?.Invoke();
+            _player.BlockSwipe(true);
         }
-
     }
 }

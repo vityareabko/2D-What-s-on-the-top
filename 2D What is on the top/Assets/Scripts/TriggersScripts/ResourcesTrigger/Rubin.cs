@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ResourceCollector
+namespace ResourcesCollector
 {
     public class Rubin : MonoBehaviour, IPickUp
     {
@@ -11,16 +11,17 @@ namespace ResourceCollector
 
         [SerializeField] private int CoinsValue = 1;
         
-        public int GetValue() => CoinsValue;
+        public int GetCoinsValue() => CoinsValue;
         
         private void Hide() => gameObject.SetActive(false);
 
         public void OnTriggerEnter2D(Collider2D colider)
         {
-            PickUP?.Invoke(this);
-            
-            Hide();
-
+            if (colider.CompareTag(ConstTags.Player))
+            {
+                PickUP?.Invoke(this);
+                Hide();
+            }
         }
     }
 }

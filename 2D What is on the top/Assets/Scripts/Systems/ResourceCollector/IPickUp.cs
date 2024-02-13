@@ -1,6 +1,6 @@
 using System;
 
-namespace ResourceCollector
+namespace ResourcesCollector
 {
     public interface IPickUp
     {
@@ -8,6 +8,6 @@ namespace ResourceCollector
 
         public event Action<IPickUp> PickUP;
         
-        public int GetValue();
+        public int GetCoinsValue();
     }
 }

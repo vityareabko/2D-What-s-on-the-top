@@ -1,14 +1,24 @@
 using System;
 using System.Collections.Generic;
+using Services.StorageService;
+using Services.StorageService.JsonDatas;
 using UnityEngine;
+using Zenject;
 
-namespace ResourceCollector
+namespace ResourcesCollector
 {
     public class PickUPResourcesExample : MonoBehaviour
     {
         private ResourceCollector _resourceCollector;
 
         [SerializeField] private List<Coin> _listCoins;
+
+        private IStorageService _storage;
+        
+        [Inject] public void Constructor(IStorageService storage)
+        {
+            _storage = storage;
+        }
 
         private void Awake()
         {
@@ -17,13 +27,13 @@ namespace ResourceCollector
 
         private void OnEnable()
         {
-            _resourceCollector.ResourcesContainerChange += OnResourcesContainerChanged;
+            // _resourceCollector.ResourcesContainerChange += OnResourcesContainerChanged;
             SubscirbeCoins();
         }
 
         private void OnDisable()
         {
-            _resourceCollector.ResourcesContainerChange -= OnResourcesContainerChanged;
+            // _resourceCollector.ResourcesContainerChange -= OnResourcesContainerChanged;
             UnsubscribeCoins();
         }
 
@@ -42,6 +52,27 @@ namespace ResourceCollector
         private void OnPickUPCoin(IPickUp coin)
         {
             _resourceCollector.AddResource(coin);
+
+            var resourcesData = new ResourcesJsonData();
+            _storage.Load<ResourcesJsonData>(StorageKeysType.Resources, data =>
+            {
+                if (data != null)
+                    resourcesData = data;
+            });
+            
+            if (resourcesData.Coins.ContainsKey(coin.Type))
+                resourcesData.Coins[coin.Type] += coin.GetCoinsValue();
+            else 
+                resourcesData.Coins[coin.Type] = coin.GetCoinsValue();
+            
+            _storage.Save(StorageKeysType.Resources, resourcesData, b =>
+            {
+                if (b)
+                    Debug.Log("success save");
+                else
+                    Debug.Log("Failed save");
+            });
+            // проверить сохранения монет
         }
         
 

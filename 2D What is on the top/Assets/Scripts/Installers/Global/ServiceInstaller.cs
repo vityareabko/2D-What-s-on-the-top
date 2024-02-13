@@ -1,3 +1,4 @@
+using Services.StorageService;
 using Zenject;
 
 namespace Installers
@@ -6,6 +7,12 @@ namespace Installers
     {
         public override void InstallBindings()
         {
+            BindStorageService();
+        }
+
+        private void BindStorageService()
+        {
+            Container.BindInterfacesAndSelfTo<JsonToFileStorageService>().FromNew().AsSingle();
         }
     }
 }

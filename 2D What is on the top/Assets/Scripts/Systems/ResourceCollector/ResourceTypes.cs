@@ -1,4 +1,4 @@
-namespace ResourceCollector
+namespace ResourcesCollector
 {
     public enum ResourceTypes
     {
