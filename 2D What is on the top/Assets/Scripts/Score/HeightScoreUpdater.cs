@@ -10,17 +10,17 @@ namespace Score
         [SerializeField] private Transform _character;
         
         private HeightTracker _heightTracker;
-        private GameScreenPresenter _screenPresenter;
+        private GameScreenHUDPresenter screenHUDPresenter;
 
-        [Inject] public void Construct(GameScreenPresenter presenter)
+        [Inject] public void Construct(GameScreenHUDPresenter hudPresenter)
         {
-            _screenPresenter = presenter;
+            screenHUDPresenter = hudPresenter;
             _heightTracker = new HeightTracker(_character.position.y);
         }
 
         private void Update()
         {
-            _screenPresenter.UpdateHeightScore(_heightTracker.CalculateHeight(_character.position.y));
+            screenHUDPresenter.UpdateHeightScore(_heightTracker.CalculateHeight(_character.position.y));
         }
     }
 }

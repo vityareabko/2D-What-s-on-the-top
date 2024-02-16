@@ -3,31 +3,32 @@ using UI;
 public class Stamina
 {
     private StaminaData _staminaData;
-    private GameScreenPresenter _gameScreenPresenter;
+    private GameScreenHUDPresenter gameScreenHUDPresenter;
     
     private float _currentStamin;
 
-    public Stamina(CharacterData characterData, GameScreenPresenter gameScreenPresenter)
+    public Stamina(CharacterData characterData, GameScreenHUDPresenter gameScreenHUDPresenter)
     {
         _staminaData = characterData.StaminaData;
         _currentStamin = _staminaData.MaxStamina;
-        _gameScreenPresenter = gameScreenPresenter;
+        this.gameScreenHUDPresenter = gameScreenHUDPresenter;
     }
 
-    public void DrainStaminaRun(float deltaTime) => DrainStamina(_staminaData.StaminaDrainRateRunning * deltaTime);
-    public void DrainStaminaWalking(float deltaTime) => DrainStamina(_staminaData.StaminaDrainRateWalking * deltaTime);
-    public void DrainStaminaJump() => DrainStamina(_staminaData.StaminaDrainRateJumping);
-    public void DrainStaminaUpwardRoll() => DrainStamina(_staminaData.StaminaDrainRateRoll);
+    public void DrainRateStaminaRun(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateRunning * deltaTime);
+    public void DrainRateStaminaWalking(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateWalking * deltaTime);
+    public void DrainRateStaminaJump() => DrainRateStamina(_staminaData.StaminaDrainRateJumping);
+    public void DrainRateStaminaUpwardRoll() => DrainRateStamina(_staminaData.StaminaDrainRateRoll);
+    public void DrainRateStaminaForObstaclesCollision() => DrainRateStamina(_staminaData.StaminaDrainObstacleCollision);
     
     public bool isEnough() => _currentStamin > _staminaData.MinStamina;
 
-    private void DrainStamina(float amount)
+    private void DrainRateStamina(float amount)
     {
         if (_currentStamin <= _staminaData.MinStamina) 
             return;
         
         _currentStamin -= amount;
-        _gameScreenPresenter.UpdateStamina(_currentStamin);
+        gameScreenHUDPresenter.UpdateStamina(_currentStamin);
     }
 
     private void RegenerateStamina(float amount)
@@ -36,8 +37,6 @@ public class Stamina
             return;
 
         _currentStamin += amount;
-        _gameScreenPresenter.UpdateStamina(_currentStamin);
+        gameScreenHUDPresenter.UpdateStamina(_currentStamin);
     }
-
-    
 }

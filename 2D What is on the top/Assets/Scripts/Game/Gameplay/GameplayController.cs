@@ -1,63 +1,31 @@
-using System;
 using UnityEngine;
-using Zenject;
 
 namespace Game.Gameplay
 {
-    public interface IGameplay
+    public class GameplayController : MonoBehaviour
     {
-        public event Action PlayerWin;
-        public event Action PlayerDefeat;
-        public void PauseGame();
-        public void ResumeGame();
-    }
-
-    public class GameplayController : MonoBehaviour, IGameplay
-    {
-        public event Action PlayerWin;
-        public event Action PlayerDefeat;
-
-        private IPlayer _player;
-        
-        [Inject] private void Construct(IPlayer player)
-        {
-            _player = player;
-        }
-
         private void OnEnable()
         {
-            _player.LevelWin += OnLevelWinHandler;
-            _player.LevelDefeat += OnLevelDefeatHandler;
+            EventAggregator.Subscribe<PauseGameEventHandler>(OnPauseGame);
+            EventAggregator.Subscribe<ResumeGameEventHandler>(OnResumeGame);
         }
-        
+
         private void OnDisable()
         {
-            _player.LevelWin -= OnLevelWinHandler;
-            _player.LevelDefeat -= OnLevelDefeatHandler;
+            EventAggregator.Unsubscribe<PauseGameEventHandler>(OnPauseGame);
+            EventAggregator.Unsubscribe<ResumeGameEventHandler>(OnResumeGame);
         }
 
-        public void PauseGame()
+        public void OnPauseGame(object sender, PauseGameEventHandler eventdata)
         {
             Time.timeScale = 0;
-            _player.BlockSwipe(true);
+            EventAggregator.Post(this, new GameIsOnPausedEvent(){ IsOnPause = true });
         }
 
-        public void ResumeGame()
+        public void OnResumeGame(object sender, ResumeGameEventHandler eventData)
         {
             Time.timeScale = 1;
-            _player.BlockSwipe(false);
-        }
-
-        private void OnLevelDefeatHandler()
-        {
-            PlayerDefeat?.Invoke();
-            _player.BlockSwipe(true);
-        }
-        
-        private void OnLevelWinHandler()
-        {
-            PlayerWin?.Invoke();
-            _player.BlockSwipe(true);
+            EventAggregator.Post(this, new GameIsOnPausedEvent(){ IsOnPause = false});
         }
     }
 }

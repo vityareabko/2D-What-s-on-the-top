@@ -1,40 +1,42 @@
 using System;
 using System.Collections;
+using Extensions;
+using Helper;
 using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMover : MonoBehaviour, IPlayerMover
+public class PlayerMover 
 {
-    // playerMover можна вынести в обычный не монобех класс
-    
     private const float RadiusDetectionPlatform = 0.2f;
-    private const float RollDelay               = 0.5f;
+    private const float RollDelay = 0.5f;
     
-    public event Action RanOutOfStamin;
-    
-    [SerializeField] private LayerMask _platformLayer;
-    [SerializeField] private Transform _platformDetector;
-    
+    private MonoBehaviour _behaviour;
+    private Transform _playerTransform;
+    private Transform _transformDetection;
+    private LayerMask _plarformLayer;
     private Rigidbody2D _rb;
-
+    
     private CharacterData _characterData;
     private Stamina _stamina;
 
-    private bool _isFacingRight    = true;
-    private bool _isDefeat         = false;
-          
-    private bool _isSlowdown       = false;
-    private bool _isPlatform       = false;
-    private bool _isRoll           = false;
+    private bool _isFacingRight = true;
+    private bool _isDefeat = false;
 
-    [Inject] private void Construct(CharacterData characterData, Stamina stamina)
+    private bool _isSlowdown = false;
+    private bool _isPlatform = false;
+    private bool _isRoll = false;
+    
+    public PlayerMover(Stamina stamina, CharacterData characterData, MonoBehaviour behaviour, Transform transformPlatformDetection)
     {
         _characterData = characterData;
         _stamina = stamina;
+        _behaviour = behaviour;
+        _rb = _behaviour.GetComponent<Rigidbody2D>();
+        _playerTransform = _behaviour.transform;
+        _transformDetection = transformPlatformDetection;
+        _plarformLayer = ConstLayer.Platform.ToLayerMask();
     }
-
-    private void Awake() => _rb = GetComponent<Rigidbody2D>(); 
     
     public void ProcessMovement(bool isBlockMovemnt)
     {
@@ -57,7 +59,7 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
 
     public void ProcessCheckingToPlayerAction()
     {
-        TriggerDefeatOnStaminaDepletion();
+        CheckStaminaDepletion();
         CheckOnPlatformOnPlatform();
     }
     
@@ -81,7 +83,7 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
         float jumpDirection = _isFacingRight ? 1 : -1;
 
         _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, _rb.velocity.y);
-        _stamina.DrainStaminaJump();
+        _stamina.DrainRateStaminaJump();
         
         FlipCharacter();
     }
@@ -90,14 +92,14 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
     
     public void PerformRoll()
     {
-        StartCoroutine(RollCoroutine());
+        _behaviour.StartCoroutine(RollCoroutine());
         SlowDownFlag(false); 
     }
     
     private void UpwardRoll()
     {
         _rb.velocity = new Vector2(_rb.velocity.x, _characterData.MaxVerticalSpeed);
-        _stamina.DrainStaminaUpwardRoll();
+        _stamina.DrainRateStaminaUpwardRoll();
     }
 
     private void SlowDown()
@@ -106,7 +108,7 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
         newVerticalSpeed = Mathf.Max(newVerticalSpeed, _characterData.MinVerticalSpeed);
         _rb.velocity = new Vector2(_rb.velocity.x, newVerticalSpeed);
         
-        _stamina.DrainStaminaWalking(Time.deltaTime);
+        _stamina.DrainRateStaminaWalking(Time.deltaTime);
         
         SlowDownFlag(true); 
     }
@@ -115,29 +117,29 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
     {
         _rb.velocity = new Vector2(_rb.velocity.x, _characterData.DefaultSpeed);
         
-        _stamina.DrainStaminaRun(Time.deltaTime);
+        _stamina.DrainRateStaminaRun(Time.deltaTime);
         
         SlowDownFlag(false); 
     }
     
-    private void TriggerDefeatOnStaminaDepletion()
+    private void CheckStaminaDepletion()
     {
         if (_stamina.isEnough() == false && _isDefeat == false)
         {
             _isDefeat = true;
-            RanOutOfStamin?.Invoke();
+            EventAggregator.Post(this, new PlayeRanOutOfStaminaEventHandler());
         }
     }
     
     private void FlipCharacter()
     {
-        var scale = transform.localScale;
+        var scale = _playerTransform.localScale;
         scale.x *= -1;
-        transform.localScale = scale;
+        _playerTransform.localScale = scale;
         
-        var transformRotation = transform.rotation;
+        var transformRotation = _playerTransform.rotation;
         transformRotation.z *= -1;
-        transform.rotation = transformRotation;
+        _playerTransform.rotation = transformRotation;
     }
     
     private bool ShouldMoveUpward() => _isPlatform && _isSlowdown == false && _isRoll == false;
@@ -151,25 +153,6 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
     }
     
     private void CheckOnPlatformOnPlatform() => 
-        _isPlatform = Physics2D.OverlapCircle(_platformDetector.position, RadiusDetectionPlatform, _platformLayer) is not null;
-    
-    #region Events
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & _platformLayer) != 0)
-            MoveUpward();
-    }
-
-    #endregion
-    
-    #region Gizmoz
-    
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(_platformDetector.position, RadiusDetectionPlatform);
-    }
-        
-    #endregion
+        _isPlatform = Physics2D.OverlapCircle(_transformDetection.position, RadiusDetectionPlatform, _plarformLayer) is not null;
 
 }

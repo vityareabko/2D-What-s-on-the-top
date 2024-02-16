@@ -2,7 +2,7 @@ namespace UI.MVP
 {
     public enum ScreenType
     {
-        GameScreen,
+        GameScreenHUD,
         GameScreenDefeat,
         GameScreenPause,
         GameScreenLevelWin,

@@ -20,10 +20,10 @@ namespace UI
         private IGameScreenLevelWinPresenter _gameScreenLevelWinPresenter;
 
         private IResourceCollector _resourceCollector;
-        private IGameplay _gameplay;
+        // private IGameplay _gameplay;
         
         [Inject] private void Construct(
-            IGameplay gameplay,
+            // IGameplay gameplay,
             IResourceCollector resourceCollector,
             
             IGameScreenPresenter gameScreenPresenter,
@@ -43,29 +43,37 @@ namespace UI
             _presenters.Add(_gameScreenLevelWinPresenter);
 
             _resourceCollector = resourceCollector;
-            _gameplay = gameplay;
+            // _gameplay = gameplay;
         }
         
         private void OnEnable()
         {
-            _gameplay.PlayerWin += OnPlayerWin;
-            _gameplay.PlayerDefeat += OnPlayerDefeat;
+            // _gameplay.PlayerWin += OnPlayerWin;
+            // _gameplay.PlayerDefeat += OnPlayerDefeat;
             _gameScreenPresenter.OnPauseClicked += OnPauseGame;
             _gameScreenPausePresenter.OnResumeGameClicked += OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked += OnRestartGame;
 
             _resourceCollector.ResourcesContainerChange += OnResourcesContainerChanged;
+            
+            
+            EventAggregator.Subscribe<PlayerWinEventHandler>(OnPlayerWin);
+            EventAggregator.Subscribe<PlayerLoseEventHandler>(OnPlayerLose);
         }
-        
+
         private void OnDisable()
         {
-            _gameplay.PlayerWin -= OnPlayerWin;
-            _gameplay.PlayerDefeat -= OnPlayerDefeat;
+            // _gameplay.PlayerWin -= OnPlayerWin;
+            // _gameplay.PlayerDefeat -= OnPlayerDefeat;
             _gameScreenPresenter.OnPauseClicked -= OnPauseGame;
             _gameScreenPausePresenter.OnResumeGameClicked -= OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked -= OnRestartGame;
             
             _resourceCollector.ResourcesContainerChange -= OnResourcesContainerChanged;
+            
+            
+            EventAggregator.Unsubscribe<PlayerWinEventHandler>(OnPlayerWin);
+            EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnPlayerLose);
         }
 
         public void HideOtherViewsAndShow(IPresenter presenter)
@@ -79,21 +87,28 @@ namespace UI
             presenter.Show();
         }
 
-        private void OnPlayerDefeat() => HideOtherViewsAndShow(_gameScreenDefeatPresenter);
+        // private void OnPlayerDefeat() => HideOtherViewsAndShow(_gameScreenDefeatPresenter);
+        // private void OnPlayerWin() => HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
 
-        private void OnPlayerWin() => HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
+        private void OnPlayerLose(object arg1, PlayerLoseEventHandler arg2) =>
+            HideOtherViewsAndShow(_gameScreenDefeatPresenter);
+        private void OnPlayerWin(object sender, PlayerWinEventHandler eventHandler) =>
+            HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
+        
         
         private void OnRestartGame() => Debug.Log("Restart game logic");
 
         private void OnResumeGame()
         {
-            _gameplay.ResumeGame();
+            // _gameplay.ResumeGame();
+            EventAggregator.Post(_gameScreenPausePresenter, new ResumeGameEventHandler());
             _gameScreenPausePresenter.Hide();
         }
-
+        
         private void OnPauseGame()
         {
-            _gameplay.PauseGame();
+            // _gameplay.PauseGame();
+            EventAggregator.Post(_gameScreenPausePresenter, new PauseGameEventHandler());
             _gameScreenPausePresenter.Show();
         }
 

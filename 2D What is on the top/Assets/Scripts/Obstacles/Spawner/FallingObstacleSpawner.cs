@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using Obstacles;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 public class FallingObstacleSpawner : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private List<Transform> _spawnPoints;
     
-    [FormerlySerializedAs("_obstacleFactory")] [SerializeField] private FallObstacleFactory fallObstacleFactory;
+    [SerializeField] private FallObstacleFactory fallObstacleFactory;
 
     private List<FallObstacle> _obstacles = new();
     
@@ -24,7 +25,16 @@ public class FallingObstacleSpawner : MonoBehaviour
         _offset.y = 2f * _camera.orthographicSize;
     }
 
-    private void LateUpdate() =>
+    private void OnEnable() =>
+        EventAggregator.Subscribe<PlayeRanOutOfStaminaEventHandler>(OnRunOutStamina);
+
+    private void OnDestroy() =>
+        EventAggregator.Unsubscribe<PlayeRanOutOfStaminaEventHandler>(OnRunOutStamina);
+    
+
+    
+
+    private void Update() =>
         UpdatePosition();
     
     private void UpdatePosition()
@@ -38,22 +48,23 @@ public class FallingObstacleSpawner : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
             var instance = fallObstacleFactory.Get((FallingObstaclesType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(FallingObstaclesType)).Length),
             _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)]);
         
             _obstacles.Add(instance);
         }
     }
+    
+    private void OnRunOutStamina(object sender, PlayeRanOutOfStaminaEventHandler eventData) =>
+        StopCoroutine(_spawnObstacles);
 
     private void OnTriggerEnter2D(Collider2D colider)
     {
         if (colider.CompareTag(ConstTags.WinColider))
-            // остановка спавна
-            _spawnObstacles = StartCoroutine(SpawnObstacles());
+            StopCoroutine(_spawnObstacles);
 
         if (colider.CompareTag(ConstTags.StopSpawnObstaclesColider))
-            // остановка спавна
-            _spawnObstacles = StartCoroutine(SpawnObstacles());
+            StopCoroutine(_spawnObstacles);
     }
 }

@@ -12,6 +12,7 @@ public class FollowCamera : MonoBehaviour
     
     [SerializeField] private Player player;
     
+    private Vector3 positionChange = Vector3.zero;
     private float _currentXOffset;
     private float _xOffsetVelocity; // Для хранения текущей скорости изменения смещения.
     
@@ -19,30 +20,32 @@ public class FollowCamera : MonoBehaviour
     
     private void Start()
     {
-        OnPlayerSetPosition(true);
+        _offset.x = _offsetCameraFromPlayerToLeft;
     }
     
     private void OnEnable()
     {
-        player.LevelDefeat += OnPlayerDefeat;
-        player.PlayerIsOnRightWall += OnPlayerSetPosition;
+        EventAggregator.Subscribe<PlayerJumpedToAgainsWallEvent>(OnPlayerJumped);
+        EventAggregator.Subscribe<PlayerWinEventHandler>(OnPlayerWin);
+        EventAggregator.Subscribe<PlayerLoseEventHandler>(OnPlayerLose);
     }
 
     private void OnDisable()
     {
-        player.LevelDefeat -= OnPlayerDefeat;
-        player.PlayerIsOnRightWall -= OnPlayerSetPosition;
+        EventAggregator.Unsubscribe<PlayerJumpedToAgainsWallEvent>(OnPlayerJumped);
+        EventAggregator.Unsubscribe<PlayerWinEventHandler>(OnPlayerWin);
+        EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnPlayerLose);
     }
-
-    private void OnPlayerSetPosition(bool isRightWall)
-    {
-        _offset.x = isRightWall ? _offsetCameraFromPlayerToLeft : _offsetCameraFromPlayerToRight;
-    }
+    
+    private void OnPlayerJumped(object sender, PlayerJumpedToAgainsWallEvent eventData) =>
+        _offset.x = eventData.IsRightWall ? _offsetCameraFromPlayerToLeft : _offsetCameraFromPlayerToRight;
+    
 
     private void LateUpdate()
     {
-        if (_target == null || _isStopFollowing) 
+        if (_target == null || _isStopFollowing || Time.deltaTime == 0) 
             return;
+
 
         float smoothTime = 0.5f; // Время плавного перехода
 
@@ -65,27 +68,30 @@ public class FollowCamera : MonoBehaviour
     }
 
 // Убедитесь, что у вас есть переменная для positionChange, если будете использовать SmoothDamp для позиции
-    private Vector3 positionChange = Vector3.zero;
 
-    private Vector3 AdjustPositionWithinBounds(Vector3 position)
-    {
-        // Здесь задайте границы для вашего игрового мира или сцены
-        float minX = -1f; // Пример минимальной границы по X
-        float maxX = 1f;  // Пример максимальной границы по X
+    // private Vector3 AdjustPositionWithinBounds(Vector3 position)
+    // {
+    //     // Здесь задайте границы для вашего игрового мира или сцены
+    //     float minX = -1f; // Пример минимальной границы по X
+    //     float maxX = 1f;  // Пример максимальной границы по X
+    //
+    //     // Корректировка позиции, чтобы она оставалась внутри этих границ
+    //     position.x = Mathf.Clamp(position.x, minX, maxX);
+    //
+    //     return position;
+    // }
+    //
+    // private float GeneratePerlinShake()
+    // {
+    //     float shakeMagnitude = 1f;
+    //     float noiseSpeed = 0.5f;
+    //     return Mathf.PerlinNoise(Time.time * noiseSpeed, 0) * shakeMagnitude - shakeMagnitude / 2;
+    // }
+    
+    // private void OnPlayerDefeat() => _isStopFollowing = true;
+    // private void OnPlayerWin() => _isStopFollowing = true;
 
-        // Корректировка позиции, чтобы она оставалась внутри этих границ
-        position.x = Mathf.Clamp(position.x, minX, maxX);
+    private void OnPlayerWin(object arg1, PlayerWinEventHandler arg2) => _isStopFollowing = true;
+    private void OnPlayerLose(object arg1, PlayerLoseEventHandler arg2) => _isStopFollowing = true;
 
-        return position;
-    }
-    
-    private float GeneratePerlinShake()
-    {
-        float shakeMagnitude = 1f;
-        float noiseSpeed = 0.5f;
-        return Mathf.PerlinNoise(Time.time * noiseSpeed, 0) * shakeMagnitude - shakeMagnitude / 2;
-    }
-    
-    private void OnPlayerDefeat() => _isStopFollowing = true;
-    
 }

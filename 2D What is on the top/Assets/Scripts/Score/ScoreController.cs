@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Game.Gameplay;
 using ResourcesCollector;
@@ -17,13 +16,11 @@ namespace Score
         private ResourcesJsonData _resourcesData;
         
         private IResourceCollector _resourceCollector;
-        private IGameplay _gameplay;
         private IStorageService _storage;
         
-        [Inject] private void Construct(IResourceCollector resourceCollector, IStorageService _storageService, IGameplay gameplay)
+        [Inject] private void Construct(IResourceCollector resourceCollector, IStorageService _storageService)
         {
             _resourceCollector = resourceCollector;
-            _gameplay = gameplay;
             _storage = _storageService;
         }
 
@@ -36,16 +33,16 @@ namespace Score
         {
             SubscriberCoins();
             
-            _gameplay.PlayerWin += OnLevelWin;
-            _gameplay.PlayerDefeat += OnLevelDefeat;
+            EventAggregator.Subscribe<PlayerWinEventHandler>(OnLevelWin);
+            EventAggregator.Subscribe<PlayerLoseEventHandler>(OnLevelLose);
         }
 
         private void OnDisable()
         {
             UnsubscriberCoins();
             
-            _gameplay.PlayerWin -= OnLevelWin;
-            _gameplay.PlayerDefeat -= OnLevelDefeat;
+            EventAggregator.Unsubscribe<PlayerWinEventHandler>(OnLevelWin);
+            EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnLevelLose);
         }
 
         private void SubscriberCoins()
@@ -92,16 +89,9 @@ namespace Score
                 _resourcesData.Coins[coin.Type] = coin.GetCoinsValue();
         }
 
-        private void OnLevelDefeat()
-        {
-            SaveUpdatedResourceData();
-        }
+        private void OnLevelWin(object arg1, PlayerWinEventHandler arg2) => SaveUpdatedResourceData();
 
-        private void OnLevelWin()
-        {
-            SaveUpdatedResourceData();
-        }
-        
+        private void OnLevelLose(object arg1, PlayerLoseEventHandler arg2) => SaveUpdatedResourceData();
         
     }
 }

@@ -23,5 +23,6 @@ MonoBehaviour:
     <MinStamina>k__BackingField: 0
     <StaminaDrainRateRunning>k__BackingField: 0
     <StaminaDrainRateWalking>k__BackingField: 0
-    <StaminaDrainRateRoll>k__BackingField: 3
+    <StaminaDrainRateRoll>k__BackingField: 22
     <StaminaDrainRateJumping>k__BackingField: 0
+    <StaminaDrainObstacleCollision>k__BackingField: 1

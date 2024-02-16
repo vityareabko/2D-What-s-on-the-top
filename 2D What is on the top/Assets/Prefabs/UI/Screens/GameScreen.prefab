@@ -56,6 +56,8 @@ MonoBehaviour:
   _pauseButton: {fileID: 1020679183542595631}
   _stamina: {fileID: 8121219736005404692}
   _amountCoins: {fileID: 5076359941409937871}
+  _drainStaminaPopUpText: {fileID: 1106664364040897239, guid: db148569b12fda14197f5c9740fad63f, type: 3}
+  _sliderCurrentValueStamimIconForPopupText: {fileID: 8121219734685398750}
 --- !u!1 &1233505975195987157
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13305448, g: 0.22150299, b: 0.4339623, a: 1}
+  m_Color: {r: 0.13305448, g: 0.22150299, b: 0.4339623, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -967,6 +969,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
+--- !u!114 &8121219734685398750 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1135553669324963890, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}
+  m_PrefabInstance: {fileID: 9184548666471429868}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8121219736005404692 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1135553669604794104, guid: 8b7022907cd1d4535a7f8e3fd499f9e7, type: 3}

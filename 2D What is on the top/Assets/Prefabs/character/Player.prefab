@@ -436,7 +436,6 @@ GameObject:
   - component: {fileID: 7814605280355711489}
   - component: {fileID: 878235720818188685}
   - component: {fileID: 3820304512639770550}
-  - component: {fileID: 2364638026877904576}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -460,7 +459,7 @@ Transform:
   - {fileID: 174487791672709604}
   - {fileID: 1836677179235933087}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 76.58}
 --- !u!50 &7814605280355711489
 Rigidbody2D:
@@ -537,24 +536,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _swipeListener: {fileID: 0}
-  _playerMover: {fileID: 2364638026877904576}
   _triggerWinLevel: {fileID: 0}
---- !u!114 &2364638026877904576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5848397001497561295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d04945270f0dcbe4eb43b4e05d6407c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _platformLayer:
+  _platformLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  _platformDetector: {fileID: 1836677179235933087}
+  _transformPlatformDetection: {fileID: 1836677179235933087}
 --- !u!1 &7755432689691251328
 GameObject:
   m_ObjectHideFlags: 0

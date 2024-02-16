@@ -11,4 +11,7 @@ public class StaminaData
     [field: SerializeField] public float StaminaDrainRateRoll { get; private set; } = 1f;
     [field: SerializeField] public float StaminaDrainRateJumping { get; private set; } = 1f;
 
+
+    [field: SerializeField] public float StaminaDrainObstacleCollision { get; private set; } = 0.1f;
+
 }

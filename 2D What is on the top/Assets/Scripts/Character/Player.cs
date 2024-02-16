@@ -1,42 +1,51 @@
-using System;
 using System.Collections;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
+using Zenject;
 
-public class Player : MonoBehaviour, IPlayer
+public class Player : MonoBehaviour
 {
     private const float DefeatDelay = 0.7f;
     private const float CharacterHideDelay = 2f;
-
-    public event Action<bool> PlayerIsOnRightWall;
-    public event Action LevelDefeat; 
-    public event Action LevelWin;
     
-    [SerializeField] private SwipeListener _swipeListener;
-    [SerializeField] private PlayerMover _playerMover;
-    [SerializeField] private TriggerWinLevel _triggerWinLevel;
+    [SerializeField] private Transform _transformPlatformDetection;
 
+    private SwipeListener _swipeListener;  
+    private PlayerMover _playerMover;
+
+    private Stamina _stamina;
+    private CharacterData _characterData;
+    
     private bool _isBlockSpwipe = false;
     private bool _isBlockMovement = false;
-    private bool _isPlayerLose = false;
-    
+    private bool _isStopPlayer = false;
+
+    [Inject] private void Construct(Stamina stamina, CharacterData characterData, SwipeListener swipeListener)
+    {
+        _characterData = characterData;
+        _swipeListener = swipeListener;
+        _stamina = stamina;
+    }
+
+    private void Awake() => _playerMover = new PlayerMover(_stamina, _characterData, this, _transformPlatformDetection);
+
     private void OnEnable()
     {
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
-        _playerMover.RanOutOfStamin += OnRanOutOfStamin;
-        _triggerWinLevel.LevelWin += OnPlayerWin;
+        EventAggregator.Subscribe<PlayeRanOutOfStaminaEventHandler>(OnRanOutOfStamin);
+        EventAggregator.Subscribe<GameIsOnPausedEvent>(OnPausedGame);
     }
 
     private void OnDisable()
     {
         _swipeListener.OnSwipe.RemoveListener(OnSwipeHandler);
-        _playerMover.RanOutOfStamin -= OnRanOutOfStamin;
-        _triggerWinLevel.LevelWin -= OnPlayerWin;
+        EventAggregator.Unsubscribe<PlayeRanOutOfStaminaEventHandler>(OnRanOutOfStamin);
+        EventAggregator.Unsubscribe<GameIsOnPausedEvent>(OnPausedGame);
     }
 
     private void Update()
     {
-        if (_isPlayerLose)
+        if (_isStopPlayer)
             return;
         
         ResetSlowDownToTouch();
@@ -45,7 +54,7 @@ public class Player : MonoBehaviour, IPlayer
 
     private void FixedUpdate()
     {
-        if (_isPlayerLose)
+        if (_isStopPlayer)
             return;
         
         _playerMover.ProcessMovement(_isBlockMovement);
@@ -53,19 +62,30 @@ public class Player : MonoBehaviour, IPlayer
 
     public void BlockSwipe(bool isBlock) => _isBlockSpwipe = isBlock;
     
-    public void PlayerLose()
+    private void PlayerWin()
     {
         _isBlockSpwipe = true;
         _isBlockMovement = true;
-        _isPlayerLose = true;
-        LevelDefeat?.Invoke();
+        _isStopPlayer = true;
+        EventAggregator.Post(this, new PlayerWinEventHandler());
     }
+    
+    private void PlayerLose()
+    {
+        _isBlockSpwipe = true;
+        _isBlockMovement = true;
+        _isStopPlayer = true;
+        EventAggregator.Post(this, new PlayerLoseEventHandler());
+    }
+
 
     private void ResetSlowDownToTouch()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             _playerMover.SlowDownFlag(false); 
     }
+    
+    private void OnPausedGame(object sender, GameIsOnPausedEvent eventData) => BlockSwipe(eventData.IsOnPause);
     
     private void OnSwipeHandler(string swipe)
     {
@@ -75,13 +95,13 @@ public class Player : MonoBehaviour, IPlayer
         if (swipe == DirectionId.ID_LEFT)
         {
             _playerMover.Jump(false);
-            PlayerIsOnRightWall?.Invoke(false);
+            EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent(){IsRightWall = false});
         }
 
         if (swipe == DirectionId.ID_RIGHT)
         {
             _playerMover.Jump(true);
-            PlayerIsOnRightWall?.Invoke(true);
+            EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent(){IsRightWall = true});
         }
 
         if (swipe == DirectionId.ID_DOWN)
@@ -95,31 +115,42 @@ public class Player : MonoBehaviour, IPlayer
         }
     }
     
-    private void OnRanOutOfStamin()
+    private void OnRanOutOfStamin(object sender, PlayeRanOutOfStaminaEventHandler eventHandler)
     {
-        _isBlockSpwipe = true;
         StartCoroutine(DefeatCoroutine());
-    }
-
-    private void OnPlayerWin()
-    {
-        _isBlockMovement = true;
-        _playerMover.FreezePlayer(true);
-        LevelWin?.Invoke();
     }
     
     private IEnumerator DefeatCoroutine()
     {
         yield return new WaitForSeconds(DefeatDelay);
-        LevelDefeat?.Invoke();
+        PlayerLose();
         
         yield return new WaitForSeconds(CharacterHideDelay);
-        _playerMover.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag(ConstTags.Obstacle))
             PlayerLose();
+        
+        if (collider.CompareTag(ConstTags.WinColider))
+            PlayerWin();
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag(ConstTags.FallingObstacle))
+        {
+            _stamina.DrainRateStaminaForObstaclesCollision();
+            EventAggregator.Post(this, new PopupTextDrainStaminEvent()
+            {
+                DrainAmount = Mathf.FloorToInt(_characterData.StaminaData.StaminaDrainObstacleCollision)
+            });
+        }
+    }
+
+    #region Gizmoz
+        private void OnDrawGizmos() => Gizmos.DrawWireSphere(_transformPlatformDetection.position, 0.2f);
+        
+    #endregion
 }

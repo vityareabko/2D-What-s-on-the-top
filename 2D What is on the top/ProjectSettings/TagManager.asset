@@ -9,6 +9,7 @@ TagManager:
   - WinColider
   - StopSpawnObstaclesColider
   - Obstacle
+  - FallingObstacle
   layers:
   - Default
   - TransparentFX

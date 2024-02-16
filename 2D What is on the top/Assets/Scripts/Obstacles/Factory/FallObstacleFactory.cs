@@ -14,7 +14,7 @@ namespace Obstacles
         {
             var cofig = _obstacleDatabase.FallObstacleConfigs.First(t => t.Type == type);
             var instance = Instantiate(cofig.Prefab, parent);
-            instance.Initialize(cofig.Speed);
+            instance.Initialize(cofig.Speed, type);
             
             return instance;
         }

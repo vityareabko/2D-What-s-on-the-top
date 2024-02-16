@@ -2,12 +2,13 @@ using UI;
 using UI.GameScreenLevelWinn;
 using UI.GameScreenPause;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 using GameScreenLevelWinPresenter = UI.GameScreenLevelWinn.GameScreenLevelWinPresenter;
 
 public class GameplayUIInstaller : MonoInstaller
 {
-    [SerializeField] private GameScreenView _gameScreenPrefab;
+    [FormerlySerializedAs("_gameScreenPrefab")] [SerializeField] private GameScreenHUDView gameScreenHUDPrefab;
     [SerializeField] private GameScreenDefeatView _defeatScreenPrefab;
     [SerializeField] private GameScreenPauseView _pauseScreenPrefab;
     [SerializeField] private GameScreenLevelWinView _levelWinScreenPrefab;
@@ -23,9 +24,9 @@ public class GameplayUIInstaller : MonoInstaller
 
     private void BindGameplayScreenMVP()
     {
-        Container.Bind<IGameScreenModel>().To<GameScreenModel>().AsSingle();
-        Container.Bind<IGameSreenView>().FromComponentInNewPrefab(_gameScreenPrefab).UnderTransform(_parentGameScreenView).AsSingle();
-        Container.BindInterfacesAndSelfTo<GameScreenPresenter>().AsSingle();
+        Container.Bind<IGameScreenModel>().To<GameScreenHUDModel>().AsSingle();
+        Container.Bind<IGameSreenView>().FromComponentInNewPrefab(gameScreenHUDPrefab).UnderTransform(_parentGameScreenView).AsSingle();
+        Container.BindInterfacesAndSelfTo<GameScreenHUDPresenter>().AsSingle();
     }
 
     private void BindDefeatScreenMVP()
