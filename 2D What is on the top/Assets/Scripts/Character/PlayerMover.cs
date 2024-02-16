@@ -49,7 +49,7 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
             return; 
         }
         
-        if (_isSlowdown)
+        if (_isSlowdown && _isPlatform)
         {
             SlowDown();
         }
@@ -59,7 +59,6 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
     {
         TriggerDefeatOnStaminaDepletion();
         CheckOnPlatformOnPlatform();
-        // ResetSlowDownToTouch();
     }
     
     public void FreezePlayer(bool _isFreeze)
@@ -72,8 +71,8 @@ public class PlayerMover : MonoBehaviour, IPlayerMover
     
     public void Jump(bool isRightWall)
     {
-        if (_isPlatform == false) // TODO: - это можно убрать чтобы сделать как фичу - что можно прыгать как хочешь
-            return;
+        // if (_isPlatform == false) // TODO: - это можно убрать чтобы сделать как фичу - что можно прыгать как хочешь
+        //     return;
 
         if (_isFacingRight == isRightWall)
             return;

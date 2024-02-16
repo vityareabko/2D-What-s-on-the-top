@@ -1,48 +1,91 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
-
 
 public class FollowCamera : MonoBehaviour
 {
-    [SerializeField] private Transform _target; // Цель, за которой следует камера.
-    [SerializeField] private Vector3 _offset = new Vector3(0, 5, -10); // Смещение относительно цели.
-    [SerializeField] private float _followSpeed = 10f; // Скорость, с которой камера следует за целью.
-    [SerializeField] private float _smoothness = 0.125f; // Плавность следования камеры (значение между 0 и 1).
-
-    [FormerlySerializedAs("_playerController")] [SerializeField] private Player player;
-
+    private const float _offsetCameraFromPlayerToRight = 1.5f;
+    private const float _offsetCameraFromPlayerToLeft = -1.5f;
+    
+    [SerializeField] private Transform _target;
+    [SerializeField] private Vector3 _offset = new Vector3(1, 0, -15);
+    [SerializeField] private float _maxPositionChangePerFrame = 0.5f;
+    
+    [SerializeField] private Player player;
+    
+    private float _currentXOffset;
+    private float _xOffsetVelocity; // Для хранения текущей скорости изменения смещения.
+    
     private bool _isStopFollowing = false;
     
-    private void OnEnable() => player.LevelDefeat += OnPlayerDefeat;
-    private void OnDisable() => player.LevelDefeat -= OnPlayerDefeat;
+    private void Start()
+    {
+        OnPlayerSetPosition(true);
+    }
     
+    private void OnEnable()
+    {
+        player.LevelDefeat += OnPlayerDefeat;
+        player.PlayerIsOnRightWall += OnPlayerSetPosition;
+    }
+
+    private void OnDisable()
+    {
+        player.LevelDefeat -= OnPlayerDefeat;
+        player.PlayerIsOnRightWall -= OnPlayerSetPosition;
+    }
+
+    private void OnPlayerSetPosition(bool isRightWall)
+    {
+        _offset.x = isRightWall ? _offsetCameraFromPlayerToLeft : _offsetCameraFromPlayerToRight;
+    }
+
     private void LateUpdate()
     {
         if (_target == null || _isStopFollowing) 
             return;
 
-        // Вычисление позиции, куда должна переместиться камера
-        Vector3 desiredPosition = _target.position + _offset;
+        float smoothTime = 0.5f; // Время плавного перехода
 
-        // Плавное перемещение камеры к желаемой позиции с использованием Lerp
-        var transformPosition = transform.position;
-        Vector3 smoothedPosition = Vector3.Lerp(transformPosition, desiredPosition, _smoothness * _followSpeed * Time.deltaTime);
+        // Плавное изменение текущего смещения по оси X до нового значения.
+        _currentXOffset = Mathf.SmoothDamp(_currentXOffset, _offset.x, ref _xOffsetVelocity, smoothTime);
 
-        // Установка новой позиции камеры
-        transformPosition.x = smoothedPosition.x;
-        transformPosition.y = _target.position.y + _offset.y + GeneratePerlinShake(); 
-        transform.position = transformPosition;
+        Vector3 desiredPosition = _target.position + new Vector3(_currentXOffset, _offset.y, _offset.z);
+
+        // Вычисляем новую позицию с учетом плавного перехода
+        Vector3 newPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref positionChange, smoothTime);
+
+        // Ограничиваем максимальную скорость изменения позиции камеры, чтобы избежать резких скачков
+        Vector3 velocity = (newPosition - transform.position) / Time.deltaTime; // Вычисляем скорость
+        velocity = Vector3.ClampMagnitude(velocity, _maxPositionChangePerFrame); // Ограничиваем скорость
+        newPosition = transform.position + velocity * Time.deltaTime; // Применяем ограниченную скорость для вычисления новой позиции
+
+        newPosition.y = _target.position.y;
+        
+        transform.position = newPosition;
+    }
+
+// Убедитесь, что у вас есть переменная для positionChange, если будете использовать SmoothDamp для позиции
+    private Vector3 positionChange = Vector3.zero;
+
+    private Vector3 AdjustPositionWithinBounds(Vector3 position)
+    {
+        // Здесь задайте границы для вашего игрового мира или сцены
+        float minX = -1f; // Пример минимальной границы по X
+        float maxX = 1f;  // Пример максимальной границы по X
+
+        // Корректировка позиции, чтобы она оставалась внутри этих границ
+        position.x = Mathf.Clamp(position.x, minX, maxX);
+
+        return position;
     }
     
     private float GeneratePerlinShake()
     {
-        float shakeMagnitude = 2f; // Амплитуда шатания
-        float noiseSpeed = 0.5f; // Скорость изменения шума
-        return Mathf.PerlinNoise(Time.time * noiseSpeed, 0) * shakeMagnitude;
+        float shakeMagnitude = 1f;
+        float noiseSpeed = 0.5f;
+        return Mathf.PerlinNoise(Time.time * noiseSpeed, 0) * shakeMagnitude - shakeMagnitude / 2;
     }
     
     private void OnPlayerDefeat() => _isStopFollowing = true;
     
-
 }

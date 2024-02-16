@@ -6,6 +6,9 @@ TagManager:
   tags:
   - platform
   - enemys
+  - WinColider
+  - StopSpawnObstaclesColider
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -43,8 +46,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Baground
+    uniqueID: 1269853543
+    locked: 0
   - name: Platform
     uniqueID: 911543835
+    locked: 0
+  - name: Obstacle
+    uniqueID: 572453045
+    locked: 0
+  - name: Decor
+    uniqueID: 808933801
     locked: 0
   - name: spikes
     uniqueID: 1054644047

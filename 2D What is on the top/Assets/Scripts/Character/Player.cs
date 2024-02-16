@@ -1,16 +1,16 @@
 using System;
 using System.Collections;
 using GG.Infrastructure.Utils.Swipe;
-using TriggersScripts;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
 {
     private const float DefeatDelay = 0.7f;
     private const float CharacterHideDelay = 2f;
-    
+
+    public event Action<bool> PlayerIsOnRightWall;
     public event Action LevelDefeat; 
-    public event Action LevelWin; 
+    public event Action LevelWin;
     
     [SerializeField] private SwipeListener _swipeListener;
     [SerializeField] private PlayerMover _playerMover;
@@ -18,6 +18,7 @@ public class Player : MonoBehaviour, IPlayer
 
     private bool _isBlockSpwipe = false;
     private bool _isBlockMovement = false;
+    private bool _isPlayerLose = false;
     
     private void OnEnable()
     {
@@ -35,14 +36,31 @@ public class Player : MonoBehaviour, IPlayer
 
     private void Update()
     {
+        if (_isPlayerLose)
+            return;
+        
         ResetSlowDownToTouch();
         _playerMover.ProcessCheckingToPlayerAction();
     }
 
-    private void FixedUpdate() => _playerMover.ProcessMovement(_isBlockMovement);
+    private void FixedUpdate()
+    {
+        if (_isPlayerLose)
+            return;
+        
+        _playerMover.ProcessMovement(_isBlockMovement);
+    }
 
     public void BlockSwipe(bool isBlock) => _isBlockSpwipe = isBlock;
     
+    public void PlayerLose()
+    {
+        _isBlockSpwipe = true;
+        _isBlockMovement = true;
+        _isPlayerLose = true;
+        LevelDefeat?.Invoke();
+    }
+
     private void ResetSlowDownToTouch()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
@@ -57,11 +75,13 @@ public class Player : MonoBehaviour, IPlayer
         if (swipe == DirectionId.ID_LEFT)
         {
             _playerMover.Jump(false);
+            PlayerIsOnRightWall?.Invoke(false);
         }
 
         if (swipe == DirectionId.ID_RIGHT)
         {
             _playerMover.Jump(true);
+            PlayerIsOnRightWall?.Invoke(true);
         }
 
         if (swipe == DirectionId.ID_DOWN)
@@ -95,5 +115,11 @@ public class Player : MonoBehaviour, IPlayer
         
         yield return new WaitForSeconds(CharacterHideDelay);
         _playerMover.gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag(ConstTags.Obstacle))
+            PlayerLose();
     }
 }
