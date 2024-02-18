@@ -8,6 +8,8 @@ namespace Obstacles
 {
     public class FallObstacle : MonoBehaviour
     {
+        // # Todo - подумать над тем стоит ли делать вес падающим ловушкам - тоесть отниматся стамина будет зависить с каким объяектом столкнулся игрок
+        
         private const float _lifeDelay = 3f;
         private const float _minRotationSpeed = 15f;
         private const float _maxRotationSpeed = 70f;
@@ -28,8 +30,11 @@ namespace Obstacles
         {
             AddDynamicRotation();
         }
-
-        // использую Fixed Update потому что в камере я использую ограничение кадров для камеры (чтобы она не тряслась) и теперь если я использую Update то не очень хорошо ведет себя постоянно движущиеся объекты 
+        
+        /// <summary>
+        /// использую Fixed Update потому что в камере я использую ограничение кадров для камеры (чтобы она не тряслась)
+        /// и теперь если я использую Update то не очень хорошо ведет себя постоянно движущиеся объекты 
+        /// </summary>
         private void FixedUpdate() => FallDown();
 
         private void FallDown() => transform.Translate(Vector3.down * _speed * Time.fixedDeltaTime, Space.World);
@@ -44,18 +49,6 @@ namespace Obstacles
         {
             yield return new WaitForSeconds(_lifeDelay);
             Destroy(gameObject);
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision) // # TODO - Прикольно было бы сделать иногда базу данных которая будет хранить фразочки и при сталкновения с игроком будет всплывать (если рандом будет randomNumber > 0.5 чтобы не очень часто показывать) 
-        {
-            if (collision.gameObject.CompareTag(ConstTags.Player))
-            {
-                // TODO - приоритет 3
-                // # Todo - делаем всплывающие окно для фразочок или можно сделать через игрока когда в него попали то мы делаем инвоке и те ето подписаны на это реагирует а именно класс который отвечает за эти всплывающие фразочки 
-                // делаем доступ к чтению типа который указан выше и это если я решу делать кто это говорить а если нет то тип вообще можно убирать так как он не нуден пока что
-                
-                Debug.Log($"Tы че ахуел, смотри куда идешь ? P.S {_fallingObstaclesType}");
-            }
         }
     }
 }

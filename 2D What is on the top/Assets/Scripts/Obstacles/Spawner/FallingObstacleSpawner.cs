@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Obstacles;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Zenject;
 
 public class FallingObstacleSpawner : MonoBehaviour
 {
+    // TODO - Приоритет 2
+    // TODO - сделать систему которая будет следить за процентом прохождения уровня а и постепенно увеличивать скорость спавна объяектов и увеличивать минимальную скорость падения препятсвий в рандоме
+    
+    
     [SerializeField] private Camera _camera;
     [SerializeField] private List<Transform> _spawnPoints;
     
@@ -30,8 +32,6 @@ public class FallingObstacleSpawner : MonoBehaviour
 
     private void OnDestroy() =>
         EventAggregator.Unsubscribe<PlayeRanOutOfStaminaEventHandler>(OnRunOutStamina);
-    
-
     
 
     private void Update() =>

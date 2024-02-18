@@ -10,8 +10,6 @@ public class FollowCamera : MonoBehaviour
     [SerializeField] private Vector3 _offset = new Vector3(1, 0, -15);
     [SerializeField] private float _maxPositionChangePerFrame = 0.5f;
     
-    [SerializeField] private Player player;
-    
     private Vector3 positionChange = Vector3.zero;
     private float _currentXOffset;
     private float _xOffsetVelocity; // Для хранения текущей скорости изменения смещения.

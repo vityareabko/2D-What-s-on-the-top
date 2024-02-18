@@ -27,6 +27,7 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-619394800-0
         - globalObjectIdString: GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-535620496-0
         - globalObjectIdString: GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-5848397001497561295-8316016854310952833
+        - globalObjectIdString: GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-4128839798699243585-2137264997
         values:
         - colorIndex: 9
           iconNameOrGuid: 
@@ -44,5 +45,7 @@ MonoBehaviour:
           iconNameOrGuid: Light Icon
         - colorIndex: 2
           iconNameOrGuid: 
+        - colorIndex: 0
+          iconNameOrGuid: AvatarMask On Icon
         - colorIndex: 0
           iconNameOrGuid: AvatarMask On Icon

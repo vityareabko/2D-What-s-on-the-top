@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private const float CharacterHideDelay = 2f;
     
     [SerializeField] private Transform _transformPlatformDetection;
+    [SerializeField] private Animator _animator;
 
     private SwipeListener _swipeListener;  
     private PlayerMover _playerMover;
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
         _stamina = stamina;
     }
 
-    private void Awake() => _playerMover = new PlayerMover(_stamina, _characterData, this, _transformPlatformDetection);
+    private void Awake() => _playerMover = new PlayerMover(_stamina, _characterData, this, _transformPlatformDetection, _animator);
 
     private void OnEnable()
     {
@@ -84,7 +85,10 @@ public class Player : MonoBehaviour
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             _playerMover.SlowDownFlag(false); 
     }
-    
+
+    private void JumpAnimation() => _animator.SetTrigger("Jump");
+    private void RunAnimation(bool isRun) => _animator.SetBool("Run", isRun);
+
     private void OnPausedGame(object sender, GameIsOnPausedEvent eventData) => BlockSwipe(eventData.IsOnPause);
     
     private void OnSwipeHandler(string swipe)
@@ -94,12 +98,14 @@ public class Player : MonoBehaviour
 
         if (swipe == DirectionId.ID_LEFT)
         {
+         //   JumpAnimation();
             _playerMover.Jump(false);
             EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent(){IsRightWall = false});
         }
 
         if (swipe == DirectionId.ID_RIGHT)
         {
+           // JumpAnimation();
             _playerMover.Jump(true);
             EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent(){IsRightWall = true});
         }

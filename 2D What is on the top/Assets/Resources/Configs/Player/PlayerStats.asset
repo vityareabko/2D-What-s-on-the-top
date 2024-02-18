@@ -17,7 +17,7 @@ MonoBehaviour:
   <MinVerticalSpeed>k__BackingField: 2
   <DecelerationRate>k__BackingField: 1
   <AccelerationRate>k__BackingField: 1
-  <JumpForce>k__BackingField: 9
+  <JumpForce>k__BackingField: 35
   <StaminaData>k__BackingField:
     <MaxStamina>k__BackingField: 50
     <MinStamina>k__BackingField: 0

@@ -59,6 +59,9 @@ TagManager:
   - name: Decor
     uniqueID: 808933801
     locked: 0
+  - name: VFX
+    uniqueID: 3704658899
+    locked: 0
   - name: spikes
     uniqueID: 1054644047
     locked: 0

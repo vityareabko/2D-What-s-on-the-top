@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using Extensions;
 using Helper;
 using UnityEngine;
-using Zenject;
+
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover 
@@ -15,6 +14,7 @@ public class PlayerMover
     private Transform _playerTransform;
     private Transform _transformDetection;
     private LayerMask _plarformLayer;
+    private Animator _animator;
     private Rigidbody2D _rb;
     
     private CharacterData _characterData;
@@ -27,13 +27,14 @@ public class PlayerMover
     private bool _isPlatform = false;
     private bool _isRoll = false;
     
-    public PlayerMover(Stamina stamina, CharacterData characterData, MonoBehaviour behaviour, Transform transformPlatformDetection)
+    public PlayerMover(Stamina stamina, CharacterData characterData, MonoBehaviour behaviour, Transform transformPlatformDetection, Animator animator)
     {
         _characterData = characterData;
         _stamina = stamina;
         _behaviour = behaviour;
         _rb = _behaviour.GetComponent<Rigidbody2D>();
         _playerTransform = _behaviour.transform;
+        _animator = animator;
         _transformDetection = transformPlatformDetection;
         _plarformLayer = ConstLayer.Platform.ToLayerMask();
     }
@@ -60,25 +61,31 @@ public class PlayerMover
     public void ProcessCheckingToPlayerAction()
     {
         CheckStaminaDepletion();
+
         CheckOnPlatformOnPlatform();
+        _animator.SetBool("IsPlatform", _isPlatform);
+        
     }
     
-    public void FreezePlayer(bool _isFreeze)
-    {
-        if (_isFreeze)
-            _rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-        else
-            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-    }
+    // public void FreezePlayer(bool _isFreeze)
+    // {
+    //     if (_isFreeze)
+    //         _rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+    //     else
+    //         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    // }
     
     public void Jump(bool isRightWall)
     {
         // if (_isPlatform == false) // TODO: - это можно убрать чтобы сделать как фичу - что можно прыгать как хочешь
         //     return;
-
+        
         if (_isFacingRight == isRightWall)
             return;
-
+        
+        if (_isPlatform)
+            _animator.SetTrigger("Jump");
+        
         _isFacingRight = !_isFacingRight;
         float jumpDirection = _isFacingRight ? 1 : -1;
 
