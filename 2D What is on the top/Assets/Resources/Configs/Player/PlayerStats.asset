@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d39c4df74b45af8c250db78e4d901d, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  <DefaultSpeed>k__BackingField: 5
-  <MaxVerticalSpeed>k__BackingField: 8
-  <MinVerticalSpeed>k__BackingField: 2
+  <RunSpeed>k__BackingField: 5
+  <RollVerticalSpeed>k__BackingField: 10
+  <WalkVerticalSpeed>k__BackingField: 2
+  <JumpForce>k__BackingField: 9
   <DecelerationRate>k__BackingField: 1
   <AccelerationRate>k__BackingField: 1
-  <JumpForce>k__BackingField: 35
   <StaminaData>k__BackingField:
     <MaxStamina>k__BackingField: 50
     <MinStamina>k__BackingField: 0
     <StaminaDrainRateRunning>k__BackingField: 0
     <StaminaDrainRateWalking>k__BackingField: 0
-    <StaminaDrainRateRoll>k__BackingField: 22
+    <StaminaDrainRateRoll>k__BackingField: 0
     <StaminaDrainRateJumping>k__BackingField: 0
     <StaminaDrainObstacleCollision>k__BackingField: 1

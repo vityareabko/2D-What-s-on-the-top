@@ -8,7 +8,7 @@ using GameScreenLevelWinPresenter = UI.GameScreenLevelWinn.GameScreenLevelWinPre
 
 public class GameplayUIInstaller : MonoInstaller
 {
-    [FormerlySerializedAs("_gameScreenPrefab")] [SerializeField] private GameScreenHUDView gameScreenHUDPrefab;
+    [SerializeField] private GameScreenHUDView gameScreenHUDPrefab;
     [SerializeField] private GameScreenDefeatView _defeatScreenPrefab;
     [SerializeField] private GameScreenPauseView _pauseScreenPrefab;
     [SerializeField] private GameScreenLevelWinView _levelWinScreenPrefab;
