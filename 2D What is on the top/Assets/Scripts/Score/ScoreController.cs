@@ -1,63 +1,49 @@
-using System.Collections.Generic;
-using Game.Gameplay;
+using System;
 using ResourcesCollector;
 using Services.StorageService;
 using Services.StorageService.JsonDatas;
 using UnityEngine;
-using Zenject;
-
 
 namespace Score
 {
-    public class ScoreController : MonoBehaviour
+    public class ScoreController : IDisposable
     {
-        [SerializeField] private List<Coin> _listLevelCoins;
-        
         private ResourcesJsonData _resourcesData;
         
         private IResourceCollector _resourceCollector;
         private IStorageService _storage;
         
-        [Inject] private void Construct(IResourceCollector resourceCollector, IStorageService _storageService)
+        private ScoreController(IResourceCollector resourceCollector, IStorageService _storageService)
         {
             _resourceCollector = resourceCollector;
             _storage = _storageService;
-        }
-
-        private void Awake()
-        {
-            LoadData();
-        }
-
-        private void OnEnable()
-        {
-            SubscriberCoins();
             
+            LoadResourcesData();
+            
+            EventAggregator.Subscribe<ResourcePickedUpEvent>(OnPickedUpHandler);
             EventAggregator.Subscribe<PlayerWinEventHandler>(OnLevelWin);
             EventAggregator.Subscribe<PlayerLoseEventHandler>(OnLevelLose);
+
         }
 
-        private void OnDisable()
+        public void Dispose()
         {
-            UnsubscriberCoins();
-            
+            EventAggregator.Unsubscribe<ResourcePickedUpEvent>(OnPickedUpHandler);
             EventAggregator.Unsubscribe<PlayerWinEventHandler>(OnLevelWin);
             EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnLevelLose);
         }
-
-        private void SubscriberCoins()
+        
+        private void OnPickedUpHandler(object sender, ResourcePickedUpEvent eventData)
         {
-            foreach (var coin in _listLevelCoins)
-                coin.PickUP += OnPickUPCoin;
-        }
+            _resourceCollector.AddResource(eventData.Resource);
 
-        private void UnsubscriberCoins()
-        {
-            foreach (var coin in _listLevelCoins)
-                coin.PickUP -= OnPickUPCoin;
+            if (_resourcesData.Resources.ContainsKey(eventData.Resource.StorageType))
+                _resourcesData.Resources[eventData.Resource.StorageType] += eventData.Resource.AmountResources;
+            else 
+                _resourcesData.Resources[eventData.Resource.StorageType] = eventData.Resource.AmountResources;
         }
-
-        private void LoadData()
+        
+        private void LoadResourcesData()
         {
             _storage.Load<ResourcesJsonData>(StorageKeysType.Resources, data =>
             {
@@ -77,16 +63,6 @@ namespace Score
                 else
                     Debug.Log("Failed save");
             });
-        }
-
-        private void OnPickUPCoin(IPickUp coin)
-        {
-            _resourceCollector.AddResource(coin);
-            
-            if (_resourcesData.Coins.ContainsKey(coin.Type))
-                _resourcesData.Coins[coin.Type] += coin.GetCoinsValue();
-            else 
-                _resourcesData.Coins[coin.Type] = coin.GetCoinsValue();
         }
 
         private void OnLevelWin(object arg1, PlayerWinEventHandler arg2) => SaveUpdatedResourceData();

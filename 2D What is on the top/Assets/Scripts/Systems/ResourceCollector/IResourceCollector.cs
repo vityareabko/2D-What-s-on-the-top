@@ -5,8 +5,9 @@ namespace ResourcesCollector
 {
     public interface IResourceCollector
     {
-        public event Action<Dictionary<ResourceTypes, int>> ResourcesContainerChange;
-        public Dictionary<ResourceTypes, int> ResourcesContainer { get; }
+        public event Action<Dictionary<ResourceStorageTypes, int>> ResourcesContainerChange;
+        
+        public Dictionary<ResourceStorageTypes, int> ResourcesContainer { get; }
 
         public void AddResource(IPickUp resource);
 

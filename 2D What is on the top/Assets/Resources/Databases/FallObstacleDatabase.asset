@@ -14,59 +14,107 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <FallObstacleConfigs>k__BackingField:
   - <Type>k__BackingField: 0
-    <Prefab>k__BackingField: {fileID: 6836510668406995301, guid: 544bea9c403c1d9408ec7dd0e41e5029, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 6187033947590667134, guid: 1853359c1c62aa14bac00cb20521d456, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 1
-    <Prefab>k__BackingField: {fileID: 8069248488971949886, guid: 0936e5aa58fa6644b8cb24db89907ad3, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 7007297777851703461, guid: 5abd7a44e8504a64b81f8108f0e7eade, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 2
-    <Prefab>k__BackingField: {fileID: 2012544378575822147, guid: 185941b0f872f604c82b76cdf1f8907c, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 3591376205345257189, guid: 6ae2476ec754c794192019c0652b6434, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 3
-    <Prefab>k__BackingField: {fileID: 1177339752648163280, guid: 9f35479f347f23748848080f6952e123, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 8294660542591674766, guid: 631689ca7b0da2b4d968ccf5c021dcd0, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 4
-    <Prefab>k__BackingField: {fileID: 8296584550816181794, guid: 875c6779f92770d4a8735a9d803886b3, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 1524619440330961039, guid: b2a032c35c5104b4eb26d9291b89643e, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 5
-    <Prefab>k__BackingField: {fileID: 2181475126540932640, guid: df2331c6887b8ab448f9b5f2b95538ab, type: 3}
-    <Speed>k__BackingField: 5
+    <Prefab>k__BackingField: {fileID: 8691763259796260399, guid: 1a4e11d1472f47e4eacc3f40c16c6973, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 6
-    <Prefab>k__BackingField: {fileID: 6844787965386915214, guid: 07b206a8be0969a4ba291980af503261, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 7095165978716750839, guid: 63a712afb1a94014fa09d6135c71b186, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 7
-    <Prefab>k__BackingField: {fileID: 1285424591171404801, guid: be07b11ac10d87f4f87548dbb90aceff, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 8802211206730107326, guid: 251ef0c129f7a5c4cb8d5a902cf31105, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 8
-    <Prefab>k__BackingField: {fileID: 266842125730596524, guid: af1739d39ba851b4f88572945943d9bb, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 4237420565782168952, guid: d8d3fdbad0c17ff428283a72a0c1ef66, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 9
-    <Prefab>k__BackingField: {fileID: 4350560796135946114, guid: 512ec0ca0c17f664dacb28cf13a6158f, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 5195142372120978391, guid: f0a2f1fa2f899174dbcf9b46d2d8e847, type: 3}
+    <Speed>k__BackingField: 7
   - <Type>k__BackingField: 10
-    <Prefab>k__BackingField: {fileID: 4011022050233929984, guid: d751a33d55dcdaf4f96c0ecb4a4b8337, type: 3}
-    <Speed>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 1625581602372389479, guid: bcb280e26627aa945849b3124a4a3bf6, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 11
+    <Prefab>k__BackingField: {fileID: 7189434754441747862, guid: 22e2bc64f72382648ba2a3029816a2c1, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 12
+    <Prefab>k__BackingField: {fileID: 3225051626179640938, guid: efff9c4f2b637804a8b191ea8f76bd51, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 13
+    <Prefab>k__BackingField: {fileID: 5329849615667710700, guid: 44dec23f4120f0741990298ee233b752, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 14
+    <Prefab>k__BackingField: {fileID: 19641561662629188, guid: 3451e3f51478aca4c9d8e305fa7ea702, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 15
+    <Prefab>k__BackingField: {fileID: 7712667697307249026, guid: 184cb33b63689db40872bc677080000d, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 16
+    <Prefab>k__BackingField: {fileID: 5842522054580523483, guid: d612985a3094a8f4a80998d0473199d6, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 17
+    <Prefab>k__BackingField: {fileID: 6990925346515697544, guid: dc1d036d6f699184a902659388dc5e6d, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 18
+    <Prefab>k__BackingField: {fileID: 407752830135468334, guid: badeeb5c03337d14ba0c3a8b12e1f5f1, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 19
+    <Prefab>k__BackingField: {fileID: 3384483874014144296, guid: 27a94470e6a67574a827c39b0608866a, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 20
+    <Prefab>k__BackingField: {fileID: 2532950189632378649, guid: 68d450466bf79674a913e040f2c92c37, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 21
+    <Prefab>k__BackingField: {fileID: 5408958088415486997, guid: aa5290d14f549ac4c92792ebf63d77c4, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 22
+    <Prefab>k__BackingField: {fileID: 7722175055455925204, guid: a40c9d4a0c9c9b94fa347b06a2c6783f, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 23
+    <Prefab>k__BackingField: {fileID: 482240396298718499, guid: 5adb410b4a40a934bbf5f2864b1f0049, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 24
+    <Prefab>k__BackingField: {fileID: 8270186663671922885, guid: 630757f0c397f114f9d7b3982eed8dd1, type: 3}
+    <Speed>k__BackingField: 7
+  - <Type>k__BackingField: 25
+    <Prefab>k__BackingField: {fileID: 7931560832688526877, guid: 325915160445425479af974ad903b4c6, type: 3}
+    <Speed>k__BackingField: 8
+  - <Type>k__BackingField: 26
+    <Prefab>k__BackingField: {fileID: 2816844574499941641, guid: cf6d8f01ac1435b448346af49903be06, type: 3}
+    <Speed>k__BackingField: 8
   <FallingResourceConfigs>k__BackingField:
   - <Type>k__BackingField: 0
     <Prefab>k__BackingField: {fileID: 6274127126711031238, guid: d55111433d488ee45bfdcaa7a0a5135a, type: 3}
     <Speed>k__BackingField: 8
   - <Type>k__BackingField: 1
-    <Prefab>k__BackingField: {fileID: 4940715396994480810, guid: ef42fcdeb4d16d841a87db1922ed58c1, type: 3}
-    <Speed>k__BackingField: 8
-  - <Type>k__BackingField: 2
-    <Prefab>k__BackingField: {fileID: 8881935557129086419, guid: bf240bf3cd6979f4e83814762e64b63d, type: 3}
-    <Speed>k__BackingField: 8
-  - <Type>k__BackingField: 3
     <Prefab>k__BackingField: {fileID: 4083021873097778758, guid: 0ef36a8a6af5b6443a3f8afbf3db53d1, type: 3}
     <Speed>k__BackingField: 8
-  - <Type>k__BackingField: 4
-    <Prefab>k__BackingField: {fileID: 2707463073625422875, guid: 920ea318dc0b3eb40984125403e5a5c0, type: 3}
-    <Speed>k__BackingField: 8
-  - <Type>k__BackingField: 5
+  - <Type>k__BackingField: 2
     <Prefab>k__BackingField: {fileID: 306485168452398887, guid: d1fcd440f64884b4fb150dd7037cc19f, type: 3}
     <Speed>k__BackingField: 8
-  - <Type>k__BackingField: 6
+  - <Type>k__BackingField: 3
     <Prefab>k__BackingField: {fileID: 880125021481145573, guid: b51a6027e968f854fbd60c46ed71af77, type: 3}
+    <Speed>k__BackingField: 8
+  - <Type>k__BackingField: 4
+    <Prefab>k__BackingField: {fileID: 2228693821744693313, guid: 554c64eccdb6dec44a0ba447a8ab2fba, type: 3}
+    <Speed>k__BackingField: 8
+  - <Type>k__BackingField: 5
+    <Prefab>k__BackingField: {fileID: 3382495305226884873, guid: 0da83d1fa7e72dd40b11e0e7796bc0f4, type: 3}
+    <Speed>k__BackingField: 8
+  - <Type>k__BackingField: 6
+    <Prefab>k__BackingField: {fileID: 1774821677916945802, guid: 8a316f2b743bfe8448a5acb57c5ca79b, type: 3}
     <Speed>k__BackingField: 8
   - <Type>k__BackingField: 7
     <Prefab>k__BackingField: {fileID: 9097750785253501236, guid: 0836e1fc9122d9247968f392dc662a6a, type: 3}
@@ -93,14 +141,14 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 8948968506779585536, guid: daa8c2167bdac8342809b45073aee840, type: 3}
     <Speed>k__BackingField: 8
   - <Type>k__BackingField: 15
-    <Prefab>k__BackingField: {fileID: 8948968506779585536, guid: daa8c2167bdac8342809b45073aee840, type: 3}
+    <Prefab>k__BackingField: {fileID: 5492154508481654391, guid: 3639dbf05f550d04e945d3e3873e7ebd, type: 3}
     <Speed>k__BackingField: 8
   - <Type>k__BackingField: 16
-    <Prefab>k__BackingField: {fileID: 5492154508481654391, guid: 3639dbf05f550d04e945d3e3873e7ebd, type: 3}
+    <Prefab>k__BackingField: {fileID: 6310048613526203138, guid: 51821dc942a971d4993e3d004e6558a7, type: 3}
     <Speed>k__BackingField: 8
   - <Type>k__BackingField: 17
     <Prefab>k__BackingField: {fileID: 6310048613526203138, guid: 51821dc942a971d4993e3d004e6558a7, type: 3}
-    <Speed>k__BackingField: 8
+    <Speed>k__BackingField: 0
   - <Type>k__BackingField: 18
     <Prefab>k__BackingField: {fileID: 1605421608062704917, guid: 40f33423da230d4479fde1f3eaaab5c1, type: 3}
     <Speed>k__BackingField: 8
@@ -108,8 +156,5 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 6430752497993961662, guid: 20f0d6684de263b4082380a01871075e, type: 3}
     <Speed>k__BackingField: 8
   - <Type>k__BackingField: 20
-    <Prefab>k__BackingField: {fileID: 7931560832688526877, guid: 325915160445425479af974ad903b4c6, type: 3}
-    <Speed>k__BackingField: 8
-  - <Type>k__BackingField: 21
-    <Prefab>k__BackingField: {fileID: 2816844574499941641, guid: cf6d8f01ac1435b448346af49903be06, type: 3}
+    <Prefab>k__BackingField: {fileID: 8418228264682595018, guid: ab8e9ef75ab500b4db9f4f1f4ddc8cca, type: 3}
     <Speed>k__BackingField: 8

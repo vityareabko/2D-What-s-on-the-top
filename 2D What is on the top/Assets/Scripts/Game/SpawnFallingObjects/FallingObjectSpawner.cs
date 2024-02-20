@@ -37,7 +37,7 @@ public class FallingObjectSpawner : MonoBehaviour
         EventAggregator.Unsubscribe<PlayeRanOutOfStaminaEventHandler>(OnRunOutStamina);
     
 
-    private void Update() =>
+    private void LateUpdate() =>
         UpdatePosition();
     
     private void UpdatePosition()

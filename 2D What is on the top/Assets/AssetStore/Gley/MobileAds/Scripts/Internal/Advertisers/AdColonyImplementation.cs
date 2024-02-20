@@ -219,7 +219,7 @@ namespace Gley.MobileAds.Internal
                     adSize = AdSize.SKYSCRAPER;
                     break;
                 default:
-                    GleyLogger.AddLog($"Banner Type: {bannerType} not supported by AdColony, BannerType.Banner will be used");
+                    GleyLogger.AddLog($"Banner StorageType: {bannerType} not supported by AdColony, BannerType.Banner will be used");
                     break;
             }
 

@@ -25,13 +25,13 @@ namespace Gley.EasyIAP.Internal
             removeAdsText.text = removeAds.ToString();
             //this should be the example
             //but since your products will not have the same names, we will use the string version 
-            //buyCoinsText.text = $"Buy {Gley.EasyIAP.API.GetValue(ShopProductNames.Coins)} Coins {Gley.EasyIAP.API.GetLocalizedPriceString(ShopProductNames.Coins)}";
+            //buyCoinsText.text = $"Buy {Gley.EasyIAP.API.GetValue(ShopProductNames.Resources)} Resources {Gley.EasyIAP.API.GetLocalizedPriceString(ShopProductNames.Resources)}";
             //buyRemoveAdsText.text = $"Remove ads - {Gley.EasyIAP.API.GetLocalizedPriceString(ShopProductNames.RemoveAds)}";
 
             //this is just a workaround to avoid errors
-            ShopProductNames coinsProduct = Gley.EasyIAP.API.ConvertNameToShopProduct("Coins");
+            ShopProductNames coinsProduct = Gley.EasyIAP.API.ConvertNameToShopProduct("Resources");
             ShopProductNames adsProduct = Gley.EasyIAP.API.ConvertNameToShopProduct("RemoveAds");
-            buyCoinsText.text = $"Buy {Gley.EasyIAP.API.GetValue(coinsProduct)} Coins {Gley.EasyIAP.API.GetLocalizedPriceString(coinsProduct)}";
+            buyCoinsText.text = $"Buy {Gley.EasyIAP.API.GetValue(coinsProduct)} Resources {Gley.EasyIAP.API.GetLocalizedPriceString(coinsProduct)}";
             buyRemoveAdsText.text = $"Remove ads - {Gley.EasyIAP.API.GetLocalizedPriceString(adsProduct)}";
         }
 
@@ -66,10 +66,10 @@ namespace Gley.EasyIAP.Internal
         {
             //this is the normal implementation
             ////but since your products will not have the same names, we will use the string version to avoid compile errors
-            //Gley.EasyIAP.API.BuyProduct(ShopProductNames.Coins, ProductBought);
+            //Gley.EasyIAP.API.BuyProduct(ShopProductNames.Resources, ProductBought);
 
 
-            ShopProductNames coinsProduct = Gley.EasyIAP.API.ConvertNameToShopProduct("Coins");
+            ShopProductNames coinsProduct = Gley.EasyIAP.API.ConvertNameToShopProduct("Resources");
             Gley.EasyIAP.API.BuyProduct(coinsProduct, ProductBought);
         }
 

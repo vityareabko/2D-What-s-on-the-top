@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5410175618215485122}
   - component: {fileID: 4323243687051689779}
-  - component: {fileID: 4333210859347050256}
   - component: {fileID: 302413663937904058}
   - component: {fileID: 5646225831383231786}
+  - component: {fileID: -3933830644983309431}
   m_Layer: 0
   m_Name: plasticlBag4
   m_TagString: Untagged
@@ -87,33 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &4333210859347050256
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7841170558848058247}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &302413663937904058
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -171,3 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3933830644983309431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7841170558848058247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ecfee3f86e3448e9128c100c5052fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AmountResources: 1

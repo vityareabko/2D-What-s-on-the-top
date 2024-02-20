@@ -23,20 +23,18 @@ namespace Obstacles
             _directionRotate = Random.value < 0.5 ? -1 : 1;
             StartCoroutine(LifeDelayCoroutine());
         }
-
+      
         private void Update()
         {
             AddDynamicRotation();
-        }
-        
-        /// <summary>
-        /// использую Fixed Update потому что в камере я использую ограничение кадров для камеры (чтобы она не тряслась)
-        /// и теперь если я использую Update то не очень хорошо ведет себя постоянно движущиеся объекты 
-        /// </summary>
-        private void FixedUpdate() => FallDown();
+            FallDown();
+        }   
 
-        private void FallDown() => transform.Translate(Vector3.down * _speed * Time.fixedDeltaTime, Space.World);
-        
+        private void FallDown()
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime, Space.World);
+        }
+
         private void AddDynamicRotation()
         {
             float rotationSpeed = Random.Range(_minRotationSpeed,_maxRotationSpeed);

@@ -4,10 +4,11 @@ namespace ResourcesCollector
 {
     public interface IPickUp
     {
-        public ResourceTypes Type { get; }
+        public ResourceStorageTypes StorageType { get; }
 
-        public event Action<IPickUp> PickUP;
+        public int AmountResources { get; }
         
-        public int GetCoinsValue();
+        // public event Action<IPickUp> PickUP;
+        
     }
 }

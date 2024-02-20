@@ -76,7 +76,7 @@ namespace Assets.HeroEditor.InventorySystem.Scripts.Elements
                 main.Add(t);
             }
 
-            var dict = new Dictionary<string, object> { { "ItemInfo.Type", string.Join(" / ", main) } };
+            var dict = new Dictionary<string, object> { { "ItemInfo.StorageType", string.Join(" / ", main) } };
 
             if (item.Params.Level >= 0) dict.Add("ItemInfo.Level", item.Params.Level);
 

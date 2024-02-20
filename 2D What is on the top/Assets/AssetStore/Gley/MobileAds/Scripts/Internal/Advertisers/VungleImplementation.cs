@@ -149,7 +149,7 @@ namespace Gley.MobileAds.Internal
                     adSize = Vungle.VungleBannerSize.VungleAdSizeBannerLeaderboard;
                     break;
                 default:
-                    GleyLogger.AddLog($"Banner Type: {bannerType} not supported by Vungle, BannerType.Banner will be used");
+                    GleyLogger.AddLog($"Banner StorageType: {bannerType} not supported by Vungle, BannerType.Banner will be used");
                     break;
             }
 

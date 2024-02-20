@@ -124,12 +124,12 @@ namespace Gley.AllPlatformsSave.Internal
             showVideo = GUI.Toggle(new Rect(margin, margin + 2 * buttonHeight, half, buttonHeight), showVideo, "Show video");
             GUI.Label(new Rect(margin, margin + 3 * buttonHeight, half, buttonHeight), "Music Volume");
             musicVolume = GUI.HorizontalSlider(new Rect(margin, margin + 4 * buttonHeight, half, buttonHeight), musicVolume, 0.0F, 1.0F);
-            GUI.Label(new Rect(margin, margin + 5 * buttonHeight, half, buttonHeight), "Total Coins: " + totalCoins);
-            if (GUI.Button(new Rect(margin, margin + 6 * buttonHeight, half, buttonHeight), "Add Coins"))
+            GUI.Label(new Rect(margin, margin + 5 * buttonHeight, half, buttonHeight), "Total Resources: " + totalCoins);
+            if (GUI.Button(new Rect(margin, margin + 6 * buttonHeight, half, buttonHeight), "Add Resources"))
             {
                 AddCoins();
             }
-            if (GUI.Button(new Rect(margin, 2 * margin + 7 * buttonHeight, half, buttonHeight), "Remove Coins"))
+            if (GUI.Button(new Rect(margin, 2 * margin + 7 * buttonHeight, half, buttonHeight), "Remove Resources"))
             {
                 RemoveCoins();
             }

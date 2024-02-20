@@ -5,26 +5,26 @@ namespace ResourcesCollector
 {
     public class ResourceCollector : IResourceCollector
     {
-        public event Action<Dictionary<ResourceTypes, int>> ResourcesContainerChange;
+        public event Action<Dictionary<ResourceStorageTypes, int>> ResourcesContainerChange;
 
-        public Dictionary<ResourceTypes, int> ResourcesContainer { get; } = new();
+        public Dictionary<ResourceStorageTypes, int> ResourcesContainer { get; } = new();
         
         public void AddResource(IPickUp ressource)
         {
-            if (ResourcesContainer.ContainsKey(ressource.Type) == false)
-                ResourcesContainer[ressource.Type] = ressource.GetCoinsValue();
+            if (ResourcesContainer.ContainsKey(ressource.StorageType) == false)
+                ResourcesContainer[ressource.StorageType] = ressource.AmountResources;
             else
-                ResourcesContainer[ressource.Type] += ressource.GetCoinsValue();
+                ResourcesContainer[ressource.StorageType] += ressource.AmountResources;
 
             ResourcesContainerChange?.Invoke(ResourcesContainer);
         }
 
         public void Remove(IPickUp ressource)
         {
-            if (ResourcesContainer.ContainsKey(ressource.Type) == false)
-                ResourcesContainer[ressource.Type] = ressource.GetCoinsValue();
+            if (ResourcesContainer.ContainsKey(ressource.StorageType) == false)
+                ResourcesContainer[ressource.StorageType] = ressource.AmountResources;
             else
-                ResourcesContainer[ressource.Type] -= ressource.GetCoinsValue();
+                ResourcesContainer[ressource.StorageType] -= ressource.AmountResources;
 
             ResourcesContainerChange?.Invoke(ResourcesContainer);
         }

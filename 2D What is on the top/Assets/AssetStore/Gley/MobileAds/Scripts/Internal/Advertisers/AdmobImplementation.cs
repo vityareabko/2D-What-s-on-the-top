@@ -294,7 +294,7 @@ namespace Gley.MobileAds.Internal
                     adSize = new AdSize(customSize.x, customSize.y);
                     break;
                 default:
-                    GleyLogger.AddLog($"Banner Type: {bannerType} not supported by Admob, BannerType.Banner will be used");
+                    GleyLogger.AddLog($"Banner StorageType: {bannerType} not supported by Admob, BannerType.Banner will be used");
                     adSize = AdSize.Banner;
                     break;
             }
@@ -1014,7 +1014,7 @@ namespace Gley.MobileAds.Internal
 
         private void RewardedVideoWatched(Reward reward)
         {
-            GleyLogger.AddLog($"Rewarded Video Watched -> Reward amount: {reward.Amount} Reward type: {reward.Type}");
+            GleyLogger.AddLog($"Rewarded Video Watched -> Reward amount: {reward.Amount} Reward type: {reward.StorageType}");
             rewardedVideoWatched = true;
 #if UNITY_EDITOR
             RewardedAdClosed();
@@ -1142,7 +1142,7 @@ namespace Gley.MobileAds.Internal
         #endregion
         private void RewardedInterstitialWatched(Reward reward)
         {
-            GleyLogger.AddLog($"Rewarded Interstitial Watched -> Reward amount: {reward.Amount} Reward type: {reward.Type}");
+            GleyLogger.AddLog($"Rewarded Interstitial Watched -> Reward amount: {reward.Amount} Reward type: {reward.StorageType}");
             rewardedInterstitialWatched = true;
 #if UNITY_EDITOR
             RewardedInterstitialClosed();

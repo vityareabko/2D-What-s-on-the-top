@@ -95,7 +95,7 @@ namespace Gley.EasyIAP.Internal
                                 DropDown(7, ref indexNumberConsumable, ref showConsumable, consumableProducts);
                             }
 
-                            if (Button("BUY " + consumableProducts[indexNumberConsumable].name + " " + Gley.EasyIAP.API.GetValue(consumableProducts[indexNumberConsumable].name) + " Coins " + Gley.EasyIAP.API.GetLocalizedPriceString(consumableProducts[indexNumberConsumable].name)))
+                            if (Button("BUY " + consumableProducts[indexNumberConsumable].name + " " + Gley.EasyIAP.API.GetValue(consumableProducts[indexNumberConsumable].name) + " Resources " + Gley.EasyIAP.API.GetLocalizedPriceString(consumableProducts[indexNumberConsumable].name)))
                             {
                                 purchaseInProgress = true;
 
@@ -193,7 +193,7 @@ namespace Gley.EasyIAP.Internal
 
                         //test variables to see if the products work
                         GUI.skin.label.alignment = TextAnchor.MiddleLeft;
-                        Label("Coins: " + coins);
+                        Label("Resources: " + coins);
                         for (int i = 0; i < nonCOnsumableProducts.Count; i++)
                         {
                             Label(nonCOnsumableProducts[i].name + " was bought " + nonCOnsumableProducts[i].bought);

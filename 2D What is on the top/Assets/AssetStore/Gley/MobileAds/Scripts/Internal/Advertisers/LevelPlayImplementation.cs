@@ -186,7 +186,7 @@ namespace Gley.MobileAds.Internal
                 case BannerType.Custom:
                     break;
                 default:
-                    GleyLogger.AddLog($"Banner Type: {bannerType} not supported by IronSource, BannerType.Banner will be used");
+                    GleyLogger.AddLog($"Banner StorageType: {bannerType} not supported by IronSource, BannerType.Banner will be used");
                     break;
 
             }

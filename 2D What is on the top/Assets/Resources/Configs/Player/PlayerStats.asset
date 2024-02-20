@@ -21,8 +21,8 @@ MonoBehaviour:
   <StaminaData>k__BackingField:
     <MaxStamina>k__BackingField: 50
     <MinStamina>k__BackingField: 0
-    <StaminaDrainRateRunning>k__BackingField: 0
+    <StaminaDrainRateRunning>k__BackingField: 1
     <StaminaDrainRateWalking>k__BackingField: 0
     <StaminaDrainRateRoll>k__BackingField: 0
     <StaminaDrainRateJumping>k__BackingField: 0
-    <StaminaDrainObstacleCollision>k__BackingField: 1
+    <StaminaDrainObstacleCollision>k__BackingField: 7

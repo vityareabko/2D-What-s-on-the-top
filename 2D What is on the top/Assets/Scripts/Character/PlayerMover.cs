@@ -72,17 +72,35 @@ public class PlayerMover
         
         if (_isFacingRight == isRightWall)
             return;
-
-        if (_isPlatform)
-            _animator.JumpAnimation();
         
+        _animator.JumpAnimation();
+    
+        // Увеличиваем силу прыжка на основе горизонтальной скорости
+        // float extraJumpForce = Mathf.Clamp(Mathf.Abs(_rb.velocity.x), 0, _characterData.JumpForce);
+        // float jumpForce = _characterData.JumpForce + extraJumpForce;
+
         _isFacingRight = !_isFacingRight;
         float jumpDirection = _isFacingRight ? 1 : -1;
 
-        _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, _rb.velocity.y);
+        // Применяем горизонтальный и вертикальный импульс
+        _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, Mathf.Max(_rb.velocity.y, _characterData.JumpForce));
         _stamina.DrainRateStaminaJump();
-        
+    
         FlipCharacter();
+        
+        // if (_isFacingRight == isRightWall)
+        //     return;
+        //
+        // if (_isPlatform)
+        //     _animator.JumpAnimation();
+        //
+        // _isFacingRight = !_isFacingRight;
+        // float jumpDirection = _isFacingRight ? 1 : -1;
+        //
+        // _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, _rb.velocity.y);
+        // _stamina.DrainRateStaminaJump();
+        //
+        // FlipCharacter();
     }
     
     public void SlowDownFlag(bool isSlowDown) => _isSlowdown = isSlowDown;

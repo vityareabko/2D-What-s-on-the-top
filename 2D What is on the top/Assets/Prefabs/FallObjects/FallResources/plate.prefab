@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6960348379441911761}
   - component: {fileID: 4569437076605928178}
-  - component: {fileID: 3685453353492109023}
   - component: {fileID: 907958130297235938}
   - component: {fileID: 5039891362850513953}
+  - component: {fileID: 3185522047532784681}
   m_Layer: 0
   m_Name: plate
   m_TagString: Untagged
@@ -87,33 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &3685453353492109023
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931696376292993100}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &907958130297235938
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -171,3 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3185522047532784681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6931696376292993100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc44980bca14ff498efedfb055b0423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AmountResources: 1
