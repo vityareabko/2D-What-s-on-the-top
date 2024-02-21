@@ -5,7 +5,7 @@ namespace ResourcesCollector
 {
     public abstract class PickUpBase : MonoBehaviour, IPickUp
     {
-        public abstract ResourceStorageTypes StorageType { get; }
+        public abstract ResourceTypes Type { get; }
 
         // public event Action<IPickUp> PickUP;
 

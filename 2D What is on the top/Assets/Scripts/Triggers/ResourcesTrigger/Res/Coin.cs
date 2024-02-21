@@ -5,6 +5,6 @@ namespace ResourcesCollector
 {
     public class Coin : PickUpBase
     {
-        public override ResourceStorageTypes StorageType { get; } = ResourceStorageTypes.Coin;
+        public override ResourceTypes Type { get; } = ResourceTypes.Coin;
     }
 }

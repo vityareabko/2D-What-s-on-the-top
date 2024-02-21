@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6532165896776588042}
   - component: {fileID: 6996204033301882982}
   - component: {fileID: 8305568262355714266}
-  - component: {fileID: 6430752497993961662}
   - component: {fileID: -435837942439981740}
+  - component: {fileID: -8521353280340021761}
   m_Layer: 0
   m_Name: toothbrush1
   m_TagString: Untagged
@@ -132,18 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4109374, y: 9.03}
   m_EdgeRadius: 0
---- !u!114 &6430752497993961662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 271766702671516352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-435837942439981740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,4 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e65a2e0d91d4cd2ba3d89a95d84be77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountResources: 1
+  <AmountResources>k__BackingField: 1
+--- !u!114 &-8521353280340021761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271766702671516352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8220cd3e0840e88a629e5e836e1d37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

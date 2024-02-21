@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5410175618215485122}
   - component: {fileID: 4323243687051689779}
   - component: {fileID: 302413663937904058}
-  - component: {fileID: 5646225831383231786}
   - component: {fileID: -3933830644983309431}
+  - component: {fileID: 8641480216431822456}
   m_Layer: 0
   m_Name: plasticlBag4
   m_TagString: Untagged
@@ -132,18 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9617188, y: 2.7}
   m_EdgeRadius: 0
---- !u!114 &5646225831383231786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7841170558848058247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-3933830644983309431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,4 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ecfee3f86e3448e9128c100c5052fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountResources: 1
+  <AmountResources>k__BackingField: 1
+--- !u!114 &8641480216431822456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7841170558848058247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8220cd3e0840e88a629e5e836e1d37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

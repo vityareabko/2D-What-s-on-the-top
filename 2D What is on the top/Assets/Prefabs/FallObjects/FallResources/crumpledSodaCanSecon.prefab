@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3995779926969807905}
   - component: {fileID: 2847805664969385519}
   - component: {fileID: 6539818573823822211}
-  - component: {fileID: 306485168452398887}
   - component: {fileID: -7552298033727644621}
+  - component: {fileID: -8944455218136471157}
   m_Layer: 0
   m_Name: crumpledSodaCanSecon
   m_TagString: Untagged
@@ -132,18 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.8199997, y: 8.689577}
   m_EdgeRadius: 0
---- !u!114 &306485168452398887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2016935585423464857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-7552298033727644621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,4 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28360fee347443f7a70fb969ab2b7dcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountResources: 1
+  <AmountResources>k__BackingField: 1
+--- !u!114 &-8944455218136471157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016935585423464857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8220cd3e0840e88a629e5e836e1d37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

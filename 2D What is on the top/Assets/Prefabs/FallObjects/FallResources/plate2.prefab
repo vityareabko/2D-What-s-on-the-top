@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8941359725476994419}
   - component: {fileID: 5312225926756589689}
   - component: {fileID: 4651850173985943294}
-  - component: {fileID: 8948968506779585536}
   - component: {fileID: 2009336124615215690}
+  - component: {fileID: -5003438253171984679}
   m_Layer: 0
   m_Name: plate2
   m_TagString: Untagged
@@ -132,18 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.889999, y: 8.11289}
   m_EdgeRadius: 0
---- !u!114 &8948968506779585536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5996103864383750801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2009336124615215690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,4 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e9087f2791492d8f5c9a88ab50e9f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountResources: 1
+  <AmountResources>k__BackingField: 1
+--- !u!114 &-5003438253171984679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5996103864383750801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8220cd3e0840e88a629e5e836e1d37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

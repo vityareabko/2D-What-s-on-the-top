@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8138675292883832596}
   - component: {fileID: 5646420872909042448}
   - component: {fileID: 491589559888160510}
-  - component: {fileID: 2228693821744693313}
   - component: {fileID: -7837176338658163532}
+  - component: {fileID: -116602474743607689}
   m_Layer: 0
   m_Name: pieceOfFabrics
   m_TagString: Untagged
@@ -132,18 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.1000001, y: 3.480702}
   m_EdgeRadius: 0
---- !u!114 &2228693821744693313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7636238699556004258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-7837176338658163532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,4 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f02b2f185c4fa9b2bef190101f4c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountResources: 1
+  <AmountResources>k__BackingField: 1
+--- !u!114 &-116602474743607689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7636238699556004258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8220cd3e0840e88a629e5e836e1d37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -4,7 +4,7 @@ namespace ResourcesCollector
 {
     public interface IPickUp
     {
-        public ResourceStorageTypes StorageType { get; }
+        public ResourceTypes Type { get; }
 
         public int AmountResources { get; }
         

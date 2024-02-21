@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7171963224224440703}
   - component: {fileID: 1773000074150767243}
   - component: {fileID: 5181511367090641392}
-  - component: {fileID: 6990925346515697544}
   - component: {fileID: 2625572446707910890}
+  - component: {fileID: 6782610561813822728}
   m_Layer: 0
   m_Name: brownStone17
   m_TagString: FallingObstacle
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5323609621803024209}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15439409, y: 0.15439409, z: 0.15439409}
+  m_LocalScale: {x: 0.28277278, y: 0.28277278, z: 0.28277278}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -122,18 +122,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.1499999
---- !u!114 &6990925346515697544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5323609621803024209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0595be2f298140b6861798baacd37172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &2625572446707910890
 Rigidbody2D:
   serializedVersion: 4
@@ -161,3 +149,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &6782610561813822728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323609621803024209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c77d24a3674ad29676c6fe60f7d6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

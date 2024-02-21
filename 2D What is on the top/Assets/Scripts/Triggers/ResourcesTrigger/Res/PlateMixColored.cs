@@ -2,6 +2,6 @@ namespace ResourcesCollector
 {
     public class PlateMixColored : PickUpBase
     {
-        public override ResourceStorageTypes StorageType { get; } = ResourceStorageTypes.PlateMixColored;
+        public override ResourceTypes Type { get; } = ResourceTypes.PlateMixColored;
     }
 }

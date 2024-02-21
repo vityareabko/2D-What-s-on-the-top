@@ -2,6 +2,6 @@ namespace ResourcesCollector
 {
     public class Spoon : PickUpBase
     {
-        public override ResourceStorageTypes StorageType { get; } = ResourceStorageTypes.Spoon;
+        public override ResourceTypes Type { get; } = ResourceTypes.Spoon;
     }
 }

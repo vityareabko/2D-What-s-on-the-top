@@ -237,7 +237,7 @@ namespace Gley.EasyIAP.Editor
                     localShopProducts[i].productName = Regex.Replace(localShopProducts[i].productName, @"^[\d-]*\s*", "");
                     localShopProducts[i].productName = localShopProducts[i].productName.Replace(" ", "");
                     localShopProducts[i].productName = localShopProducts[i].productName.Trim();
-                    localShopProducts[i].productType = (ProductType)EditorGUILayout.EnumPopup("Product StorageType:", localShopProducts[i].productType);
+                    localShopProducts[i].productType = (ProductType)EditorGUILayout.EnumPopup("Product Type:", localShopProducts[i].productType);
                     localShopProducts[i].value = EditorGUILayout.IntField("Reward Value:", localShopProducts[i].value);
 
                     if (useForGooglePlay)

@@ -37,10 +37,10 @@ namespace Score
         {
             _resourceCollector.AddResource(eventData.Resource);
 
-            if (_resourcesData.Resources.ContainsKey(eventData.Resource.StorageType))
-                _resourcesData.Resources[eventData.Resource.StorageType] += eventData.Resource.AmountResources;
+            if (_resourcesData.Resources.ContainsKey(eventData.Resource.Type))
+                _resourcesData.Resources[eventData.Resource.Type] += eventData.Resource.AmountResources;
             else 
-                _resourcesData.Resources[eventData.Resource.StorageType] = eventData.Resource.AmountResources;
+                _resourcesData.Resources[eventData.Resource.Type] = eventData.Resource.AmountResources;
         }
         
         private void LoadResourcesData()

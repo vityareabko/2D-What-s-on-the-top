@@ -2,6 +2,6 @@ namespace ResourcesCollector
 {
     public class Glasses : PickUpBase
     {
-        public override ResourceStorageTypes StorageType { get; } = ResourceStorageTypes.Glasses;
+        public override ResourceTypes Type { get; } = ResourceTypes.Glasses;
     }
 }

@@ -1,9 +1,9 @@
-using UI;
+using System;using UI;
 
-public class Stamina
+public class Stamina : IDisposable
 {
     private StaminaData _staminaData;
-    private GameScreenHUDPresenter gameScreenHUDPresenter;
+    private GameScreenHUDPresenter _gameScreenHUDPresenter;
     
     private float _currentStamin;
 
@@ -11,14 +11,18 @@ public class Stamina
     {
         _staminaData = characterData.StaminaData;
         _currentStamin = _staminaData.MaxStamina;
-        this.gameScreenHUDPresenter = gameScreenHUDPresenter;
+        _gameScreenHUDPresenter = gameScreenHUDPresenter;
+        
+        EventAggregator.Subscribe<PopupTextDrainStaminEvent>(OnColisionObstacle);
     }
+    
+    public void Dispose() => EventAggregator.Unsubscribe<PopupTextDrainStaminEvent>(OnColisionObstacle);
+    
 
     public void DrainRateStaminaRun(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateRunning * deltaTime);
     public void DrainRateStaminaWalking(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateWalking * deltaTime);
     public void DrainRateStaminaJump() => DrainRateStamina(_staminaData.StaminaDrainRateJumping);
     public void DrainRateStaminaUpwardRoll() => DrainRateStamina(_staminaData.StaminaDrainRateRoll);
-    public void DrainRateStaminaForObstaclesCollision() => DrainRateStamina(_staminaData.StaminaDrainObstacleCollision);
     
     public bool isEnough() => _currentStamin > _staminaData.MinStamina;
 
@@ -28,7 +32,7 @@ public class Stamina
             return;
         
         _currentStamin -= amount;
-        gameScreenHUDPresenter.UpdateStamina(_currentStamin);
+        _gameScreenHUDPresenter.UpdateStamina(_currentStamin);
     }
 
     private void RegenerateStamina(float amount)
@@ -37,6 +41,9 @@ public class Stamina
             return;
 
         _currentStamin += amount;
-        gameScreenHUDPresenter.UpdateStamina(_currentStamin);
+        _gameScreenHUDPresenter.UpdateStamina(_currentStamin);
     }
+    
+    private void OnColisionObstacle(object sender, PopupTextDrainStaminEvent eventData) => DrainRateStamina(eventData.DrainAmount);
+    
 }

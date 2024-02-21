@@ -2,6 +2,6 @@ namespace ResourcesCollector
 {
     public class PlasticlBagRed : PickUpBase
     {
-        public override ResourceStorageTypes StorageType { get; } = ResourceStorageTypes.PlasticlBagRed;
+        public override ResourceTypes Type { get; } = ResourceTypes.PlasticlBagRed;
     }
 }

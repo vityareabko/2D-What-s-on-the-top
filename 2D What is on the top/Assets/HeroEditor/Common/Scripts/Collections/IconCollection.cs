@@ -35,14 +35,14 @@ namespace Assets.HeroEditor.Common.Scripts.Collections
 
                 foreach (var path in files.Select(i => i.Replace("\\", "/")))
                 {
-                    var match = Regex.Match(path, @"Assets\/HeroEditor\/(?<Edition>\w+)\/(.+?\/)*Icons\/\w+\/(?<StorageType>\w+)\/(?<Collection>.+?)\/(.+\/)*(?<Name>.+?)\.png");
+                    var match = Regex.Match(path, @"Assets\/HeroEditor\/(?<Edition>\w+)\/(.+?\/)*Icons\/\w+\/(?<Type>\w+)\/(?<Collection>.+?)\/(.+\/)*(?<Name>.+?)\.png");
                     
                     if (!match.Success) throw new Exception($"Incorrect path: {path}");
                     
                     var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                     var edition = match.Groups["Edition"].Value;
                     var collection = match.Groups["Collection"].Value;
-                    var type = match.Groups["StorageType"].Value;
+                    var type = match.Groups["Type"].Value;
                     var iconName = match.Groups["Name"].Value;
                     var icon = new ItemIcon(edition, collection, type, iconName, path, sprite);
 

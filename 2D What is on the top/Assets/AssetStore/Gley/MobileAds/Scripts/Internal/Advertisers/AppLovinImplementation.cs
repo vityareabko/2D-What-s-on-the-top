@@ -276,7 +276,7 @@ namespace Gley.MobileAds.Internal
                     MaxSdk.SetBannerWidth(bannerId, customSize.x);
                     break;
                 default:
-                    GleyLogger.AddLog($"Banner StorageType: {bannerType} not supported by AppLovin, Default banner behavior will be used");
+                    GleyLogger.AddLog($"Banner Type: {bannerType} not supported by AppLovin, Default banner behavior will be used");
                     MaxSdk.SetBannerExtraParameter(bannerId, "adaptive_banner", "true");
                     break;
             }

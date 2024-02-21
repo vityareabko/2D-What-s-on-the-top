@@ -1,25 +1,28 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class FollowCamera : MonoBehaviour
 {
     private const float _offsetCameraFromPlayerToRight = 1.5f;
     private const float _offsetCameraFromPlayerToLeft = -1.5f;
     
-    [SerializeField] private Transform _target;
+    // [SerializeField] private Transform _target;
     [SerializeField] private Vector3 _offset = new Vector3(1, 0, -15);
     [SerializeField] private float _maxPositionChangePerFrame = 0.5f;
+    
+    private Transform _target;
     
     private Vector3 positionChange = Vector3.zero;
     private float _currentXOffset;
     private float _xOffsetVelocity; // Для хранения текущей скорости изменения смещения.
     
     private bool _isStopFollowing = false;
+
+    [Inject]
+    private void Construct(IPlayer player) => _target = player.Transform;
     
-    private void Start()
-    {
-        _offset.x = _offsetCameraFromPlayerToLeft;
-    }
+    private void Start() => _offset.x = _offsetCameraFromPlayerToLeft;
     
     private void OnEnable()
     {

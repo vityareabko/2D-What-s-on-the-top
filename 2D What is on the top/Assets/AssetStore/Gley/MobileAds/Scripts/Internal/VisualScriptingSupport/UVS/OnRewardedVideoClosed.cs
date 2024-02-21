@@ -10,7 +10,7 @@ namespace Gley.MobileAds.Internal
         [DoNotSerialize]
         public ValueOutput complete { get; private set; }
 
-        public override StorageType MessageListenerType =>null;
+        public override Type MessageListenerType =>null;
 
         protected override string hookName => EventNames.OnRewardedVideoClosed;
 

@@ -3,12 +3,14 @@ using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
 using Zenject;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IPlayer
 {
     private const float DefeatDelay = 0.7f;
     private const float CharacterHideDelay = 2f;
     
     [SerializeField] private Transform _transformPlatformDetection;
+    
+    public Transform Transform { get; private set; }
 
     private SwipeListener _swipeListener;  
     private PlayerMover _playerMover;
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour
         _characterData = characterData;
         _swipeListener = swipeListener;
         _stamina = stamina;
+        Transform = transform;
     }
 
     private void Awake() => _playerMover = new PlayerMover(_stamina, _characterData, this, _transformPlatformDetection);
@@ -137,17 +140,17 @@ public class Player : MonoBehaviour
             PlayerWin();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.CompareTag(ConstTags.FallingObstacle))
-        {
-            _stamina.DrainRateStaminaForObstaclesCollision();
-            EventAggregator.Post(this, new PopupTextDrainStaminEvent()
-            {
-                DrainAmount = Mathf.FloorToInt(_characterData.StaminaData.StaminaDrainObstacleCollision)
-            });
-        }
-    }
+    // private void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     if (collision.collider.CompareTag(ConstTags.FallingObstacle))
+    //     {
+    //         _stamina.DrainRateStaminaForObstaclesCollision();
+    //         EventAggregator.Post(this, new PopupTextDrainStaminEvent()
+    //         {
+    //             DrainAmount = Mathf.FloorToInt(_characterData.StaminaData.StaminaDrainObstacleCollision)
+    //         });
+    //     }
+    // }
 
     #region Gizmoz
         private void OnDrawGizmos() => Gizmos.DrawWireSphere(_transformPlatformDetection.position, 0.2f);

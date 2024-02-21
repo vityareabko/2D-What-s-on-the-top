@@ -112,52 +112,52 @@ namespace UI
             _gameScreenPausePresenter.Show();
         }
 
-        private void OnResourcesContainerChanged(Dictionary<ResourceStorageTypes, int> data)
+        private void OnResourcesContainerChanged(Dictionary<ResourceTypes, int> data)
         {
             foreach (var (key, value) in data)
             {
                 switch (key)
                 {
-                    case ResourceStorageTypes.Coin:
+                    case ResourceTypes.Coin:
                         _gameScreenPresenter.SetAmountCoins(value);
                         break;
-                    case ResourceStorageTypes.AdhesivePlaster:
+                    case ResourceTypes.AdhesivePlaster:
                         break;
-                    case ResourceStorageTypes.CrumpledPlasticBootle:
+                    case ResourceTypes.CrumpledPlasticBootle:
                         break;
-                    case ResourceStorageTypes.CrumpledSodaCan:
+                    case ResourceTypes.CrumpledSodaCan:
                         break;
-                    case ResourceStorageTypes.Glasses:
+                    case ResourceTypes.Glasses:
                         break;
-                    case ResourceStorageTypes.PieceOfFabricsGreen:
+                    case ResourceTypes.PieceOfFabricsGreen:
                         break;
-                    case ResourceStorageTypes.PieceOfFabricsYellow:
+                    case ResourceTypes.PieceOfFabricsYellow:
                         break;
-                    case ResourceStorageTypes.PieceOfFabricsOrange:
+                    case ResourceTypes.PieceOfFabricsOrange:
                         break;
-                    case ResourceStorageTypes.PlasticlBagYellow:
+                    case ResourceTypes.PlasticlBagYellow:
                         break;
-                    case ResourceStorageTypes.PlasticlBagBlue:
+                    case ResourceTypes.PlasticlBagBlue:
                         break;
-                    case ResourceStorageTypes.PlasticlBagGreen:
+                    case ResourceTypes.PlasticlBagGreen:
                         break;
-                    case ResourceStorageTypes.PlasticlBagRed:
+                    case ResourceTypes.PlasticlBagRed:
                         break;
-                    case ResourceStorageTypes.PlasticlBagPurple:
+                    case ResourceTypes.PlasticlBagPurple:
                         break;
-                    case ResourceStorageTypes.PlateSimple:
+                    case ResourceTypes.PlateSimple:
                         break;
-                    case ResourceStorageTypes.PlateRed:
+                    case ResourceTypes.PlateRed:
                         break;
-                    case ResourceStorageTypes.PlateFlowers:
+                    case ResourceTypes.PlateFlowers:
                         break;
-                    case ResourceStorageTypes.PlateMixColored:
+                    case ResourceTypes.PlateMixColored:
                         break;
-                    case ResourceStorageTypes.Spoon:
+                    case ResourceTypes.Spoon:
                         break;
-                    case ResourceStorageTypes.ToothBrushRed:
+                    case ResourceTypes.ToothBrushRed:
                         break;
-                    case ResourceStorageTypes.ToothBrushWhithe:
+                    case ResourceTypes.ToothBrushWhithe:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

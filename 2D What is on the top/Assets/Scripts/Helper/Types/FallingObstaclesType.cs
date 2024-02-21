@@ -40,7 +40,5 @@ namespace Obstacles
         brownStone22,
         brownStone23,
         brownStone24,
-        WoodBucketFirst,
-        WoodBucketSecond,
     }
 }

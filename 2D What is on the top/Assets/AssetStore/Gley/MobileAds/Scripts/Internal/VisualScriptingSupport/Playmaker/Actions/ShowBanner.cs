@@ -10,7 +10,7 @@ namespace HutongGames.PlayMaker.Actions
     {
         [Tooltip("Location of the banner")]
         public BannerPosition bannerPosition;
-        [Tooltip("Banner StorageType")]
+        [Tooltip("Banner Type")]
         public BannerType bannerType;
 
         public override void OnEnter()

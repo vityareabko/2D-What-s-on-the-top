@@ -5,6 +5,6 @@ namespace ResourcesCollector
 {
     public class AdhesivePlaster : PickUpBase
     {
-        public override ResourceStorageTypes StorageType { get; } = ResourceStorageTypes.AdhesivePlaster;
+        public override ResourceTypes Type { get; } = ResourceTypes.AdhesivePlaster;
     }
 }

@@ -2,6 +2,6 @@ namespace ResourcesCollector
 {
     public class PieceOfFabricsYellow : PickUpBase
     {
-        public override ResourceStorageTypes StorageType { get; } = ResourceStorageTypes.PieceOfFabricsYellow;
+        public override ResourceTypes Type { get; } = ResourceTypes.PieceOfFabricsYellow;
     }
 }
