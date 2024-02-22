@@ -21,5 +21,4 @@ public enum ResourceTypes
     ToothBrushRed           ,
     ToothBrushWhithe        ,
     Coin      
-    
 }

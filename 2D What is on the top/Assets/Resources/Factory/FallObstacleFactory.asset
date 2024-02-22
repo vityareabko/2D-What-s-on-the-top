@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a641ba07389482fadadb38433b0ad88, type: 3}
   m_Name: FallObstacleFactory
   m_EditorClassIdentifier: 
-  _obstacleDatabase: {fileID: 11400000, guid: 98a14818984102941aa22be38abec93c, type: 2}
+  _objectsDatabase: {fileID: 11400000, guid: 98a14818984102941aa22be38abec93c, type: 2}

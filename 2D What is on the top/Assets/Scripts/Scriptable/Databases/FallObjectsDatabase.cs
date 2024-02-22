@@ -3,75 +3,54 @@ using System.Linq;
 using Scriptable.Datas.FallResources;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Obstacles
 {
     [CreateAssetMenu(fileName = "FallObjectsDatabase", menuName = "Databases/FallObstaclesDatabase")]
-    public class FallObjectsDatabase: ScriptableObject
+    public class FallObjectsDatabase: SerializedScriptableObject
     {
-        [field: SerializeField, ListDrawerSettings(CustomAddFunction = "AddUniqueFallObstacleConfig")]  public List<FallObstacleConfig> FallObstacleConfigs { get; private set; }
-        
-        [field: SerializeField, ListDrawerSettings(CustomAddFunction = "AddUniqueFallingResourceConfig")] public List<FallingResourceConfig> FallingResourceConfigs { get; private set; }
+        [TabGroup("Resources")] 
+        public Dictionary<ResourceCategory, List<FallingResourceConfig>> Resources;
+
+        [TabGroup("Obstacles")] 
+        public Dictionary<ObstacleCategory, List<FallObstacleConfig>> Obstacles; 
 
         private void OnValidate()
         {
-            if (FallObstacleConfigs.GroupBy(x => x.Type).Any(g => g.Count() > 1))
-                Debug.LogError($"[FallObjectsDatabase] Обнаружены дубликаты в FallObstacleConfigs.", this);
-            
-            if (FallingResourceConfigs.GroupBy(x => x.Type).Any(g => g.Count() > 1))
-                Debug.LogError($"[FallObjectsDatabase] Обнаружены дубликаты в FallingResourceConfigs.", this);
-        }
-        
-        private void AddUniqueFallObstacleConfig()
-        {
-            var existingTypes = FallObstacleConfigs.Select(c => c.Type).ToList();
-            var allTypes = System.Enum.GetValues(typeof(FallingObstaclesType)).Cast<FallingObstaclesType>();
-
-            var availableType = allTypes.FirstOrDefault(t => existingTypes.Contains(t) == false);
-
-            if (availableType != default(FallingObstaclesType))
-                FallObstacleConfigs.Add(new FallObstacleConfig { Type = availableType });
-        }
-        
-        private void AddUniqueFallingResourceConfig()
-        {
-            var existingTypes = FallingResourceConfigs.Select(c => c.Type).ToList();
-            var allTypes = System.Enum.GetValues(typeof(ResourceTypes)).Cast<ResourceTypes>();
-
-            var availableType = allTypes.FirstOrDefault(t => existingTypes.Contains(t) == false);
-            
-            if (availableType != default(ResourceTypes))
-                FallingResourceConfigs.Add(new FallingResourceConfig { Type = availableType });
+            ValidateObstacleUniquenessAndCategoryMatch();
+            ValidateResourceUniquenessAndCategoryMatch();
         }
 
-        [Button] private void SetSpeedObstacleObjects(int speed)
+        private void ValidateResourceUniquenessAndCategoryMatch()
         {
-            foreach (var item in FallObstacleConfigs)
-                item.Speed = speed;
-        }
-        
-        [Button] private void SetSpeedResourceObjects(int speed)
-        {
-            foreach (var item in FallingResourceConfigs)
-                item.Speed = speed;
-        }
-
-        [Button] private void SetRandomStaminaDrainForCollisionAboutObstacle()
-        {
-            foreach (var fallObstacleConfig in FallObstacleConfigs)
+            foreach (var entry in Resources)
             {
-                fallObstacleConfig.StaminaDrainRateForColision = UnityEngine.Random.Range(1, 4);
+                var category = entry.Key;
+                var resources = entry.Value;
+                
+                if (resources.GroupBy(x => x.Type).Any(g => g.Count() > 1))
+                    Debug.LogError($"[FallObjectsDatabase] Обнаружены дубликаты в категории {category}.", this);
+                
+                foreach (var resource in resources)
+                    if (resource.CategoryType != category)
+                        Debug.LogError($"[FallObjectsDatabase] Ресурс {resource.name} не соответствует категории {category}.", this);
             }
         }
-        
-        [Button] private void SetRandomSpeedFall()
-        {
-            foreach (var fallObstacleConfig in FallObstacleConfigs)
-                fallObstacleConfig.Speed = UnityEngine.Random.Range(7,12);
 
-            foreach (var fallingResourceConfig in FallingResourceConfigs)
-                fallingResourceConfig.Speed = UnityEngine.Random.Range(5, 9);
+        private void ValidateObstacleUniquenessAndCategoryMatch()
+        {
+            foreach (var entry in Obstacles)
+            {
+                var category = entry.Key;
+                var obstacles = entry.Value;
+
+                if (obstacles.GroupBy(x => x.Type).Any(g => g.Count() > 1))
+                    Debug.LogError($"[FallObjectsDatabase] Обнаружены дубликаты в категории {category}.", this);
+                
+                foreach (var item in obstacles)
+                    if (item.CategoryType != category)
+                        Debug.LogError($"[FallObjectsDatabase] Ресурс {item.name} не соответствует категории {category}.", this);
+            }
         }
     }
 }

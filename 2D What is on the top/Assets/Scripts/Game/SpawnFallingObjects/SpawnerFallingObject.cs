@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Game.SpawnFallingObjects;
 using Obstacles;
-using Scriptable.Datas.ConfigsLevel;
 using UnityEngine;
 using Zenject;
 
@@ -17,7 +16,7 @@ public class SpawnerFallingObject : MonoBehaviour
     private LevelConfig _levelConfig;
     private IPlayer _player;
     private DynamicSpawnRateController _spawnRateController;
-    private ResourceSpawnBalancer _balancer;
+    private ResourceBalancer _balancer;
     
     private float _spawnTimeObstacle;
     
@@ -41,8 +40,8 @@ public class SpawnerFallingObject : MonoBehaviour
         _spawnResources = StartCoroutine(SpawnResources());
         _offset.y = 2f * _camera.orthographicSize;
         
-        _spawnRateController = new DynamicSpawnRateController(_levelConfig.MaxHeightLevel); // , _levelConfig.StartTimeSpawmObstacle, _levelConfig.MinTimeSpawObstacle);
-        _balancer = new ResourceSpawnBalancer();
+        _spawnRateController = new DynamicSpawnRateController(_levelConfig.MaxHeightLevel);
+        _balancer = new ResourceBalancer(_levelConfig);
     }
 
     private void OnEnable() =>
@@ -66,10 +65,10 @@ public class SpawnerFallingObject : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(_spawnTimeObstacle);
-            var spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
-            var getObstacleType = (FallingObstaclesType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(FallingObstaclesType)).Length);
             
-            fallObstacleFactory.Get(getObstacleType, spawnPoint);
+            var randomNumberSpawmAmounObstaclest = UnityEngine.Random.Range(1, 3);
+            SpawnObstacle(randomNumberSpawmAmounObstaclest);
+            
             UpdateSpawnTimeObstacles();
         }
     }
@@ -83,12 +82,22 @@ public class SpawnerFallingObject : MonoBehaviour
             var spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
             var categoryType = _balancer.GetRandomResourceType();
             
-            fallObstacleFactory.Get(categoryType, spawnPoint);
+            fallObstacleFactory.Get(_levelConfig.ResourcesByCategory[categoryType], spawnPoint);
 
             UpdateSpawnTimeResources();
         }
     }
-    
+
+    private void SpawnObstacle(int amount)
+    {
+        for (int i = 0; i <= amount; i++)
+        {
+            var spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
+            var getObstacleType = (ObstacleType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(ObstacleType)).Length);
+            fallObstacleFactory.Get(getObstacleType, spawnPoint);
+        }
+    }
+
     private void UpdateSpawnTimeResources() =>
         _spawnTimeResource = _spawnRateController.CalculateAdjustedSpawnTime(_player.Transform.position.y, _levelConfig.StartTimeSpawnResource, _levelConfig.MinTimeSpawnResource);
     
@@ -117,14 +126,3 @@ public class SpawnerFallingObject : MonoBehaviour
         }
     }
 }
-
-
-/// <summary>
-///
-/// Что у меня есть:
-/// 
-/// Как я хочу чтобы было:
-/// 
-/// Что я могу сделать :
-/// 
-/// </summary>

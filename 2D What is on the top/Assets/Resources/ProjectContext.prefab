@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterData: {fileID: 11400000, guid: bc3e01d872f35c045acb186e34a6f12a, type: 2}
+  _objectsDatabase: {fileID: 11400000, guid: 98a14818984102941aa22be38abec93c, type: 2}
 --- !u!114 &-3727844505535398464
 MonoBehaviour:
   m_ObjectHideFlags: 0

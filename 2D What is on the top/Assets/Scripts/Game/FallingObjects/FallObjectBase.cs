@@ -8,7 +8,7 @@
     {
         public abstract class FallObjectBase : MonoBehaviour
         {
-            private const float _lifeDelay = 3f;
+            private const float _lifeDelay = 8f;
             private const float _minRotationSpeed = 15f;
             private const float _maxRotationSpeed = 70f;
             

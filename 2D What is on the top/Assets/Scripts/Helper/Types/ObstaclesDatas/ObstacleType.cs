@@ -1,20 +1,7 @@
 namespace Obstacles
 {
-    public enum FallingObstaclesType
+    public enum ObstacleType
     {
-        // StalactiteLong,
-        // StalactiteShort,
-        // Pickaxe,
-        // Bone,
-        // Brick,
-        // Shield,
-        // Cup,
-        // PumpkinSmall,
-        // PumpkinBig,
-        // BossHelmet,
-        // Skull
-        
-        // level 1
         brownStone,
         brownStone1,
         brownStone2,

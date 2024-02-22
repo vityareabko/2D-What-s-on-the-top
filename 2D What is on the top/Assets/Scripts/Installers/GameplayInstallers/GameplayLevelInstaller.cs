@@ -1,5 +1,4 @@
 using Score;
-using Scriptable.Datas.ConfigsLevel;
 using UnityEngine;
 using Zenject;
 
