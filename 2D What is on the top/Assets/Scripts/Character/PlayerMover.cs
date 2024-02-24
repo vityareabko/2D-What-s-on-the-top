@@ -18,7 +18,7 @@ public class PlayerMover
     private PlayerAnimationController _animator;
     private Stamina _stamina;
 
-    private bool _isFacingRight = true;
+    private int _jumpDirection;
     private bool _isDefeat = false;
 
     private bool _isSlowdown = false;
@@ -64,43 +64,27 @@ public class PlayerMover
         CheckStaminaDepletion();
         CheckOnPlatformOnPlatform();
     }
+
+
     
     public void Jump(bool isRightWall)
     {
         // if (_isPlatform == false) // TODO: - это можно убрать чтобы сделать как фичу - что можно прыгать как хочешь
         //     return;
         
-        if (_isFacingRight == isRightWall)
-            return;
+        int jumpDirection = isRightWall ? 1 : -1;
         
-        _animator.JumpAnimation();
-    
-        // Увеличиваем силу прыжка на основе горизонтальной скорости
-        // float extraJumpForce = Mathf.Clamp(Mathf.Abs(_rb.velocity.x), 0, _characterData.JumpForce);
-        // float jumpForce = _characterData.JumpForce + extraJumpForce;
+        if (_jumpDirection == null | _jumpDirection != jumpDirection)
+            _animator.JumpAnimation();
+        
 
-        _isFacingRight = !_isFacingRight;
-        float jumpDirection = _isFacingRight ? 1 : -1;
-
-        // Применяем горизонтальный и вертикальный импульс
         _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, Mathf.Max(_rb.velocity.y, _characterData.JumpForce));
         _stamina.DrainRateStaminaJump();
-    
-        FlipCharacter();
+
+        _jumpDirection = jumpDirection;
         
-        // if (_isFacingRight == isRightWall)
-        //     return;
-        //
-        // if (_isPlatform)
-        //     _animator.JumpAnimation();
-        //
-        // _isFacingRight = !_isFacingRight;
-        // float jumpDirection = _isFacingRight ? 1 : -1;
-        //
-        // _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, _rb.velocity.y);
-        // _stamina.DrainRateStaminaJump();
-        //
-        // FlipCharacter();
+        FlipCharacter(jumpDirection);
+        
     }
     
     public void SlowDownFlag(bool isSlowDown) => _isSlowdown = isSlowDown;
@@ -158,15 +142,17 @@ public class PlayerMover
         _animator.IsPlatform(_isPlatform);
     }
 
-    private void FlipCharacter()
+    private void FlipCharacter(float jumpDirection)
     {
+
         var scale = _playerTransform.localScale;
-        scale.x *= -1;
+        scale.x = Mathf.Abs(scale.x) * jumpDirection;
         _playerTransform.localScale = scale;
         
-        var transformRotation = _playerTransform.rotation;
-        transformRotation.z *= -1;
-        _playerTransform.rotation = transformRotation;
+        _playerTransform.rotation = Quaternion.Euler(  // # todo - можно оставить потому что прикольно что персонаж иногода перемещается задом наперед но нужно что-то придумать с анимацией вогда персонаж пригает вперед 
+            _playerTransform.rotation.eulerAngles.x, 
+            _playerTransform.rotation.eulerAngles.y, 
+            80f * jumpDirection);
     }
     
     private bool ShouldMoveUpward() => _isPlatform && _isSlowdown == false && _isRoll == false;

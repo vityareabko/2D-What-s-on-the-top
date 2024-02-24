@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Scriptable.Datas.FallResources;
 using UnityEngine;
 
@@ -10,19 +8,13 @@ namespace Obstacles
     [CreateAssetMenu(fileName = "FallObstacleFactory", menuName = "Factory/FallObjectBase")]
     public class FallObstacleFactory : ScriptableObject
     {
-        [SerializeField] private FallObjectsDatabase _objectsDatabase;
-        
-        public FallObstacle Get(ObstacleType type, Transform parent)
+
+        public FallObstacle Get(List<FallObstacleConfig> availableObstaclesForSpawn, Transform parent)
         {
-            var getRandomObstacleCategory = (ObstacleCategory)UnityEngine.Random.Range(0, Enum.GetValues(typeof(ObstacleCategory)).Length);
-            
-            var getListByCategoriesTypes = _objectsDatabase.Obstacles[getRandomObstacleCategory];
-            
-            var config = getListByCategoriesTypes.First(t => t.Type == type);
-            
+            var config = GetRandomAvailableObstacle(availableObstaclesForSpawn);
             var instance = Instantiate(config.Prefab, parent);
             instance.Initialize(config.Speed, config.StaminaDrainRateForColision);
-            
+
             return instance;
         }
         
@@ -39,6 +31,12 @@ namespace Obstacles
         {
             var index = UnityEngine.Random.Range(0, availableResourcesForSpawn.Count);
             return availableResourcesForSpawn[index];
+        }
+
+        private FallObstacleConfig GetRandomAvailableObstacle(List<FallObstacleConfig> availableObstaclesForSpawn)
+        {
+            var index = UnityEngine.Random.Range(0, availableObstaclesForSpawn.Count);
+            return availableObstaclesForSpawn[index];
         }
     }
 }

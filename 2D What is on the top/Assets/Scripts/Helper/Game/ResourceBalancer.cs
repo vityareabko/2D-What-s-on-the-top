@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using Extensions;
-using ModestTree;
-using Obstacles;
+
 
 namespace Game.SpawnFallingObjects
 {
@@ -15,10 +13,15 @@ namespace Game.SpawnFallingObjects
         private const int _rare = 20;
         private const int _epic = 10;
         private const int _legendary = 5;
-
-        private List<ResourceCategory> _resources = new();
         
         private  LevelConfig _levelConfig;
+        
+        private List<ResourceCategory> _resources = new();
+        
+        private List<ObstacleCategory> _obstacleCategories = new()
+        {
+            ObstacleCategory.BrownStone,
+        };
         
         private Dictionary<ResourceCategory, int> _weights = new()
         {
@@ -29,11 +32,25 @@ namespace Game.SpawnFallingObjects
             { ResourceCategory.Coin , _coins},
         };
 
+
         public ResourceBalancer(LevelConfig levelConfig)
         {
             _levelConfig = levelConfig;
             RemoveEmptyResourceCategoriesFromWeights();
+            RemoveEmmptyObstacleCategories();
             InitializeResourcePool();
+        }
+
+        public ResourceCategory GetRandomAvailableResourceCategory() // стоит заменить random на более крутой рандом
+        {
+            var index = UnityEngine.Random.Range(0, _resources.Count);
+            return _resources[index];
+        }
+
+        public ObstacleCategory GetRandomAvailableCategortType()
+        {
+            var index = UnityEngine.Random.Range(0, _obstacleCategories.Count);
+            return _obstacleCategories[index];
         }
 
         private void RemoveEmptyResourceCategoriesFromWeights()
@@ -49,12 +66,19 @@ namespace Game.SpawnFallingObjects
             }        
         }
 
-        public ResourceCategory GetRandomResourceType() // стоит заменить random на более крутой рандом
+        private void RemoveEmmptyObstacleCategories()
         {
-            var index = UnityEngine.Random.Range(0, _resources.Count);
-            return _resources[index];
-        }
+            var availableCatecoriesObstacles = _levelConfig.ObstaclesByCategory;
         
+            foreach (var key in availableCatecoriesObstacles)
+            {
+                if (key.Value.Count > 0)
+                    continue;
+        
+                _obstacleCategories.Remove(key.Key);
+            }
+        }
+
         private void InitializeResourcePool()
         {
             foreach (var item in _weights)

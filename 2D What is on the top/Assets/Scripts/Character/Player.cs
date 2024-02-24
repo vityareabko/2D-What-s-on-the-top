@@ -70,6 +70,7 @@ public class Player : MonoBehaviour, IPlayer
         _isBlockSpwipe = true;
         _isBlockMovement = true;
         _isStopPlayer = true;
+        // GetComponent<Animator>().SetTrigger("PlayerWin");
         EventAggregator.Post(this, new PlayerWinEventHandler());
     }
     
@@ -139,18 +140,7 @@ public class Player : MonoBehaviour, IPlayer
         if (collider.CompareTag(ConstTags.WinColider))
             PlayerWin();
     }
-
-    // private void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     if (collision.collider.CompareTag(ConstTags.FallingObstacle))
-    //     {
-    //         _stamina.DrainRateStaminaForObstaclesCollision();
-    //         EventAggregator.Post(this, new PopupTextDrainStaminEvent()
-    //         {
-    //             DrainAmount = Mathf.FloorToInt(_characterData.StaminaData.StaminaDrainObstacleCollision)
-    //         });
-    //     }
-    // }
+    
 
     #region Gizmoz
         private void OnDrawGizmos() => Gizmos.DrawWireSphere(_transformPlatformDetection.position, 0.2f);

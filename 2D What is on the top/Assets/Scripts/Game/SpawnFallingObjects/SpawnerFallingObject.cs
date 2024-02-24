@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game.SpawnFallingObjects;
@@ -30,17 +29,15 @@ public class SpawnerFallingObject : MonoBehaviour
     {
         _levelConfig = levelConfig;
         _player = player;
-        _spawnTimeObstacle = levelConfig.StartTimeSpawmObstacle;
-        _spawnTimeResource = levelConfig.StartTimeSpawnResource;
+        _spawnTimeObstacle = levelConfig.LevelDatas.StartTimeSpawmObstacle;
+        _spawnTimeResource = levelConfig.LevelDatas.StartTimeSpawnResource;
     }
 
     private void Awake()
     {
-        _spawnObstacles = StartCoroutine(SpawnObstacles());
-        _spawnResources = StartCoroutine(SpawnResources());
         _offset.y = 2f * _camera.orthographicSize;
         
-        _spawnRateController = new DynamicSpawnRateController(_levelConfig.MaxHeightLevel);
+        _spawnRateController = new DynamicSpawnRateController(_levelConfig.LevelDatas.MaxHeightLevel);
         _balancer = new ResourceBalancer(_levelConfig);
     }
 
@@ -66,7 +63,7 @@ public class SpawnerFallingObject : MonoBehaviour
         {
             yield return new WaitForSeconds(_spawnTimeObstacle);
             
-            var randomNumberSpawmAmounObstaclest = UnityEngine.Random.Range(1, 3);
+            var randomNumberSpawmAmounObstaclest = UnityEngine.Random.Range(0, 2);
             SpawnObstacle(randomNumberSpawmAmounObstaclest);
             
             UpdateSpawnTimeObstacles();
@@ -80,7 +77,7 @@ public class SpawnerFallingObject : MonoBehaviour
             yield return new WaitForSeconds(_spawnTimeResource);
 
             var spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
-            var categoryType = _balancer.GetRandomResourceType();
+            var categoryType = _balancer.GetRandomAvailableResourceCategory();
             
             fallObstacleFactory.Get(_levelConfig.ResourcesByCategory[categoryType], spawnPoint);
 
@@ -93,16 +90,23 @@ public class SpawnerFallingObject : MonoBehaviour
         for (int i = 0; i <= amount; i++)
         {
             var spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count - 1)];
-            var getObstacleType = (ObstacleType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(ObstacleType)).Length);
-            fallObstacleFactory.Get(getObstacleType, spawnPoint);
+
+            var randomAvailableCategory = _balancer.GetRandomAvailableCategortType();
+            fallObstacleFactory.Get(_levelConfig.ObstaclesByCategory[randomAvailableCategory], spawnPoint);
         }
     }
 
     private void UpdateSpawnTimeResources() =>
-        _spawnTimeResource = _spawnRateController.CalculateAdjustedSpawnTime(_player.Transform.position.y, _levelConfig.StartTimeSpawnResource, _levelConfig.MinTimeSpawnResource);
+        _spawnTimeResource = _spawnRateController.CalculateAdjustedSpawnTime(
+            _player.Transform.position.y,
+            _levelConfig.LevelDatas.StartTimeSpawnResource,
+            _levelConfig.LevelDatas.MinTimeSpawnResource);
     
     private void UpdateSpawnTimeObstacles() =>
-        _spawnTimeObstacle = _spawnRateController.CalculateAdjustedSpawnTime(_player.Transform.position.y, _levelConfig.StartTimeSpawmObstacle, _levelConfig.MinTimeSpawObstacle);
+        _spawnTimeObstacle = _spawnRateController.CalculateAdjustedSpawnTime(
+            _player.Transform.position.y,
+            _levelConfig.LevelDatas.StartTimeSpawmObstacle,
+            _levelConfig.LevelDatas.MinTimeSpawObstacle);
     
     
     private void OnRunOutStamina(object sender, PlayeRanOutOfStaminaEventHandler eventData)
@@ -113,13 +117,19 @@ public class SpawnerFallingObject : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D colider)
     {
+        if (colider.CompareTag(ConstTags.StartSpawnObjects))
+        {
+            _spawnObstacles = StartCoroutine(SpawnObstacles());
+            _spawnResources = StartCoroutine(SpawnResources());
+        }
+
         if (colider.CompareTag(ConstTags.WinColider))
         {
             StopCoroutine(_spawnObstacles);
             StopCoroutine(_spawnResources);
         }
 
-        if (colider.CompareTag(ConstTags.StopSpawnObstaclesColider))
+        if (colider.CompareTag(ConstTags.StopSpawnColider))
         {
             StopCoroutine(_spawnObstacles);
             StopCoroutine(_spawnResources);

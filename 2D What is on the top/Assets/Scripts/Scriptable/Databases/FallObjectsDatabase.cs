@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scriptable.Datas.FallResources;
@@ -9,18 +10,22 @@ namespace Obstacles
     [CreateAssetMenu(fileName = "FallObjectsDatabase", menuName = "Databases/FallObstaclesDatabase")]
     public class FallObjectsDatabase: SerializedScriptableObject
     {
-        [TabGroup("Resources")] 
         public Dictionary<ResourceCategory, List<FallingResourceConfig>> Resources;
-
-        [TabGroup("Obstacles")] 
-        public Dictionary<ObstacleCategory, List<FallObstacleConfig>> Obstacles; 
+        public Dictionary<ObstacleCategory, List<FallObstacleConfig>> Obstacles;
 
         private void OnValidate()
         {
             ValidateObstacleUniquenessAndCategoryMatch();
             ValidateResourceUniquenessAndCategoryMatch();
         }
-
+        
+        [Button("Initialize Dictionaries")]
+        private void InitializeDictionaries()
+        {
+            InitializeResourcesCategories();
+            InitializeObstacleCategories();
+        }
+        
         private void ValidateResourceUniquenessAndCategoryMatch()
         {
             foreach (var entry in Resources)
@@ -50,6 +55,33 @@ namespace Obstacles
                 foreach (var item in obstacles)
                     if (item.CategoryType != category)
                         Debug.LogError($"[FallObjectsDatabase] Ресурс {item.name} не соответствует категории {category}.", this);
+            }
+        }
+        
+        
+        private void InitializeObstacleCategories()
+        {
+            if (Obstacles == null)
+            {
+                Obstacles = new Dictionary<ObstacleCategory, List<FallObstacleConfig>>();
+            
+                foreach (ObstacleCategory category in System.Enum.GetValues(typeof(ObstacleCategory)))
+                {
+                    Obstacles[category] = new List<FallObstacleConfig>();
+                }
+            }
+        
+        }
+        private void InitializeResourcesCategories()
+        {
+            if (Resources == null)
+            {
+                Resources = new Dictionary<ResourceCategory, List<FallingResourceConfig>>();
+            
+                foreach (ResourceCategory category in System.Enum.GetValues(typeof(ResourceCategory)))
+                {
+                    Resources[category] = new List<FallingResourceConfig>();
+                }
             }
         }
     }

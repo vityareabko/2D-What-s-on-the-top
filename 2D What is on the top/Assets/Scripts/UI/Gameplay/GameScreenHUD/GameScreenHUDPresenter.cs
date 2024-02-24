@@ -22,7 +22,7 @@ namespace UI
         
         private bool _isInit = false;
 
-        [Inject] public GameScreenHUDPresenter(
+        public GameScreenHUDPresenter(
             IGameScreenModel model, 
             IGameSreenView view, 
             CharacterData characterData)

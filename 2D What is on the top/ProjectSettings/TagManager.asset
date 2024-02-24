@@ -7,9 +7,9 @@ TagManager:
   - platform
   - enemys
   - WinColider
-  - StopSpawnObstaclesColider
   - Obstacle
-  - FallingObstacle
+  - StartSpawnObjects
+  - StopSpawnObjects
   layers:
   - Default
   - TransparentFX
