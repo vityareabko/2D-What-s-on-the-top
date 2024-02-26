@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Game.Gameplay;
 using ResourcesCollector;
+using Systems.SceneSystem;
 using UI.GameScreenLevelWinn;
 using UI.GameScreenPause;
 using UI.MVP;
@@ -20,11 +20,10 @@ namespace UI
         private IGameScreenLevelWinPresenter _gameScreenLevelWinPresenter;
 
         private IResourceCollector _resourceCollector;
-
-        private SceneLoadMediator _sceneLoader;
+        private ISceneSystem _sceneSystem;
         
         [Inject] private void Construct(
-            SceneLoadMediator levelLoader,
+            ISceneSystem sceneSystem,
             IResourceCollector resourceCollector,
             
             IGameScreenPresenter gameScreenPresenter,
@@ -39,8 +38,7 @@ namespace UI
             _gameScreenLevelWinPresenter = gameScreenLevelWinPresenter;
             
             _resourceCollector = resourceCollector;
-
-            _sceneLoader = levelLoader;
+            _sceneSystem = sceneSystem;
         }
 
         private void Awake()
@@ -102,13 +100,18 @@ namespace UI
 
         private void OnPlayerLose(object sender, PlayerLoseEventHandler eventHandler) => HideOtherViewsAndShow(_gameScreenDefeatPresenter);
         
-        private void OnPlayerWin(object sender, PlayerWinEventHandler eventHandler) => HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
+        private void OnPlayerWin(object sender, PlayerWinEventHandler eventHandler)
+        {
+            // # todo - Должен пофиксить чтобы когда игрок выбрал и он падал вниз то не реагировал на перепятствия потому что сеейчас игрок выйграл ему показывают выйграшное окно и когда он падает и задевает препятсвия то ему показывет окно проиграша
+            HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
+        }
 
         private void OnRestartGame()
         {
             HideOtherViewsAndShow(_gameScreenHUDPresenter);
             OnResumeGame();
-            _sceneLoader.RestatcCurrentLevel();
+            _sceneSystem.ReloadScene();
+            // _sceneLoader.RestatcCurrentLevel();
         }
 
         private void OnResumeGame()
@@ -125,7 +128,10 @@ namespace UI
 
         private void OnX2RewardButtonClicked() => Debug.Log("X2 Reward Button Clicked");
         
-        private void OnHomeButtonClicked() => _sceneLoader.GoToMainMenu();
+        private void OnHomeButtonClicked()
+        {
+            // _sceneLoader.GoToMainMenu();
+        }
 
         private void OnResourcesContainerChanged(Dictionary<ResourceTypes, int> data)
         {

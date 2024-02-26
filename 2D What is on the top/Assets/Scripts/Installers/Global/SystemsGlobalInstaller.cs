@@ -1,4 +1,4 @@
-using Systems.ResourcesLoaderSystem;
+using Systems.SceneSystem;
 using Zenject;
 
 namespace Installers
@@ -7,9 +7,8 @@ namespace Installers
     {
         public override void InstallBindings()
         {
-            BindResourceLoader();
+            BindSceneSystem();
         }
-
-        private void BindResourceLoader() => Container.BindInterfacesAndSelfTo<ResourceLoaderSystem>().AsSingle();
+        private void BindSceneSystem() => Container.Bind<ISceneSystem>().To<SceneSystem>().AsSingle();
     }
 }

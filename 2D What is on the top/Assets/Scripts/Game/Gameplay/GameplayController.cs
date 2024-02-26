@@ -1,19 +1,10 @@
-using Systems.ResourcesLoaderSystem;
 using UnityEngine;
-using Zenject;
 
 namespace Game.Gameplay
 {
     public class GameplayController : MonoBehaviour
     {
         [SerializeField] private Transform _parentToSpawnMap;
-        
-        [Inject] private void Constrct(IResourceLoaderSystem resourceLoaderSystem, LevelConfig levelConfig)
-        {
-            Debug.Log(resourceLoaderSystem == null);
-            var tileMap = resourceLoaderSystem.Load<GameObject>(levelConfig.PathToResourcesByLevelType);
-            Instantiate(tileMap, _parentToSpawnMap);
-        }
 
         private void OnEnable()
         {
@@ -36,7 +27,9 @@ namespace Game.Gameplay
         public void OnResumeGame(object sender, ResumeGameEventHandler eventData)
         {
             Time.timeScale = 1;
-            EventAggregator.Post(this, new GameIsOnPausedEvent(){ IsOnPause = false});
+            EventAggregator.Post(this, new GameIsOnPausedEvent() { IsOnPause = false });
         }
+        
+        
     }
 }

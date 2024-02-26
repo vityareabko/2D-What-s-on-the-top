@@ -11,6 +11,8 @@ public class Player : MonoBehaviour, IPlayer
     [SerializeField] private Transform _transformPlatformDetection;
     
     public Transform Transform { get; private set; }
+    
+    public bool IsOnPlatform { get; private set; } // это нужно для камеры
 
     private SwipeListener _swipeListener;  
     private PlayerMover _playerMover;
@@ -53,6 +55,8 @@ public class Player : MonoBehaviour, IPlayer
         
         ResetSlowDownToTouch();
         _playerMover.ProcessCheckingToPlayerAction();
+
+        IsOnPlatform = _playerMover.CheckOnPlatformOnPlatform();
     }
 
     private void FixedUpdate()
@@ -137,8 +141,8 @@ public class Player : MonoBehaviour, IPlayer
         if (collider.CompareTag(ConstTags.Obstacle))
             PlayerLose();
         
-        if (collider.CompareTag(ConstTags.WinColider))
-            PlayerWin();
+        // if (collider.CompareTag(ConstTags.WinColider))
+        //     PlayerWin();
     }
     
 

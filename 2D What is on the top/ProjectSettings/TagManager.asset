@@ -10,6 +10,7 @@ TagManager:
   - Obstacle
   - StartSpawnObjects
   - StopSpawnObjects
+  - FallingObstacle
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - PlatformMainMenu
   - 
   - 
   - 
@@ -64,4 +65,7 @@ TagManager:
     locked: 0
   - name: spikes
     uniqueID: 1054644047
+    locked: 0
+  - name: Hidden
+    uniqueID: 702779305
     locked: 0

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8755909921306163236}
   - component: {fileID: -7335457219476481600}
   - component: {fileID: -3727844505535398464}
-  - component: {fileID: 6473747565890462469}
   - component: {fileID: -8354010810993887186}
   m_Layer: 0
   m_Name: ProjectContext
@@ -34,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8755909921306163236
 MonoBehaviour:
@@ -52,7 +51,6 @@ MonoBehaviour:
   _monoInstallers:
   - {fileID: -7335457219476481600}
   - {fileID: -3727844505535398464}
-  - {fileID: 6473747565890462469}
   - {fileID: -8354010810993887186}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 1
@@ -92,18 +90,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4007abd484b94f0988364dc357254f1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6473747565890462469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7353148328526225635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed41c1d33ee47d386eb2c88d3d80807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &-8354010810993887186

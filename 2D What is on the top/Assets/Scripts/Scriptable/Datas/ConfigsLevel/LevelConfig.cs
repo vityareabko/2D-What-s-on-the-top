@@ -1,26 +1,21 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Obstacles;
 using Scriptable.Datas.FallResources;
 using Sirenix.OdinInspector;
-using Systems.ResourcesLoaderSystem;
 using UnityEngine;
-using UnityEngine.Serialization;
-
 
 [CreateAssetMenu (fileName = "ConfigLevel", menuName = "Config/LevelConfig")]
 public class LevelConfig : SerializedScriptableObject
 {
-    [field: SerializeField,  OnValueChanged("DeterminePathToResourcesByLevelType")] public LevelType Type { get; private set; }
-    [SerializeField, ReadOnly] private ResourceID _pathToResourcesByLevelType;
+    [field: SerializeField] public LevelType Type { get; private set; }
         
     [FoldoutGroup("LevelDatas")] [field: SerializeField] public LevelConfigDatas LevelDatas;
     
+    
+    // # todo - эти два списка я пока удалять не буду может как нибуть сделаю что-то сними (например поп прохождения отдельного порога игроком к примеру 500м то уже будет добавлены в этот список новый рессурсы)
     [FoldoutGroup("Available To Spawn")] public Dictionary<ResourceCategory, List<FallingResourceConfig>> ResourcesByCategory;
     [FoldoutGroup("Available To Spawn")] public Dictionary<ObstacleCategory, List<FallObstacleConfig>> ObstaclesByCategory;
-
-    public ResourceID PathToResourcesByLevelType { get => _pathToResourcesByLevelType; }
 
     public void OnValidate()
     {
@@ -105,21 +100,6 @@ public class LevelConfig : SerializedScriptableObject
             {
                 ResourcesByCategory[category] = new List<FallingResourceConfig>();
             }
-        }
-    }
-    
-    private void DeterminePathToResourcesByLevelType()
-    {
-        switch (Type)
-        {
-            case LevelType.Level1:
-                _pathToResourcesByLevelType = ResourceID.Level1Prefab;
-                break;
-            case LevelType.TestLevel:
-                _pathToResourcesByLevelType = ResourceID.TestLevelPrefab;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
     }
 }

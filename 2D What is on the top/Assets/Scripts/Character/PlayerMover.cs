@@ -37,7 +37,6 @@ public class PlayerMover
         
         var animator = _behaviour.GetComponent<Animator>();
         _animator = new PlayerAnimationController(animator);
-
     }
     
     public void ProcessMovement(bool isBlockMovemnt)
@@ -65,7 +64,12 @@ public class PlayerMover
         CheckOnPlatformOnPlatform();
     }
 
-
+    public bool CheckOnPlatformOnPlatform()
+    {
+        _isPlatform = Physics2D.OverlapCircle(_transformDetection.position, RadiusDetectionPlatform, _plarformLayer) is not null;
+        _animator.IsPlatform(_isPlatform);
+        return _isPlatform;
+    }
     
     public void Jump(bool isRightWall)
     {
@@ -135,12 +139,6 @@ public class PlayerMover
             _isDefeat = true;
             EventAggregator.Post(this, new PlayeRanOutOfStaminaEventHandler());
         }
-    }
-    
-    private void CheckOnPlatformOnPlatform()
-    {
-        _isPlatform = Physics2D.OverlapCircle(_transformDetection.position, RadiusDetectionPlatform, _plarformLayer) is not null;
-        _animator.IsPlatform(_isPlatform);
     }
 
     private void FlipCharacter(float jumpDirection)

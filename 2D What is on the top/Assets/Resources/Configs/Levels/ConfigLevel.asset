@@ -1,0 +1,394 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67de6446ebc24fc4939b62fa8410de4c, type: 3}
+  m_Name: ConfigLevel
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 4091df9070f6b444ead089ecbcd307c2, type: 2}
+    - {fileID: 11400000, guid: 402170012c1df7c4f80f6a184f6af5e5, type: 2}
+    - {fileID: 11400000, guid: 41f5dd0371a1d234f88d96998ec4dd69, type: 2}
+    - {fileID: 11400000, guid: 743035c3648e89e499d54eb72b889255, type: 2}
+    - {fileID: 11400000, guid: 7b265f5902c8f7d43969d4346112a1d9, type: 2}
+    - {fileID: 11400000, guid: d393d0e30a2a52a408274d374c3eaba0, type: 2}
+    - {fileID: 11400000, guid: bd7de124fc8fb3d4faf6d3330a4ead18, type: 2}
+    - {fileID: 11400000, guid: 6cf1d644cea51544e8f703f5331cef23, type: 2}
+    - {fileID: 11400000, guid: 0d156ca9cd2e08744bd781cb1a8494cb, type: 2}
+    - {fileID: 11400000, guid: 3117b29f34af3ab4caa353ab35c549a0, type: 2}
+    - {fileID: 11400000, guid: 14ebd2cc95fb07f48ac1f8931351d9bc, type: 2}
+    - {fileID: 11400000, guid: b986fb63b0f44fb4fb480713346711f4, type: 2}
+    - {fileID: 11400000, guid: 622cd2ad4e1639344abadbb4d8630e85, type: 2}
+    - {fileID: 11400000, guid: 76cbac52b5ebcaf42939b4fa891d0a93, type: 2}
+    - {fileID: 11400000, guid: 8ffbba29aab204b4a9704a6b2aad6d7c, type: 2}
+    - {fileID: 11400000, guid: 89f91ee2e49405747a55538a5a2314f1, type: 2}
+    - {fileID: 11400000, guid: 4f6511a135724844e9794f7f40d80ad5, type: 2}
+    - {fileID: 11400000, guid: 0eaa6e65278c7264e88193506e0e91f5, type: 2}
+    - {fileID: 11400000, guid: 9b4291493e01cf24788a7c3c0422dc4a, type: 2}
+    - {fileID: 11400000, guid: 3d54ac8e6f3ebc447a7c068b95d76d4b, type: 2}
+    - {fileID: 11400000, guid: b5a5f405362234e4a921843cede14063, type: 2}
+    - {fileID: 11400000, guid: d6b37dcbb4e03ee4c95c10f7441c8327, type: 2}
+    - {fileID: 11400000, guid: 3e2498aff29df2842a9051d1c30b33f6, type: 2}
+    - {fileID: 11400000, guid: be53d699ee9dfff49abf9f37aeff70e6, type: 2}
+    - {fileID: 11400000, guid: 3da613b052187ef479348be55003b741, type: 2}
+    - {fileID: 11400000, guid: c43a63d7c76c17041b42e96077d440ee, type: 2}
+    - {fileID: 11400000, guid: 48b04a7c800799e4b9098878c4769b98, type: 2}
+    - {fileID: 11400000, guid: 6249cad3cf172c744ac107468ed6c061, type: 2}
+    - {fileID: 11400000, guid: 5ea8bdcae34d49a41ad13de6f83777ac, type: 2}
+    - {fileID: 11400000, guid: 75313cd00570fde48b4161d6af7280ac, type: 2}
+    - {fileID: 11400000, guid: 0d88337cc23cc1b48929af766aba3249, type: 2}
+    - {fileID: 11400000, guid: d76dfedcc118e8a4cad0c95ecd080279, type: 2}
+    - {fileID: 11400000, guid: e28231d2cde0b7d4e88f9ceacec91a14, type: 2}
+    - {fileID: 11400000, guid: d755bb4911eb8b6469ca41633721d2a1, type: 2}
+    - {fileID: 11400000, guid: 9a27f37291d6e23428768143fd9ed540, type: 2}
+    - {fileID: 11400000, guid: 867509a7e0e5b06438336fb1cc963ea4, type: 2}
+    - {fileID: 11400000, guid: 3716c34657ffd7f47b493b702ea6863a, type: 2}
+    - {fileID: 11400000, guid: 57ff6e013747be64c98cbcc110a1a2e2, type: 2}
+    - {fileID: 11400000, guid: a4b705e7de3c9a04c92465a17984c042, type: 2}
+    - {fileID: 11400000, guid: 17ba844526f976442b244db382a4c256, type: 2}
+    - {fileID: 11400000, guid: e4a773d9da551bd408a9e0f022543ab0, type: 2}
+    - {fileID: 11400000, guid: adeff68aa0779f446830d554a6c9ea40, type: 2}
+    - {fileID: 11400000, guid: b603932ca3940134b8752abe6fda1a35, type: 2}
+    - {fileID: 11400000, guid: ad3ac0b94125a1e4daf81e83801cae3b, type: 2}
+    - {fileID: 11400000, guid: d98b2c2edf2b1f44d860ce466995b2d6, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: ResourcesByCategory
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[ResourceCategory, Assembly-CSharp],[System.Collections.Generic.List`1[[Scriptable.Datas.FallResources.FallingResourceConfig,
+        Assembly-CSharp]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[ResourceCategory,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[Scriptable.Datas.FallResources.FallingResourceConfig,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[Scriptable.Datas.FallResources.FallingResourceConfig,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 10
+      Data: 7
+    - Name: 
+      Entry: 10
+      Data: 8
+    - Name: 
+      Entry: 10
+      Data: 9
+    - Name: 
+      Entry: 10
+      Data: 10
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: 4|System.Collections.Generic.List`1[[Scriptable.Datas.FallResources.FallingResourceConfig,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 6
+    - Name: 
+      Entry: 10
+      Data: 11
+    - Name: 
+      Entry: 10
+      Data: 12
+    - Name: 
+      Entry: 10
+      Data: 13
+    - Name: 
+      Entry: 10
+      Data: 14
+    - Name: 
+      Entry: 10
+      Data: 15
+    - Name: 
+      Entry: 10
+      Data: 16
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[Scriptable.Datas.FallResources.FallingResourceConfig,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 10
+      Data: 17
+    - Name: 
+      Entry: 10
+      Data: 18
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[Scriptable.Datas.FallResources.FallingResourceConfig,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 19
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ObstaclesByCategory
+      Entry: 7
+      Data: 7|System.Collections.Generic.Dictionary`2[[ObstacleCategory, Assembly-CSharp],[System.Collections.Generic.List`1[[Obstacles.FallObstacleConfig,
+        Assembly-CSharp]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 8|System.Collections.Generic.EnumEqualityComparer`1[[ObstacleCategory,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 9|System.Collections.Generic.List`1[[Obstacles.FallObstacleConfig, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 25
+    - Name: 
+      Entry: 10
+      Data: 20
+    - Name: 
+      Entry: 10
+      Data: 21
+    - Name: 
+      Entry: 10
+      Data: 22
+    - Name: 
+      Entry: 10
+      Data: 23
+    - Name: 
+      Entry: 10
+      Data: 24
+    - Name: 
+      Entry: 10
+      Data: 25
+    - Name: 
+      Entry: 10
+      Data: 26
+    - Name: 
+      Entry: 10
+      Data: 27
+    - Name: 
+      Entry: 10
+      Data: 28
+    - Name: 
+      Entry: 10
+      Data: 29
+    - Name: 
+      Entry: 10
+      Data: 30
+    - Name: 
+      Entry: 10
+      Data: 31
+    - Name: 
+      Entry: 10
+      Data: 32
+    - Name: 
+      Entry: 10
+      Data: 33
+    - Name: 
+      Entry: 10
+      Data: 34
+    - Name: 
+      Entry: 10
+      Data: 35
+    - Name: 
+      Entry: 10
+      Data: 36
+    - Name: 
+      Entry: 10
+      Data: 37
+    - Name: 
+      Entry: 10
+      Data: 38
+    - Name: 
+      Entry: 10
+      Data: 39
+    - Name: 
+      Entry: 10
+      Data: 40
+    - Name: 
+      Entry: 10
+      Data: 41
+    - Name: 
+      Entry: 10
+      Data: 42
+    - Name: 
+      Entry: 10
+      Data: 43
+    - Name: 
+      Entry: 10
+      Data: 44
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  <Type>k__BackingField: 0
+  LevelDatas:
+    <MaxHeightLevel>k__BackingField: 500
+    <MinTimeSpawObstacle>k__BackingField: 1
+    <StartTimeSpawmObstacle>k__BackingField: 2.5
+    <StartTimeSpawnResource>k__BackingField: 2
+    <MinTimeSpawnResource>k__BackingField: 1
