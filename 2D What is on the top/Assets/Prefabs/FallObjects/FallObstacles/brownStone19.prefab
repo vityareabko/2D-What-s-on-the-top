@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4411420822982904355}
   - component: {fileID: 958493140407007976}
-  - component: {fileID: 4016589208857230742}
   - component: {fileID: -1989157780020376223}
   - component: {fileID: -2316334116798658682}
+  - component: {fileID: -8031389664299215113}
   m_Layer: 0
   m_Name: brownStone19
   m_TagString: FallingObstacle
@@ -87,41 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &4016589208857230742
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113123666075863933}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1.3099998
 --- !u!50 &-1989157780020376223
 Rigidbody2D:
   serializedVersion: 4
@@ -161,3 +126,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c77d24a3674ad29676c6fe60f7d6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!60 &-8031389664299215113
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113123666075863933}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.62, y: 2.43}
+    newSize: {x: 2.62, y: 2.43}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.84, y: -0.905}
+      - {x: 0.91999996, y: -0.72499996}
+      - {x: 0.98999995, y: -0.45499998}
+      - {x: 1.04, y: -0.24499999}
+      - {x: 1.05, y: -0.185}
+      - {x: 1.13, y: -0.024999999}
+      - {x: 1.1999999, y: 0.155}
+      - {x: 1.26, y: 0.325}
+      - {x: 1.29, y: 0.435}
+      - {x: 1.31, y: 0.515}
+      - {x: 1.31, y: 0.805}
+      - {x: 1.26, y: 0.895}
+      - {x: 1.1, y: 1.025}
+      - {x: 0.94, y: 1.115}
+      - {x: 0.84999996, y: 1.155}
+      - {x: 0.71999997, y: 1.1949999}
+      - {x: 0.63, y: 1.2149999}
+      - {x: 0.049999997, y: 1.2149999}
+      - {x: -0.049999997, y: 1.1949999}
+      - {x: -0.35, y: 1.105}
+      - {x: -0.78, y: 0.97499996}
+      - {x: -0.96, y: 0.92499995}
+      - {x: -1.1899999, y: 0.79499996}
+      - {x: -1.28, y: 0.695}
+      - {x: -1.31, y: 0.59499997}
+      - {x: -1.31, y: 0.055}
+      - {x: -1.27, y: -0.195}
+      - {x: -1.24, y: -0.345}
+      - {x: -1.1999999, y: -0.48499998}
+      - {x: -1.17, y: -0.575}
+      - {x: -1.11, y: -0.705}
+      - {x: -1.01, y: -0.805}
+      - {x: -0.9, y: -0.905}
+      - {x: -0.72999996, y: -1.025}
+      - {x: -0.53, y: -1.155}
+      - {x: -0.39999998, y: -1.2149999}
+      - {x: 0.59999996, y: -1.2149999}
+      - {x: 0.66999996, y: -1.185}
+      - {x: 0.77, y: -1.055}
+  m_UseDelaunayMesh: 0

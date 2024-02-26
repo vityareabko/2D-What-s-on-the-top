@@ -7,7 +7,6 @@ namespace UI.GameLevelChooser
 {
     public class GameLevelChoserUIController : MonoBehaviour // # todo - можно его делать и не монобех а обычным и просто забиндит на сцене 
     {
-
         private LevelDatabases _levelDatabases;
         private SceneLoadMediator _sceneLoader;
         
@@ -29,7 +28,6 @@ namespace UI.GameLevelChooser
 
         private void OnLevelIsSelectedNeedToGo(LevelType type)
         {
-            Debug.Log(type);
             if (_levelDatabases.LevelConfigs.ContainsKey(type) == false) 
                 throw new ArgumentException($"level {type} - couldn't founded");
             

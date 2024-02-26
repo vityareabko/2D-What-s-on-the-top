@@ -8,7 +8,7 @@ namespace Game.SpawnFallingObjects
     {
         // # Todo - вынести это в конфиг, потому что у каждого уровня будет свои шансы выпадения рессурсов, особенно в уровнях за донат
 
-        private const int _coins = 130;
+        private const int _coins = 300;
         private const int _common = 30;
         private const int _rare = 20;
         private const int _epic = 10;

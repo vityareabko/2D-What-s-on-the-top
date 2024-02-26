@@ -1,17 +1,21 @@
 using UI.MVP;
-using UnityEngine;
 using Zenject;
 
 namespace UI.GameScreenLevelWinn
 {
     public interface IGameScreenLevelWinPresenter : IPresenter<IGameScrenLevelWinModel, IGameScreenLevelWinView>
     {
+        public event System.Action ClaimButtonClicked; 
+        public event System.Action X2RewardButtonClicked; 
         public void OnClickClaimButton();
         public void OnClickClaimX2AdsButton();
     }
 
     public class GameScreenLevelWinPresenter : IGameScreenLevelWinPresenter
     {
+        public event System.Action ClaimButtonClicked;
+        public event System.Action X2RewardButtonClicked;
+        
         public IGameScrenLevelWinModel Model { get; }
         public IGameScreenLevelWinView View { get; }
 
@@ -39,20 +43,8 @@ namespace UI.GameScreenLevelWinn
             View.InitPresentor(this);
         }
 
-        public void OnClickClaimButton()
-        {
-            // принимаем награду сохраняем и переходим на главный экран
-            Debug.Log("Claim rewards");
-            
-            View.Hide();
-        }
+        public void OnClickClaimButton() => ClaimButtonClicked?.Invoke();
 
-        public void OnClickClaimX2AdsButton()
-        {
-            // попказываем рекламу проверяем если рекламу посмотрели полностью и даем X2 награду, сохраняем, и переходим на главный экран
-            Debug.Log("Claim X2 rewards");
-            
-            View.Hide();
-        }
+        public void OnClickClaimX2AdsButton() => X2RewardButtonClicked?.Invoke();
     }
 }

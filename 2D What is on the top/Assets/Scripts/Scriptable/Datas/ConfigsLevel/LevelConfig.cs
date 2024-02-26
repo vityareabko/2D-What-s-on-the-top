@@ -4,19 +4,23 @@ using System.Linq;
 using Obstacles;
 using Scriptable.Datas.FallResources;
 using Sirenix.OdinInspector;
+using Systems.ResourcesLoaderSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [CreateAssetMenu (fileName = "ConfigLevel", menuName = "Config/LevelConfig")]
 public class LevelConfig : SerializedScriptableObject
 {
-    [field: SerializeField] public LevelType Type { get; private set; }
+    [field: SerializeField,  OnValueChanged("DeterminePathToResourcesByLevelType")] public LevelType Type { get; private set; }
+    [SerializeField, ReadOnly] private ResourceID _pathToResourcesByLevelType;
+        
+    [FoldoutGroup("LevelDatas")] [field: SerializeField] public LevelConfigDatas LevelDatas;
     
-    [field: SerializeField] public LevelConfigDatas LevelDatas;
-    
-    public Dictionary<ResourceCategory, List<FallingResourceConfig>> ResourcesByCategory;
+    [FoldoutGroup("Available To Spawn")] public Dictionary<ResourceCategory, List<FallingResourceConfig>> ResourcesByCategory;
+    [FoldoutGroup("Available To Spawn")] public Dictionary<ObstacleCategory, List<FallObstacleConfig>> ObstaclesByCategory;
 
-    public Dictionary<ObstacleCategory, List<FallObstacleConfig>> ObstaclesByCategory;
+    public ResourceID PathToResourcesByLevelType { get => _pathToResourcesByLevelType; }
 
     public void OnValidate()
     {
@@ -31,7 +35,7 @@ public class LevelConfig : SerializedScriptableObject
         InitializeObstacleCategories();
         InitializeResourcesCategories();
     }
-    
+
     private void ValidateObstacles()
     {
         if (ObstaclesByCategory == null)
@@ -101,6 +105,21 @@ public class LevelConfig : SerializedScriptableObject
             {
                 ResourcesByCategory[category] = new List<FallingResourceConfig>();
             }
+        }
+    }
+    
+    private void DeterminePathToResourcesByLevelType()
+    {
+        switch (Type)
+        {
+            case LevelType.Level1:
+                _pathToResourcesByLevelType = ResourceID.Level1Prefab;
+                break;
+            case LevelType.TestLevel:
+                _pathToResourcesByLevelType = ResourceID.TestLevelPrefab;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 }

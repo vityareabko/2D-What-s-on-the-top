@@ -14,14 +14,17 @@ namespace UI
     {
         private List<IPresenter> _presenters = new();
         
-        private IGameScreenPresenter _gameScreenPresenter;
+        private IGameScreenPresenter _gameScreenHUDPresenter;
         private IGameScreenDefeatPresenter _gameScreenDefeatPresenter;
         private IGameScreenPausePresenter _gameScreenPausePresenter;
         private IGameScreenLevelWinPresenter _gameScreenLevelWinPresenter;
 
         private IResourceCollector _resourceCollector;
+
+        private SceneLoadMediator _sceneLoader;
         
         [Inject] private void Construct(
+            SceneLoadMediator levelLoader,
             IResourceCollector resourceCollector,
             
             IGameScreenPresenter gameScreenPresenter,
@@ -30,18 +33,19 @@ namespace UI
             IGameScreenLevelWinPresenter gameScreenLevelWinPresenter
             )
         { 
-            _gameScreenPresenter = gameScreenPresenter;
+            _gameScreenHUDPresenter = gameScreenPresenter;
             _gameScreenDefeatPresenter = gameScreenDefeatPresenter;
             _gameScreenPausePresenter = gameScreenPausePresenter;
             _gameScreenLevelWinPresenter = gameScreenLevelWinPresenter;
             
-
             _resourceCollector = resourceCollector;
+
+            _sceneLoader = levelLoader;
         }
 
         private void Awake()
         {
-            _presenters.Add(_gameScreenPresenter);
+            _presenters.Add(_gameScreenHUDPresenter);
             _presenters.Add(_gameScreenDefeatPresenter);
             _presenters.Add(_gameScreenPausePresenter);
             _presenters.Add(_gameScreenLevelWinPresenter);
@@ -49,7 +53,15 @@ namespace UI
 
         private void OnEnable()
         {
-            _gameScreenPresenter.OnPauseClicked += OnPauseGame;
+            _gameScreenDefeatPresenter.HomeButtonCliked += OnHomeButtonClicked;
+            _gameScreenDefeatPresenter.OnX2RewardButtonCliked += OnX2RewardButtonClicked;
+            _gameScreenDefeatPresenter.RestartLevelButtonCliked += OnRestartGame;
+
+            _gameScreenLevelWinPresenter.X2RewardButtonClicked += OnX2RewardButtonClicked;
+            _gameScreenLevelWinPresenter.ClaimButtonClicked += OnHomeButtonClicked;
+            
+            _gameScreenHUDPresenter.OnPauseClicked += OnPauseGame;
+            
             _gameScreenPausePresenter.OnResumeGameClicked += OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked += OnRestartGame;
 
@@ -62,12 +74,16 @@ namespace UI
 
         private void OnDisable()
         {
-            _gameScreenPresenter.OnPauseClicked -= OnPauseGame;
+            _gameScreenDefeatPresenter.HomeButtonCliked -= OnHomeButtonClicked;
+            _gameScreenDefeatPresenter.OnX2RewardButtonCliked -= OnX2RewardButtonClicked;
+            _gameScreenDefeatPresenter.RestartLevelButtonCliked -= OnRestartGame;
+            
+            _gameScreenHUDPresenter.OnPauseClicked -= OnPauseGame;
+            
             _gameScreenPausePresenter.OnResumeGameClicked -= OnResumeGame;
             _gameScreenPausePresenter.OnRestartGameClicked -= OnRestartGame;
             
             _resourceCollector.ResourcesContainerChange -= OnResourcesContainerChanged;
-            
             
             EventAggregator.Unsubscribe<PlayerWinEventHandler>(OnPlayerWin);
             EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnPlayerLose);
@@ -84,12 +100,16 @@ namespace UI
             presenter.Show();
         }
 
-        private void OnPlayerLose(object arg1, PlayerLoseEventHandler arg2) =>
-            HideOtherViewsAndShow(_gameScreenDefeatPresenter);
-        private void OnPlayerWin(object sender, PlayerWinEventHandler eventHandler) =>
-            HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
+        private void OnPlayerLose(object sender, PlayerLoseEventHandler eventHandler) => HideOtherViewsAndShow(_gameScreenDefeatPresenter);
         
-        private void OnRestartGame() => Debug.Log("Restart game logic");
+        private void OnPlayerWin(object sender, PlayerWinEventHandler eventHandler) => HideOtherViewsAndShow(_gameScreenLevelWinPresenter);
+
+        private void OnRestartGame()
+        {
+            HideOtherViewsAndShow(_gameScreenHUDPresenter);
+            OnResumeGame();
+            _sceneLoader.RestatcCurrentLevel();
+        }
 
         private void OnResumeGame()
         {
@@ -103,6 +123,10 @@ namespace UI
             _gameScreenPausePresenter.Show();
         }
 
+        private void OnX2RewardButtonClicked() => Debug.Log("X2 Reward Button Clicked");
+        
+        private void OnHomeButtonClicked() => _sceneLoader.GoToMainMenu();
+
         private void OnResourcesContainerChanged(Dictionary<ResourceTypes, int> data)
         {
             foreach (var (key, value) in data)
@@ -110,7 +134,7 @@ namespace UI
                 switch (key)
                 {
                     case ResourceTypes.Coin:
-                        _gameScreenPresenter.SetAmountCoins(value);
+                        _gameScreenHUDPresenter.SetAmountCoins(value);
                         break;
                     case ResourceTypes.AdhesivePlaster:
                         break;

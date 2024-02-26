@@ -1,4 +1,6 @@
+using System;
 using UI.MVP;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -6,6 +8,9 @@ namespace UI
 {
     public interface IGameScreenDefeatPresenter : IPresenter<IGameScreenDefeatView>
     {
+        public event System.Action HomeButtonCliked; 
+        public event System.Action RestartLevelButtonCliked; 
+        public event System.Action OnX2RewardButtonCliked; 
         public void OnHomeButtonClicked();
         public void OnAgainButtonClicked();
         public void OnX2RewardWatchButton();
@@ -13,6 +18,10 @@ namespace UI
 
     public class GameScreenDefeatPresenter : IGameScreenDefeatPresenter
     {
+        public event Action HomeButtonCliked;
+        public event Action RestartLevelButtonCliked;
+        public event Action OnX2RewardButtonCliked;
+        
         public IGameScreenDefeatView View { get; }
 
         public bool _isInit = false;
@@ -35,32 +44,10 @@ namespace UI
         public void Show() => View.Show();
         
         public void Hide() => View.Hide();
+
+        public void OnHomeButtonClicked() => HomeButtonCliked?.Invoke();
+        public void OnAgainButtonClicked() => RestartLevelButtonCliked?.Invoke();
+        public void OnX2RewardWatchButton() => OnX2RewardButtonCliked?.Invoke();
         
-        public void OnHomeButtonClicked()
-        {
-           Debug.Log("home button clicked");
-           
-           // к главному экранну 
-           
-           Hide();
-        }
-
-        public void OnAgainButtonClicked()
-        {
-            Debug.Log("again button clicked");
-            
-            // начать игру заново
-            
-            Hide();
-        }
-
-        public void OnX2RewardWatchButton()
-        {
-            Debug.Log("x2 reward ads button clicked");
-            
-            // посмотреть рекламы и дать выйграш x2
-            
-            Hide();
-        }
     }
 }

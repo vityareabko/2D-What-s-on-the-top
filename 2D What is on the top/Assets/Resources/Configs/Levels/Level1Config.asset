@@ -386,9 +386,10 @@ MonoBehaviour:
       Entry: 8
       Data: 
   <Type>k__BackingField: 0
+  _pathToResourcesByLevelType: 0
   LevelDatas:
     <MaxHeightLevel>k__BackingField: 500
-    <MinTimeSpawObstacle>k__BackingField: 1
+    <MinTimeSpawObstacle>k__BackingField: 0.3
     <StartTimeSpawmObstacle>k__BackingField: 2.5
     <StartTimeSpawnResource>k__BackingField: 2
     <MinTimeSpawnResource>k__BackingField: 1

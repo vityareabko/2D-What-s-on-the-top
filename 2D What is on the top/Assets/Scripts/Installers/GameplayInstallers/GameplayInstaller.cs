@@ -1,4 +1,5 @@
 using Score;
+using Systems.ResourcesLoaderSystem;
 using UnityEngine;
 using Zenject;
 
@@ -26,7 +27,7 @@ namespace Installers.GameplayInstallers
             BindHeightScoreUpdater();
             
         }
-
+        
         private void BindPayerStamin() => Container.Bind<Stamina>().AsSingle();
 
         private void BindIPlayer() => Container.Bind<IPlayer>().To<Player>().FromComponentInNewPrefab(_player).UnderTransform(_spawnPointPlayer).AsSingle();

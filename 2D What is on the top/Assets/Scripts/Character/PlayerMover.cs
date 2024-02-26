@@ -75,7 +75,8 @@ public class PlayerMover
         int jumpDirection = isRightWall ? 1 : -1;
         
         if (_jumpDirection == null | _jumpDirection != jumpDirection)
-            _animator.JumpAnimation();
+            if (_isPlatform) 
+                _animator.JumpAnimation();
         
 
         _rb.velocity = new Vector2(jumpDirection * _characterData.JumpForce, Mathf.Max(_rb.velocity.y, _characterData.JumpForce));
