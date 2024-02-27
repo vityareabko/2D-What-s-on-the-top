@@ -19,7 +19,6 @@ public class PlayerMover
     private Stamina _stamina;
 
     private int _jumpDirection;
-    private bool _isDefeat = false;
 
     private bool _isSlowdown = false;
     private bool _isPlatform = false;
@@ -41,10 +40,11 @@ public class PlayerMover
     
     public void ProcessMovement(bool isBlockMovemnt)
     {
-        if (isBlockMovemnt) return;
-        
-        if (_isDefeat)
+        if (isBlockMovemnt)
+        {
+            _animator.IdleAnimation();
             return;
+        }
         
         if (ShouldMoveUpward())
         {
@@ -134,9 +134,8 @@ public class PlayerMover
     
     private void CheckStaminaDepletion()
     {
-        if (_stamina.isEnough() == false && _isDefeat == false)
+        if (_stamina.isEnough() == false )
         {
-            _isDefeat = true;
             EventAggregator.Post(this, new PlayeRanOutOfStaminaEventHandler());
         }
     }

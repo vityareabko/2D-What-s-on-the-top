@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f4464e53662459d9bd0a13a5d9a8534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hideOnAwake: 0
+  _hideOnAwake: 1
   _heightScoreText: {fileID: 1732215596232606238}
   _pauseButton: {fileID: 1020679183542595631}
   _stamina: {fileID: 8121219736005404692}

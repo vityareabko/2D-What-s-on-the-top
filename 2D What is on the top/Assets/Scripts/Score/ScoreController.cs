@@ -21,16 +21,16 @@ namespace Score
             LoadResourcesData();
             
             EventAggregator.Subscribe<ResourcePickedUpEvent>(OnPickedUpHandler);
-            EventAggregator.Subscribe<PlayerWinEventHandler>(OnLevelWin);
-            EventAggregator.Subscribe<PlayerLoseEventHandler>(OnLevelLose);
+            EventAggregator.Subscribe<SwitchGameStateToLoseGameEvent>(OnLevelLose);
+            // EventAggregator.Subscribe<PlayerLoseEventHandler>(OnLevelLose);
 
         }
 
         public void Dispose()
         {
             EventAggregator.Unsubscribe<ResourcePickedUpEvent>(OnPickedUpHandler);
-            EventAggregator.Unsubscribe<PlayerWinEventHandler>(OnLevelWin);
-            EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnLevelLose);
+            EventAggregator.Unsubscribe<SwitchGameStateToLoseGameEvent>(OnLevelLose);
+            // EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnLevelLose);
         }
         
         private void OnPickedUpHandler(object sender, ResourcePickedUpEvent eventData)
@@ -65,9 +65,7 @@ namespace Score
             });
         }
 
-        private void OnLevelWin(object arg1, PlayerWinEventHandler arg2) => SaveUpdatedResourceData();
-
-        private void OnLevelLose(object arg1, PlayerLoseEventHandler arg2) => SaveUpdatedResourceData();
+        private void OnLevelLose(object sender, SwitchGameStateToLoseGameEvent eventData) => SaveUpdatedResourceData();
         
     }
 }

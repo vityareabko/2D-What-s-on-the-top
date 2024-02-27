@@ -19,14 +19,13 @@ namespace Installers.GameplayInstallers
             BindHeightScoreUpdater();
             
         }
-        
         private void BindPayerStamin() => Container.Bind<Stamina>().AsSingle();
-
         private void BindIPlayer() => Container.Bind<IPlayer>().To<Player>().FromComponentInNewPrefab(_player).UnderTransform(_spawnPointPlayer).AsSingle();
 
+        
         private void BindLevelConfig() => Container.Bind<LevelConfig>().FromInstance(_levelConfig).AsSingle();
         private void BindHeightScoreUpdater() => Container.BindInterfacesAndSelfTo<HeightScoreUpdater>().AsSingle();
-
         private void BindScoreController() => Container.Bind<ScoreController>().AsSingle().NonLazy();
+        
     }
 }

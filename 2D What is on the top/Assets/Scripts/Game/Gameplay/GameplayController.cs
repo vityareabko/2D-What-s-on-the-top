@@ -4,8 +4,6 @@ namespace Game.Gameplay
 {
     public class GameplayController : MonoBehaviour
     {
-        [SerializeField] private Transform _parentToSpawnMap;
-
         private void OnEnable()
         {
             EventAggregator.Subscribe<PauseGameEventHandler>(OnPauseGame);
@@ -29,7 +27,5 @@ namespace Game.Gameplay
             Time.timeScale = 1;
             EventAggregator.Post(this, new GameIsOnPausedEvent() { IsOnPause = false });
         }
-        
-        
     }
 }

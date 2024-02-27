@@ -6,4 +6,5 @@ public static class ConstTags
     public const string WinColider = "WinColider";
     public const string StopSpawnColider = "StopSpawnObjects";
     public const string StartSpawnObjects = "StartSpawnObjects";
+    public const string TransitionToMainMenu = "TransitionToMainMenu";
 }

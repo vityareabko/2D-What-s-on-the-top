@@ -26,15 +26,13 @@ public class FollowCamera : MonoBehaviour
     private void OnEnable()
     {
         EventAggregator.Subscribe<PlayerJumpedToAgainsWallEvent>(OnPlayerJumped);
-        EventAggregator.Subscribe<PlayerWinEventHandler>(OnPlayerWin);
-        EventAggregator.Subscribe<PlayerLoseEventHandler>(OnPlayerLose);
+        // EventAggregator.Subscribe<PlayerLoseEventHandler>(OnPlayerLose);
     }
 
     private void OnDisable()
     {
         EventAggregator.Unsubscribe<PlayerJumpedToAgainsWallEvent>(OnPlayerJumped);
-        EventAggregator.Unsubscribe<PlayerWinEventHandler>(OnPlayerWin);
-        EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnPlayerLose);
+        // EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnPlayerLose);
     }
     
     private void OnPlayerJumped(object sender, PlayerJumpedToAgainsWallEvent eventData) =>
@@ -94,8 +92,7 @@ public class FollowCamera : MonoBehaviour
     
     // private void OnPlayerDefeat() => _isStopFollowing = true;
     // private void OnPlayerWin() => _isStopFollowing = true;
-
-    private void OnPlayerWin(object arg1, PlayerWinEventHandler arg2) => _isStopFollowing = true;
-    private void OnPlayerLose(object arg1, PlayerLoseEventHandler arg2) => _isStopFollowing = true;
+    
+    // private void OnPlayerLose(object arg1, PlayerLoseEventHandler arg2) => _isStopFollowing = true;
 
 }

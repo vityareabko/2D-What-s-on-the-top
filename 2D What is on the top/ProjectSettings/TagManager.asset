@@ -11,6 +11,7 @@ TagManager:
   - StartSpawnObjects
   - StopSpawnObjects
   - FallingObstacle
+  - TransitionToMainMenu
   layers:
   - Default
   - TransparentFX
