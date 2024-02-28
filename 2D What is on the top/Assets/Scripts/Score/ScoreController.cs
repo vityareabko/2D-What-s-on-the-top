@@ -22,7 +22,6 @@ namespace Score
             
             EventAggregator.Subscribe<ResourcePickedUpEvent>(OnPickedUpHandler);
             EventAggregator.Subscribe<SwitchGameStateToLoseGameEvent>(OnLevelLose);
-            // EventAggregator.Subscribe<PlayerLoseEventHandler>(OnLevelLose);
 
         }
 
@@ -30,7 +29,6 @@ namespace Score
         {
             EventAggregator.Unsubscribe<ResourcePickedUpEvent>(OnPickedUpHandler);
             EventAggregator.Unsubscribe<SwitchGameStateToLoseGameEvent>(OnLevelLose);
-            // EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnLevelLose);
         }
         
         private void OnPickedUpHandler(object sender, ResourcePickedUpEvent eventData)

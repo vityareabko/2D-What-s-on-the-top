@@ -7,7 +7,7 @@ namespace Installers.MainMenuInstallers
     public class MainMenuUIInstaller : MonoInstaller
     {
         [SerializeField] private Transform _parent;
-        [SerializeField] private MainMenuView _mainMenuView;
+        [SerializeField] private MainMenuVieww _mainMenu;
         
         public override void InstallBindings()
         {
@@ -17,7 +17,7 @@ namespace Installers.MainMenuInstallers
         private void BindMainMenuMVP()
         {
             Container.Bind<IMainMenuModel>().To<MainMenuModel>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<MainMenuView>().FromComponentInNewPrefab(_mainMenuView).UnderTransform(_parent).AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<MainMenuVieww>().FromComponentInNewPrefab(_mainMenu).UnderTransform(_parent).AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<MainMenuPresenter>().AsSingle().NonLazy();
         }
     }

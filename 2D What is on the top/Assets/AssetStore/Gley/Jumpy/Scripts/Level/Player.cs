@@ -298,7 +298,7 @@ namespace Gley.Jumpy
         internal void Jump(float pressTime, Transform bottomRightPoz, Transform bottomLeftPoz)
         {
             Slide(false);
-            GameManager.Instance.SoundLoader.AddFxSound("Jump");
+            GameManager.Instance.SoundLoader.AddFxSound("ProcessJumpinp");
             jumpRight = !jumpRight;
             float yPoz = transform.position.y + 1 + pressTime * 5;
             if (jumpRight)

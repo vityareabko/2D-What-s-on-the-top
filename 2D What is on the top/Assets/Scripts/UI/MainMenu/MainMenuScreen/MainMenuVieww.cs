@@ -8,7 +8,7 @@ namespace UI.MainMenu
     {
     }
 
-    public class MainMenuView : BaseScreenView, IIMainMenuView
+    public class MainMenuVieww : BaseScreenView, IIMainMenuView
     {
 
         public override ScreenType ScreenType { get; } = ScreenType.MainMenu;

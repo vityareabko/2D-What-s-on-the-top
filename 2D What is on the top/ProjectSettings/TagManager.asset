@@ -12,6 +12,7 @@ TagManager:
   - StopSpawnObjects
   - FallingObstacle
   - TransitionToMainMenu
+  - PlatformMainMenu
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - PlatformMainMenu
+  - 
   - 
   - 
   - 

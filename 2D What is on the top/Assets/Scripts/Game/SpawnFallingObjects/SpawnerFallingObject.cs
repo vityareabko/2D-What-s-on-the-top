@@ -47,10 +47,10 @@ public class SpawnerFallingObject : MonoBehaviour
     }
 
     private void OnEnable() =>
-        EventAggregator.Subscribe<PlayeRanOutOfStaminaEventHandler>(OnRunOutStamina);
+        EventAggregator.Subscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJump);
 
     private void OnDestroy() =>
-        EventAggregator.Unsubscribe<PlayeRanOutOfStaminaEventHandler>(OnRunOutStamina);
+        EventAggregator.Unsubscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJump);
 
     private void LateUpdate() =>
         UpdatePosition();
@@ -112,7 +112,7 @@ public class SpawnerFallingObject : MonoBehaviour
             _levelConfig.LevelDatas.MinTimeSpawObstacle);
     
     
-    private void OnRunOutStamina(object sender, PlayeRanOutOfStaminaEventHandler eventData)
+    private void OnPlayerLoseLastJump(object sender, PlayeLoseLastJumpEvent eventData)
     {
         StopCoroutine(_spawnObstacles);
         StopCoroutine(_spawnResources);

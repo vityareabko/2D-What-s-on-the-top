@@ -14,5 +14,6 @@ namespace Installers
         {
             Container.BindInterfacesAndSelfTo<JsonToFileStorageService>().FromNew().AsSingle();
         }
+        
     }
 }

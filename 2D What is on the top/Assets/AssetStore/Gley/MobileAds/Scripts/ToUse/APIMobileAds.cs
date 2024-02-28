@@ -121,7 +121,7 @@ namespace Gley.MobileAds
         /// <summary>
         /// Display a rewarded interstitial ad if available.
         /// </summary>
-        /// <param name="completeMethod">Callback called when rewarded interstitial is closed. Use it to reward the user after ad view.</param>
+        /// <param name="completeMethod">Callback called when rewarded interstitial is closed. Use it to reward the user after ad view1.</param>
         public static void ShowRewardedInterstitial(UnityAction<bool> completeMethod)
         {
             MobileAdsManager.Instance.ShowRewardedInterstitial(completeMethod);

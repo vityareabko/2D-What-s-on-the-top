@@ -1,18 +1,20 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using GameSM;
 using ResourcesCollector;
-using Systems.SceneSystem;
 using UI.GameScreenLevelWinn;
 using UI.GameScreenPause;
 using UI.MVP;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace UI
 {
     public class GameplayUIController : MonoBehaviour
     {
+        private const float ShowDefeatScreenDelay = 1.5f;
+        
         private List<IPresenter> _presenters = new();
         
         private IGameScreenPresenter _gameScreenHUDPresenter;
@@ -21,10 +23,8 @@ namespace UI
         private IGameScreenLevelWinPresenter _gameScreenLevelWinPresenter;
 
         private IResourceCollector _resourceCollector;
-        private ISceneSystem _sceneSystem;
-        
+                
         [Inject] private void Construct(
-            // ISceneSystem sceneSystem,
             IResourceCollector resourceCollector,
             
             IGameScreenPresenter gameScreenPresenter,
@@ -39,7 +39,6 @@ namespace UI
             _gameScreenLevelWinPresenter = gameScreenLevelWinPresenter;
             
             _resourceCollector = resourceCollector;
-            // _sceneSystem = sceneSystem;
         }
 
         private void Awake()
@@ -54,20 +53,15 @@ namespace UI
         {
             _gameScreenDefeatPresenter.HomeButtonCliked += OnClaimRewardAndGoToMainMenuButtonClicked;
             _gameScreenDefeatPresenter.OnX2RewardButtonCliked += OnX2RewardButtonClicked;
-            _gameScreenDefeatPresenter.RestartLevelButtonCliked += OnRestartGame;
 
             _gameScreenLevelWinPresenter.X2RewardButtonClicked += OnX2RewardButtonClicked;
             _gameScreenLevelWinPresenter.ClaimButtonClicked += OnClaimRewardAndGoToMainMenuButtonClicked;
             
             _gameScreenHUDPresenter.OnPauseClicked += OnPauseGame;
             
-            _gameScreenPausePresenter.OnResumeGameClicked += OnResumeGame;
-            _gameScreenPausePresenter.OnRestartGameClicked += OnRestartGame;
-
+            _gameScreenPausePresenter.OnResumeGameButtonIsClicked += OnResumeGameButtonIs;
+            _gameScreenPausePresenter.OnMainMenuButtonIsClicked += OnMainMenuButtonClicked;
             _resourceCollector.ResourcesContainerChange += OnResourcesContainerChanged;
-            
-            
-            // EventAggregator.Subscribe<PlayerLoseEventHandler>(OnPlayerLose);
             
 
             EventAggregator.Subscribe<SwitchGameStateToPlayGameEvent>(OnSwitchGameStateToPlay);
@@ -78,22 +72,20 @@ namespace UI
         {
             _gameScreenDefeatPresenter.HomeButtonCliked -= OnClaimRewardAndGoToMainMenuButtonClicked;
             _gameScreenDefeatPresenter.OnX2RewardButtonCliked -= OnX2RewardButtonClicked;
-            _gameScreenDefeatPresenter.RestartLevelButtonCliked -= OnRestartGame;
             
             _gameScreenHUDPresenter.OnPauseClicked -= OnPauseGame;
             
-            _gameScreenPausePresenter.OnResumeGameClicked -= OnResumeGame;
-            _gameScreenPausePresenter.OnRestartGameClicked -= OnRestartGame;
+            _gameScreenPausePresenter.OnResumeGameButtonIsClicked -= OnResumeGameButtonIs;
+            _gameScreenPausePresenter.OnMainMenuButtonIsClicked -= OnMainMenuButtonClicked;
             
             _resourceCollector.ResourcesContainerChange -= OnResourcesContainerChanged;
             
-            // EventAggregator.Unsubscribe<PlayerLoseEventHandler>(OnPlayerLose);
 
             EventAggregator.Unsubscribe<SwitchGameStateToPlayGameEvent>(OnSwitchGameStateToPlay);
             EventAggregator.Unsubscribe<SwitchGameStateToLoseGameEvent>(OnSwitchGameStateToLoseGame);
         }
 
-        public void HideOtherViewsAndShow(IPresenter presenter)
+        private void HideOtherViewsAndShow(IPresenter presenter)
         {
             foreach (var presntr in _presenters)
             {
@@ -104,30 +96,26 @@ namespace UI
             presenter.Show();
         }
         
-        private void OnSwitchGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent evenData) =>
-            HideOtherViewsAndShow(_gameScreenHUDPresenter);
-        
-
-        private void OnSwitchGameStateToLoseGame(object sender, SwitchGameStateToLoseGameEvent evenData) =>
-            HideOtherViewsAndShow(_gameScreenDefeatPresenter); 
-        
-        
-        // private void OnPlayerLose(object sender, PlayerLoseEventHandler eventHandler)
-        // {
-        //     HideOtherViewsAndShow(_gameScreenDefeatPresenter);
-        //     EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
-        // }
-
-        private void OnRestartGame()
+        private void HideAllViewsInList()
         {
+            foreach (var presenter in _presenters)
+                presenter.Hide();
+        }
+        
+        private void OnSwitchGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent evenData)
+        {
+            _gameScreenHUDPresenter.Init();
             HideOtherViewsAndShow(_gameScreenHUDPresenter);
-            OnResumeGame();
-            
-            // _sceneSystem.ReloadSceneByStateGame(GameStateType.GamePlay);
-            // _sceneLoader.RestatcCurrentLevel();
         }
 
-        private void OnResumeGame()
+
+        private void OnSwitchGameStateToLoseGame(object sender, SwitchGameStateToLoseGameEvent evenData)
+        {
+            EventAggregator.Post(this, new SwitchCameraStateOnPlayerLoseIsNotOnPlatform());
+            StartCoroutine(DefeatCoroutineDelay());
+        }
+
+        private void OnResumeGameButtonIs()
         {
             EventAggregator.Post(_gameScreenPausePresenter, new ResumeGameEventHandler());
             _gameScreenPausePresenter.Hide();
@@ -139,18 +127,35 @@ namespace UI
             _gameScreenPausePresenter.Show();
         }
 
+        private void OnMainMenuButtonClicked()
+        {
+            OnResumeGameButtonIs();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         private void OnX2RewardButtonClicked()
         {
+            
+            // проверка просмотра рекламы ...
+            // если игрок посмотрел дать x2 награду и снять с паузы
+            // если человек не досмотрел до конца вывести окно что он не досмотрел рекламу и просто зачислить обычнуб x1 награду и снять с паузы 
+            
             Debug.Log("X2 Reward Button Clicked");
-            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
+            
+            EventAggregator.Post(this, new ClaimRewardEvent());
+            
+            HideAllViewsInList();
         }
 
         private void OnClaimRewardAndGoToMainMenuButtonClicked()
         {
             Debug.Log("Claim Reward");
-            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
-        }
+            
+            EventAggregator.Post(this, new ClaimRewardEvent());
 
+            HideAllViewsInList();
+        }
+        
         private void OnResourcesContainerChanged(Dictionary<ResourceTypes, int> data)
         {
             foreach (var (key, value) in data)
@@ -202,6 +207,13 @@ namespace UI
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+        
+        
+        private IEnumerator DefeatCoroutineDelay()
+        {
+            yield return new WaitForSeconds(ShowDefeatScreenDelay);
+            HideOtherViewsAndShow(_gameScreenDefeatPresenter);
         }
     }
 }

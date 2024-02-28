@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace GameSM
 {
@@ -39,8 +40,7 @@ namespace GameSM
 
         
         private void SwitchState(GameStateType state)
-        {
-
+        { 
             switch (state)
             {
                 case GameStateType.GameMenu:

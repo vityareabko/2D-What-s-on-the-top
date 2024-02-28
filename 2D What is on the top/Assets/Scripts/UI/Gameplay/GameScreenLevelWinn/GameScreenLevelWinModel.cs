@@ -12,6 +12,6 @@ namespace UI.GameScreenLevelWinn
         // седсь скорее всего будем хранить List<RewardItem> который нужно создаьб
         // метод добовления в List 
         // метод удаления из List
-        // и еще Action<RewardItem> чтобы передать View item для добовления в панель с наградами
+        // и еще Action<RewardItem> чтобы передать View1 item для добовления в панель с наградами
     }
 }

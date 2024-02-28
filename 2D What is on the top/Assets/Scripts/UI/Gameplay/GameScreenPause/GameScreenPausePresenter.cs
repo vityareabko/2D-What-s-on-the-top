@@ -6,17 +6,17 @@ namespace UI.GameScreenPause
 {
     public interface IGameScreenPausePresenter : IPresenter<IGameScreenPauseVIew>
     {
-        public event Action OnRestartGameClicked;
-        public event Action OnResumeGameClicked; 
-        public void OnRestartGameButtonClicked();
+        public event Action OnMainMenuButtonIsClicked;
+        public event Action OnResumeGameButtonIsClicked; 
+        public void OnMainMenuButtonClicked();
         public void OnResumeGameButtondClicked();
         
     }
 
     public class GameScreenPausePresenter : IGameScreenPausePresenter
     {
-        public event Action OnRestartGameClicked;
-        public event Action OnResumeGameClicked;
+        public event Action OnMainMenuButtonIsClicked;
+        public event Action OnResumeGameButtonIsClicked;
         
         public IGameScreenPauseVIew View { get; }
         
@@ -44,17 +44,17 @@ namespace UI.GameScreenPause
         }
 
 
-        public void OnRestartGameButtonClicked()
+        public void OnMainMenuButtonClicked()
         {
             // снять паузу и продолжыть игру
-            OnRestartGameClicked?.Invoke();
+            OnMainMenuButtonIsClicked?.Invoke();
             View.Hide();
         }
 
         public void OnResumeGameButtondClicked()
         {
             // начать игру заново
-            OnResumeGameClicked?.Invoke();
+            OnResumeGameButtonIsClicked?.Invoke();
             View.Hide(); 
         }
     }

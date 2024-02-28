@@ -27,11 +27,15 @@ namespace UI.MainMenu
             EventAggregator.Unsubscribe<SwitchGameStateToMainMenuGameEvent>(OnSwitchToGameStateMainMenu);
         }
 
-        private void OnSwitchToGameStateMainMenu(object sender, SwitchGameStateToMainMenuGameEvent eventData) =>
+        private void OnSwitchToGameStateMainMenu(object sender, SwitchGameStateToMainMenuGameEvent eventData)
+        {
+            EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
             _mainMenuPresenter.Show();
-        
+        }
+
         private void OnSwitchToGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent eventData) 
         {
+            EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
             _mainMenuPresenter.Hide();
         }
         

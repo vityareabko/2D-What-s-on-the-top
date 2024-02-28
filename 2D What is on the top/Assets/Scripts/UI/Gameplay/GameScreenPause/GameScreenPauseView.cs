@@ -14,7 +14,7 @@ namespace UI.GameScreenPause
     {
         public override ScreenType ScreenType { get; } = ScreenType.GameScreenPause;
         
-        [SerializeField] private Button _restatrButton;
+        [SerializeField] private Button _mainMenuButton;
         [SerializeField] private Button _resumeButton;
 
         public IGameScreenPausePresenter Presentor { get; private set; }
@@ -23,20 +23,20 @@ namespace UI.GameScreenPause
         
         private void OnEnable()
         {
-            _restatrButton.onClick.AddListener(OnRestartGameButton);
-            _resumeButton.onClick.AddListener(OnResumeGameButtond);
+            _mainMenuButton.onClick.AddListener(OnMainMenuButton);
+            _resumeButton.onClick.AddListener(OnResumeGameButton);
         }
 
         private void OnDisable()
         {
-            _restatrButton.onClick.RemoveListener(OnRestartGameButton);
-            _resumeButton.onClick.RemoveListener(OnResumeGameButtond);
+            _mainMenuButton.onClick.RemoveListener(OnMainMenuButton);
+            _resumeButton.onClick.RemoveListener(OnResumeGameButton);
         }
 
-        private void OnResumeGameButtond() => Presentor.OnResumeGameButtondClicked();
+        private void OnResumeGameButton() => Presentor.OnResumeGameButtondClicked();
         
 
-        private void OnRestartGameButton() => Presentor.OnRestartGameButtonClicked();
+        private void OnMainMenuButton() => Presentor.OnMainMenuButtonClicked();
         
 
     }

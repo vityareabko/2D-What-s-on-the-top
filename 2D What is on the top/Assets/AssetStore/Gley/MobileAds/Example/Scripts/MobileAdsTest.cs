@@ -228,7 +228,7 @@ namespace Gley.MobileAds.Internal
 
 
         /// <summary>
-        /// View debug messages
+        /// View1 debug messages
         /// </summary>
         public void ShowLogsWindow()
         {

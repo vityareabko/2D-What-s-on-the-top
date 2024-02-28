@@ -1,65 +1,71 @@
 using System;
-
+using System.Collections;
 using GameSM;
 using GG.Infrastructure.Utils.Swipe;
-using Triggers;
 using UnityEngine;
 using Zenject;
 
 public class Player : MonoBehaviour, IPlayer
 {
-    [SerializeField] private Transform _transformPlatformDetection;
+    [field: SerializeField] public Transform TransformPlatformDetection { get; private set; }
     
     public Transform Transform { get; private set; }
-    public bool IsOnPlatform { get; private set; } // это для камеры
-    
+
     private SwipeListener _swipeListener;  
-    private CharacterData _characterData;
-    private PlayerMover _playerMover;
-    private Stamina _stamina;
+    private IPlayerMover _playerMover;
+    // private CharacterData _characterData;
+    // private Stamina _stamina;
     
 
     private IGameCurrentState _gameCurrentState;
     
     private bool _isBlockSpwipe = false;
     private bool _isBlockMovement = false;
+    private bool _isLoseCoroutine;
     
-    [Inject] private void Construct(Stamina stamina, CharacterData characterData, SwipeListener swipeListener, IGameCurrentState gameCurrentState)
+    // private bool _staminaIsInit;
+    
+    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover)//(Stamina stamina, CharacterData characterData, SwipeListener swipeListener, IGameCurrentState gameCurrentState)
     {
-        _characterData = characterData;
+        // _characterData = characterData;
+        // _stamina = stamina;
+        _playerMover = playerMover;
         _swipeListener = swipeListener;
-        _stamina = stamina;
         _gameCurrentState = gameCurrentState;
         Transform = transform;
     }
-    
-    private void Awake() => _playerMover = new PlayerMover(_stamina, _characterData, this, _transformPlatformDetection);
+
+    // private void Awake() => _playerMover = new PlayerMover(this, _transformPlatformDetection); //(_stamina, _characterData, this, _transformPlatformDetection);
     
     private void OnEnable()
     {
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
-        EventAggregator.Subscribe<PlayeRanOutOfStaminaEventHandler>(OnRanOutOfStamin);
+
+        EventAggregator.Subscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Subscribe<GameIsOnPausedEvent>(OnPausedGame);
+        EventAggregator.Subscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
     
     private void OnDisable()
     {
         _swipeListener.OnSwipe.RemoveListener(OnSwipeHandler);
-        EventAggregator.Unsubscribe<PlayeRanOutOfStaminaEventHandler>(OnRanOutOfStamin);
+        
+        EventAggregator.Unsubscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Unsubscribe<GameIsOnPausedEvent>(OnPausedGame);
+        EventAggregator.Unsubscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
     
     private void Update()
     {
-        if (_lastJump != null)
-            _lastJump.Tick();
+        // if (_lastJump != null)
+        //     _lastJump.Tick();
         
         ObserveGameState();
         
         ResetSlowDownToTouch();
         _playerMover.ProcessCheckingToPlayerAction();
     
-        IsOnPlatform = _playerMover.CheckOnPlatformOnPlatform();
+        // IsOnPlatform = _playerMover.CheckOnPlatformOnPlatform();
     }
     
     private void FixedUpdate() => _playerMover.ProcessMovement(_isBlockMovement);
@@ -77,6 +83,7 @@ public class Player : MonoBehaviour, IPlayer
                 break;
             case GameStateType.GamePlay:
                 // unblock all game
+                // InitializeStamina();
                 BlockSwipe(false);  
                 BlockMovement(false);
                 break;
@@ -95,7 +102,6 @@ public class Player : MonoBehaviour, IPlayer
         }
     }
     
-  
     private void BlockSwipe(bool isBlock) => _isBlockSpwipe = isBlock;
     
     private void BlockMovement(bool isBlock) => _isBlockMovement = isBlock;
@@ -103,29 +109,49 @@ public class Player : MonoBehaviour, IPlayer
     private void PlayerLose()
     {
         EventAggregator.Post(this, new SwitchGameStateToLoseGameEvent());
-        
-        // EventAggregator.Post(this, new SwitchGameStateEvent(){ CurrentGameState = GameStateType.LoseGame });
-        // EventAggregator.Post(this, new PlayerLoseEventHandler()); - // НУЖНО ПРОВЕРИТЬ ПОТОМ - ПОТОМУ ЧТО НА ЭТОМ ЕВЕНТЕ МНОГОЕ ВЕСИТ
+        _isLoseCoroutine = true;
+        StartCoroutine(PlayerFallCoroutine());
     }
     
     private void ResetSlowDownToTouch()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            _playerMover.SlowDownFlag(false); 
+            _playerMover.ProcessSlowDown(false); 
     }
-
-   
     
-    private LastJumpToCenter _lastJump; // # todo - нужно будет что-то придумать по лучше а то это сдесь как-то не очень (но это не кретично можно оставить на последок)
-    // # todo - мне не нравится сдесь то что мне нужно переключать Player.enable = true / false - из-за этого может поломатся что-то например как ссейчас камера
-    private void LastJump()
+    
+    private IEnumerator PlayerFallCoroutine()
     {
-        _lastJump = new LastJumpToCenter(this, 4f, 1f);
-        _lastJump.StartLastJump();
-    } 
+        var rigidbody = GetComponent<Rigidbody2D>();
+        rigidbody.velocity = new Vector2(0, -5f); 
+        
+        EventAggregator.Post(this, new PlayerLoseHideAllObstaclesEvent());
+        
+        while (_isLoseCoroutine)
+        {
+            if (transform.position.y <= 10)
+            {
+                var newPos = transform.position;
+                newPos.y = 50f;
+                transform.position = newPos;
+                rigidbody.velocity = new Vector2(0, -5f); 
+            }
+            else
+            {
+                if (rigidbody.velocity.y < -10f) 
+                    rigidbody.velocity = new Vector2(0, -10f);
+                else
+                    rigidbody.velocity += new Vector2(0, Time.deltaTime * -9.8f);
+            }
+            
+            yield return null;
+        }
 
-    
-    
+        rigidbody.velocity = new Vector2(0, -5f); ; 
+        var newPosition = transform.position;
+        newPosition.y = 10f;
+        transform.position = newPosition;
+    }
     
     private void OnPausedGame(object sender, GameIsOnPausedEvent eventData) => BlockSwipe(eventData.IsOnPause);
     
@@ -136,45 +162,51 @@ public class Player : MonoBehaviour, IPlayer
     
         if (swipe == DirectionId.ID_LEFT)
         {
-            _playerMover.Jump(false);
-            EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent(){IsRightWall = false});
+            _playerMover.ProcessJumpinp(false);
+            // EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent(){IsRightWall = false});
         }
 
         if (swipe == DirectionId.ID_RIGHT)
         {
-            _playerMover.Jump(true);
-            EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent() { IsRightWall = true });
+            _playerMover.ProcessJumpinp(true);
+            // EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent() { IsRightWall = true });
         }
 
         if (swipe == DirectionId.ID_DOWN)
         {
-            _playerMover.SlowDownFlag(true);
+            _playerMover.ProcessSlowDown(true);
         }
     
         if (swipe == DirectionId.ID_UP)
         {
-            _playerMover.PerformRoll();
+            _playerMover.ProcessUpwardRoll();
         }
     }
     
-    private void OnRanOutOfStamin(object sender, PlayeRanOutOfStaminaEventHandler eventHandler) =>
-        PlayerLose();
+    private void OnPlayerLoseLastJumping(object sender, PlayeLoseLastJumpEvent evenDatat) => PlayerLose();
+    
+    private void OnStopCoroiteneLoseFall(object sender, ClaimRewardEvent eventData) => _isLoseCoroutine = false;
     
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag(ConstTags.Obstacle))
         {
-            LastJump();
-            PlayerLose();
+            _playerMover.LastLosseJump();
         }
-
+        
         if (collider.CompareTag(ConstTags.TransitionToMainMenu)) 
             BlockMovement(true);
     }
-    
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag(ConstTags.PlatformMainMenu))
+            EventAggregator.Post(this, new SwitchGameStateToMainMenuGameEvent());
+    }
+
+
     #region Gizmoz
-        private void OnDrawGizmos() => Gizmos.DrawWireSphere(_transformPlatformDetection.position, 0.2f);
+        private void OnDrawGizmos() => Gizmos.DrawWireSphere(TransformPlatformDetection.position, 0.2f);
         
     #endregion
 }

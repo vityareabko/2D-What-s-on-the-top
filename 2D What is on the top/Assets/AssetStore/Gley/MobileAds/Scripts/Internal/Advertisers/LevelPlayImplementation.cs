@@ -404,7 +404,7 @@ namespace Gley.MobileAds.Internal
         #endregion
 
 
-        //Invoked when the RewardedVideo ad view has opened.
+        //Invoked when the RewardedVideo ad view1 has opened.
         //Your Activity will lose focus. Please avoid performing heavy 
         //tasks till the video ad will be closed.
         void RewardedVideoAdOpenedEvent(IronSourceAdInfo adInfo)
@@ -413,7 +413,7 @@ namespace Gley.MobileAds.Internal
         }
 
 
-        //Invoked when the RewardedVideo ad view is about to be closed.
+        //Invoked when the RewardedVideo ad view1 is about to be closed.
         //Your activity will now regain its focus.
         void RewardedVideoAdClosedEvent(IronSourceAdInfo adInfo)
         {

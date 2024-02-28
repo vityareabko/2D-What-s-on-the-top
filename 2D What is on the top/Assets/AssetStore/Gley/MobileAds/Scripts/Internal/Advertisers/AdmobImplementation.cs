@@ -300,7 +300,7 @@ namespace Gley.MobileAds.Internal
             }
 
             AdPosition adPosition = AdPosition.Top;
-            // create an instance of a banner view first.
+            // create an instance of a banner view1 first.
             switch (position)
             {
                 case BannerPosition.Bottom:
@@ -387,7 +387,7 @@ namespace Gley.MobileAds.Internal
         }
 
         /// <summary>
-        /// Admob specific event triggered after banner was loaded into the banner view.
+        /// Admob specific event triggered after banner was loaded into the banner view1.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -420,7 +420,7 @@ namespace Gley.MobileAds.Internal
         /// <param name="adValue"></param>
         private void BannerAdPaied(AdValue adValue)
         {
-            GleyLogger.AddLog($"Banner view paid {adValue.Value} {adValue.CurrencyCode}.");
+            GleyLogger.AddLog($"Banner view1 paid {adValue.Value} {adValue.CurrencyCode}.");
         }
 
 
@@ -429,7 +429,7 @@ namespace Gley.MobileAds.Internal
         /// </summary>
         private void BannerImpressionRecorded()
         {
-            GleyLogger.AddLog("Banner view recorded an impression.");
+            GleyLogger.AddLog("Banner view1 recorded an impression.");
         }
 
 
@@ -438,7 +438,7 @@ namespace Gley.MobileAds.Internal
         /// </summary>
         private void BannerClicked()
         {
-            GleyLogger.AddLog("Banner view was clicked.");
+            GleyLogger.AddLog("Banner view1 was clicked.");
             events.TriggerBannerClicked();
         }
 
@@ -448,7 +448,7 @@ namespace Gley.MobileAds.Internal
         /// </summary>
         private void BannerFullScreenOpened()
         {
-            GleyLogger.AddLog("Banner view full screen content opened.");
+            GleyLogger.AddLog("Banner view1 full screen content opened.");
         }
 
 
@@ -457,7 +457,7 @@ namespace Gley.MobileAds.Internal
         /// </summary>
         private void BannerFullScreenClose()
         {
-            GleyLogger.AddLog("Banner view full screen content closed.");
+            GleyLogger.AddLog("Banner view1 full screen content closed.");
         }
         #endregion
 

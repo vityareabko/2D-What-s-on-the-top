@@ -4,7 +4,7 @@ using UI.MVP;
 
 namespace UI.MainMenu
 {
-    public interface IMainMenuPresenter : IPresenter < IMainMenuModel, MainMenuView>
+    public interface IMainMenuPresenter : IPresenter < IMainMenuModel, MainMenuVieww>
     {
         public event System.Action ClickedPlayButton;
         public void OnClickedPlayButton();
@@ -14,11 +14,11 @@ namespace UI.MainMenu
     {
         public event Action ClickedPlayButton;
         public IMainMenuModel Model { get; }
-        public MainMenuView View { get; }
+        public MainMenuVieww View { get; }
 
         private bool _isInit = false; 
         
-        public MainMenuPresenter(IMainMenuModel model, MainMenuView view)
+        public MainMenuPresenter(IMainMenuModel model, MainMenuVieww view)
         {
             Model = model;
             View = view;

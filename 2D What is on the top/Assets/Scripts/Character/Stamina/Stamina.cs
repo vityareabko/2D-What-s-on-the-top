@@ -10,14 +10,19 @@ public class Stamina : IDisposable
     public Stamina(CharacterData characterData, GameScreenHUDPresenter gameScreenHUDPresenter)
     {
         _staminaData = characterData.StaminaData;
-        _currentStamin = _staminaData.MaxStamina;
         _gameScreenHUDPresenter = gameScreenHUDPresenter;
+        Initialize();
         
-        EventAggregator.Subscribe<PopupTextDrainStaminEvent>(OnColisionObstacle);
+        EventAggregator.Subscribe<PopupTextDrainStaminEvent>(OnColisionObstacle); 
     }
     
     public void Dispose() => EventAggregator.Unsubscribe<PopupTextDrainStaminEvent>(OnColisionObstacle);
-    
+
+    public void Initialize()
+    {
+        _currentStamin = _staminaData.MaxStamina;
+        DrainRateStamina(0f);
+    }
 
     public void DrainRateStaminaRun(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateRunning * deltaTime);
     public void DrainRateStaminaWalking(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateWalking * deltaTime);

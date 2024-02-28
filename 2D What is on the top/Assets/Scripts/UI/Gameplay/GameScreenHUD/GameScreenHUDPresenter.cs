@@ -43,6 +43,7 @@ namespace UI
 
             View.Initialize(_characterData.StaminaData);
             View.InitPresentor(this);
+
             
             Model.HightScoreChange += OnHightScoreChange;
             Model.StaminaChange += OnStaminaChange;

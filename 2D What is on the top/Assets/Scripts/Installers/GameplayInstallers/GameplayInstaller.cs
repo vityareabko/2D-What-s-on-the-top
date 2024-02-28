@@ -14,18 +14,27 @@ namespace Installers.GameplayInstallers
         {
             BindIPlayer();
             BindPayerStamin();
+            BindPlayerMover();
             BindLevelConfig();
+            BindCameraStateMachine();
             BindScoreController();
             BindHeightScoreUpdater();
             
         }
         private void BindPayerStamin() => Container.Bind<Stamina>().AsSingle();
-        private void BindIPlayer() => Container.Bind<IPlayer>().To<Player>().FromComponentInNewPrefab(_player).UnderTransform(_spawnPointPlayer).AsSingle();
-
+        private void BindIPlayer() => Container.BindInterfacesAndSelfTo<Player>().FromComponentInNewPrefab(_player).UnderTransform(_spawnPointPlayer).AsSingle();
         
         private void BindLevelConfig() => Container.Bind<LevelConfig>().FromInstance(_levelConfig).AsSingle();
         private void BindHeightScoreUpdater() => Container.BindInterfacesAndSelfTo<HeightScoreUpdater>().AsSingle();
         private void BindScoreController() => Container.Bind<ScoreController>().AsSingle().NonLazy();
+
+        private void BindPlayerMover() => Container.Bind<IPlayerMover>().To<PlayerMover>().AsSingle();
         
+        private void BindCameraStateMachine()
+        {
+            var cameraSM = new CameraStateMaschine(CameraState.PlayerOnMainMenuPlatform);
+
+            Container.Bind<ICameraStateMachine>().To<CameraStateMaschine>().FromInstance(cameraSM).AsSingle();
+        }
     }
 }

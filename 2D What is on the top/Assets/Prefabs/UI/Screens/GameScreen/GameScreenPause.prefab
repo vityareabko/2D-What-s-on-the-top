@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 11422064}
   - component: {fileID: 5436492419654267452}
   m_Layer: 5
-  m_Name: RestartButton
+  m_Name: MainMenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hideOnAwake: 1
-  _restatrButton: {fileID: 5436492419654267452}
+  _mainMenuButton: {fileID: 5436492419654267452}
   _resumeButton: {fileID: 7990860950131696703}
 --- !u!1 &1501082714786654
 GameObject:
@@ -496,7 +496,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: RESTART
+  m_Text: Main Menu
 --- !u!1 &1639876361983314
 GameObject:
   m_ObjectHideFlags: 0

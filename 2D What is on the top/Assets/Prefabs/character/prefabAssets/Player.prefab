@@ -544,7 +544,7 @@ Transform:
   - {fileID: 307186869626414449}
   - {fileID: 5820456176566570827}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &68969731930717648
 Animator:
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7149c21b1d44188987646c302348ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transformPlatformDetection: {fileID: 6143012972614822310}
+  <TransformPlatformDetection>k__BackingField: {fileID: 6143012972614822310}
 --- !u!1 &930500058796666160
 GameObject:
   m_ObjectHideFlags: 0
