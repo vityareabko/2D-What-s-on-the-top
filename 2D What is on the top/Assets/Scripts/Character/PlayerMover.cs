@@ -12,6 +12,7 @@ public interface IPlayerMover
     public void ProcessUpwardRoll();
     public void ProcessJumpinp(bool isRightWall);
     public void LastLosseJump();
+    public IEnumerator PlayerFallCoroutine();
 }
 
 public class PlayerMover : IPlayerMover, IDisposable
@@ -30,7 +31,11 @@ public class PlayerMover : IPlayerMover, IDisposable
     private Stamina _stamina;
 
     private int _jumpDirection;
+    
+    private bool _isLoseCoroutinePlayerEnternalFalling;
+    private bool _isLoseBlockJumpProcess;
     private bool _isStaminaRanOut;
+    private bool _isFirstJump = true;
     
     private bool _isSlowdown = false;
     private bool _isPlatform = false;
@@ -46,22 +51,21 @@ public class PlayerMover : IPlayerMover, IDisposable
         _transformDetection = player.TransformPlatformDetection;
         
         _plarformLayer = ConstLayer.Platform.ToLayerMask();
-        
-        var animator = this._player.GetComponent<Animator>();
+
+        var animator = _player.GetComponent<Animator>(); 
         _animator = new PlayerAnimationController(animator);
         
         EventAggregator.Subscribe<SwitchGameStateToPlayGameEvent>(OnStartGame);
         
+        EventAggregator.Subscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
+        
     }
     
-    public void Dispose() => EventAggregator.Unsubscribe<SwitchGameStateToPlayGameEvent>(OnStartGame);
-
-    private void OnStartGame(object sender, SwitchGameStateToPlayGameEvent evendData)
+    public void Dispose()
     {
-        _isStaminaRanOut = false;
-        _stamina.Initialize();
+        EventAggregator.Unsubscribe<SwitchGameStateToPlayGameEvent>(OnStartGame);
+        EventAggregator.Subscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
-
 
     public void ProcessMovement(bool isBlockMovemnt)
     {
@@ -88,11 +92,14 @@ public class PlayerMover : IPlayerMover, IDisposable
         CheckStaminaDepletion();
         CheckOnPlatformOnPlatform();
     }
-
+    
     public void ProcessJumpinp(bool isRightWall)
     {
         // if (_isPlatform == false) // TODO: - это можно убрать чтобы сделать как фичу - что можно прыгать как хочешь
         //     return;
+        
+        if (_isLoseBlockJumpProcess)
+            return;
 
         int jumpDirection = isRightWall ? 1 : -1;
         
@@ -100,19 +107,22 @@ public class PlayerMover : IPlayerMover, IDisposable
             EventAggregator.Post(this, new SwitchCameraStateOnPlayerRightPlatform());
         else
             EventAggregator.Post(this, new SwitchCameraStateOnPlayerLeftPlatform());
-        
-        
-        if (_jumpDirection == null | _jumpDirection != jumpDirection)
-            if (_isPlatform) // это для далнейшых прыжков 
-                _animator.JumpAnimation();
 
 
-        // if (_isPlatform) // это нужно чтобы игрок изначально был на платформе (если буде реализовувать чтобы игра началась при свайпе или при нажатия кнопки но чтобы игрок прыгнул на стену и потом уже включать эту проверку)
-        // {
+        if (_jumpDirection != jumpDirection && _isPlatform || _isFirstJump)
+        {
+                _animator.JumpAnimationTrigger();
+                _isFirstJump = false;
+        }
+        
+        
+        if (_isPlatform)
             _rigidbody.velocity = new Vector2(jumpDirection * _characterData.JumpForce, Mathf.Max(_rigidbody.velocity.y, _characterData.JumpForce));
-            _stamina.DrainRateStaminaJump();
-        // }
-
+        else 
+            _rigidbody.velocity = new Vector2(jumpDirection * _characterData.JumpForce, _rigidbody.velocity.y);
+                
+        _stamina.DrainRateStaminaJump(); 
+    
 
 
         _jumpDirection = jumpDirection;
@@ -129,20 +139,25 @@ public class PlayerMover : IPlayerMover, IDisposable
             return;
         
         _player.StartCoroutine(RollCoroutine());
+        UpwardRoll();
+        
         ProcessSlowDown(false); 
     }
 
     public void LastLosseJump()
     {
+        const float LastYJumpVelocity = 3f;
         _rigidbody.gravityScale = 0;
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 15f);
+        _isLoseBlockJumpProcess = true;
+        _isLoseCoroutinePlayerEnternalFalling = true;
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, LastYJumpVelocity);
+        _animator.LoseBounceAnimationTrigger();
         _player.StartCoroutine(SmoothMovementAndRotationToCenter());
     }
     
     private void UpwardRoll()
     {
-        _animator.RollUpwardAnimation();
-        
+        _animator.RollUpwardAnimationTrigger();
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _characterData.RollVerticalSpeed);
         _stamina.DrainRateStaminaUpwardRoll();
     }
@@ -196,13 +211,14 @@ public class PlayerMover : IPlayerMover, IDisposable
             80f * jumpDirection);
     }
     
+    private bool ShouldMoveUpward() => _isPlatform && _isSlowdown == false && _isRoll == false;
+    
     private void CheckOnPlatformOnPlatform()
     {
         _isPlatform = Physics2D.OverlapCircle(_transformDetection.position, RadiusDetectionPlatform, _plarformLayer) is not null;
         _animator.IsPlatform(_isPlatform);
     }
     
-    private bool ShouldMoveUpward() => _isPlatform && _isSlowdown == false && _isRoll == false;
     
     private IEnumerator RollCoroutine()
     {
@@ -211,12 +227,58 @@ public class PlayerMover : IPlayerMover, IDisposable
         yield return new WaitForSeconds(RollDelay);
         _isRoll = false;
     }
+    
+    public IEnumerator PlayerFallCoroutine()
+    {
+        const float initialFallSpeed = -5f;
+        const float resetPositionY = 50f;
+        const float minimumYPosition = 10f;
+        const float maxFallSpeed = -10f;
+        const float gravityAcceleration = -9.8f;
+        const float finalPositionY = 30f;
+        
+        var rigidbody = _player.GetComponent<Rigidbody2D>();
+        
+        rigidbody.velocity = new Vector2(0, initialFallSpeed); 
+        
+        EventAggregator.Post(this, new PlayerLoseHideAllObstaclesEvent());
+        
+        while (_isLoseCoroutinePlayerEnternalFalling)
+        {
+            if (_player.transform.position.y <= minimumYPosition)
+            {
+                var newPos = _player.transform.position;
+                newPos.y = resetPositionY;
+                _player.transform.position = newPos;
+                rigidbody.velocity = new Vector2(0, -5f); 
+            }
+            else
+            {
+                if (rigidbody.velocity.y < maxFallSpeed) 
+                    rigidbody.velocity = new Vector2(0, maxFallSpeed);
+                else
+                    rigidbody.velocity += new Vector2(0, Time.deltaTime * gravityAcceleration);
+            }
+            
+            yield return null;
+        }
+        
+        // _player.GetComponent<Animator>().SetBool("SecondLosePose", true);
+        _animator.LoseBouncePrepareToLand(true);
+        
+        rigidbody.velocity = new Vector2(0, initialFallSpeed); ; 
+        var newPosition = _player.transform.position;
+        newPosition.y = finalPositionY;
+        
+        _player.transform.position = newPosition;
+        _isLoseBlockJumpProcess = false;
+    }
 
     private IEnumerator SmoothMovementAndRotationToCenter()
     {
-        // Пока текущая позиция игрока по оси X не приблизится к 0 или пока поворот не станет равным 0
         while (Mathf.Abs(_playerTransform.position.x) > 0.01f || Mathf.Abs(_playerTransform.eulerAngles.z) > 0.01f)
         {
+            
             // Плавно изменяем позицию игрока к центру
             _playerTransform.position = Vector3.MoveTowards(_playerTransform.position, new Vector3(0, _playerTransform.position.y, _playerTransform.position.z), Time.deltaTime * 2f);
         
@@ -232,4 +294,12 @@ public class PlayerMover : IPlayerMover, IDisposable
         EventAggregator.Post(this, new PlayeLoseLastJumpEvent());
             
     }
+    
+    private void OnStartGame(object sender, SwitchGameStateToPlayGameEvent evendData)
+    {
+        _isStaminaRanOut = false;
+        _stamina.Initialize();
+    }
+    
+    private void OnStopCoroiteneLoseFall(object sender, ClaimRewardEvent eventData) => _isLoseCoroutinePlayerEnternalFalling = false;
 }

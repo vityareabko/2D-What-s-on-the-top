@@ -16,10 +16,9 @@ namespace Installers.GameplayInstallers
             BindPayerStamin();
             BindPlayerMover();
             BindLevelConfig();
-            BindCameraStateMachine();
             BindScoreController();
+            BindCameraStateMachine();
             BindHeightScoreUpdater();
-            
         }
         private void BindPayerStamin() => Container.Bind<Stamina>().AsSingle();
         private void BindIPlayer() => Container.BindInterfacesAndSelfTo<Player>().FromComponentInNewPrefab(_player).UnderTransform(_spawnPointPlayer).AsSingle();

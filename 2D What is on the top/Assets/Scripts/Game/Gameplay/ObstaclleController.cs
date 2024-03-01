@@ -21,7 +21,7 @@ namespace Game.Gameplay
         {
             foreach (var obstacle in _obstacles)
             {
-                obstacle.gameObject.SetActive(false);
+                // obstacle.gameObject.SetActive(false);
             }
         }
         

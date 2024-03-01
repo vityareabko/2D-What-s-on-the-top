@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using GameSM;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
@@ -13,6 +12,9 @@ public class Player : MonoBehaviour, IPlayer
 
     private SwipeListener _swipeListener;  
     private IPlayerMover _playerMover;
+
+    private PlayerAnimationController _animatorController;
+    
     // private CharacterData _characterData;
     // private Stamina _stamina;
     
@@ -21,7 +23,7 @@ public class Player : MonoBehaviour, IPlayer
     
     private bool _isBlockSpwipe = false;
     private bool _isBlockMovement = false;
-    private bool _isLoseCoroutine;
+    // private bool _isLoseCoroutine;
     
     // private bool _staminaIsInit;
     
@@ -36,14 +38,17 @@ public class Player : MonoBehaviour, IPlayer
     }
 
     // private void Awake() => _playerMover = new PlayerMover(this, _transformPlatformDetection); //(_stamina, _characterData, this, _transformPlatformDetection);
+
+    private void Awake() => _animatorController = new PlayerAnimationController(GetComponent<Animator>());
     
+
     private void OnEnable()
     {
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
 
         EventAggregator.Subscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Subscribe<GameIsOnPausedEvent>(OnPausedGame);
-        EventAggregator.Subscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
+        // EventAggregator.Subscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
     
     private void OnDisable()
@@ -52,7 +57,7 @@ public class Player : MonoBehaviour, IPlayer
         
         EventAggregator.Unsubscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Unsubscribe<GameIsOnPausedEvent>(OnPausedGame);
-        EventAggregator.Unsubscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
+        // EventAggregator.Unsubscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
     
     private void Update()
@@ -80,6 +85,7 @@ public class Player : MonoBehaviour, IPlayer
                 // Блокируем все кроме сфайпа - желательно только в лево и вправо
                 BlockSwipe(true); // блокирует весь свайп (возможно подвинуть _isBlockSwipe - ниже на два условие а имменоо пропустить вайпы влево в право) // левый и правй свайп включаем только когда игра на платформе MainMenuPlatform 
                 BlockMovement(true);
+                Invoke(nameof(ResetAnimationBounceLanding), 1f);
                 break;
             case GameStateType.GamePlay:
                 // unblock all game
@@ -101,7 +107,9 @@ public class Player : MonoBehaviour, IPlayer
                 throw new ArgumentOutOfRangeException($"{CurrentGameState} couldn't found in GameStateType");
         }
     }
-    
+
+    private void ResetAnimationBounceLanding() => _animatorController.LoseBounceLanding(false);
+
     private void BlockSwipe(bool isBlock) => _isBlockSpwipe = isBlock;
     
     private void BlockMovement(bool isBlock) => _isBlockMovement = isBlock;
@@ -109,48 +117,15 @@ public class Player : MonoBehaviour, IPlayer
     private void PlayerLose()
     {
         EventAggregator.Post(this, new SwitchGameStateToLoseGameEvent());
-        _isLoseCoroutine = true;
-        StartCoroutine(PlayerFallCoroutine());
+        // _isLoseCoroutine = true;
+        // StartCoroutine(PlayerFallCoroutine());
+        StartCoroutine(_playerMover.PlayerFallCoroutine());
     }
     
     private void ResetSlowDownToTouch()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             _playerMover.ProcessSlowDown(false); 
-    }
-    
-    
-    private IEnumerator PlayerFallCoroutine()
-    {
-        var rigidbody = GetComponent<Rigidbody2D>();
-        rigidbody.velocity = new Vector2(0, -5f); 
-        
-        EventAggregator.Post(this, new PlayerLoseHideAllObstaclesEvent());
-        
-        while (_isLoseCoroutine)
-        {
-            if (transform.position.y <= 10)
-            {
-                var newPos = transform.position;
-                newPos.y = 50f;
-                transform.position = newPos;
-                rigidbody.velocity = new Vector2(0, -5f); 
-            }
-            else
-            {
-                if (rigidbody.velocity.y < -10f) 
-                    rigidbody.velocity = new Vector2(0, -10f);
-                else
-                    rigidbody.velocity += new Vector2(0, Time.deltaTime * -9.8f);
-            }
-            
-            yield return null;
-        }
-
-        rigidbody.velocity = new Vector2(0, -5f); ; 
-        var newPosition = transform.position;
-        newPosition.y = 10f;
-        transform.position = newPosition;
     }
     
     private void OnPausedGame(object sender, GameIsOnPausedEvent eventData) => BlockSwipe(eventData.IsOnPause);
@@ -185,7 +160,7 @@ public class Player : MonoBehaviour, IPlayer
     
     private void OnPlayerLoseLastJumping(object sender, PlayeLoseLastJumpEvent evenDatat) => PlayerLose();
     
-    private void OnStopCoroiteneLoseFall(object sender, ClaimRewardEvent eventData) => _isLoseCoroutine = false;
+    // private void OnStopCoroiteneLoseFall(object sender, ClaimRewardEvent eventData) => _isLoseCoroutine = false;
     
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -201,7 +176,13 @@ public class Player : MonoBehaviour, IPlayer
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag(ConstTags.PlatformMainMenu))
-            EventAggregator.Post(this, new SwitchGameStateToMainMenuGameEvent());
+        {
+            if (_gameCurrentState.CurrentState == GameStateType.LoseGame) 
+            {
+                _animatorController.LoseBounceLanding(true);
+                EventAggregator.Post(this, new SwitchGameStateToMainMenuGameEvent());
+            }
+        }
     }
 
 

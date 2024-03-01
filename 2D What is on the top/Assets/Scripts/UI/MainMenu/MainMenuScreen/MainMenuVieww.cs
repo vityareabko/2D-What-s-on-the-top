@@ -26,8 +26,5 @@ namespace UI.MainMenu
             _playButton.onClick.AddListener(OnPlayButtonClicked);
         
         private void OnPlayButtonClicked() => Presentor.OnClickedPlayButton();
-
-        public void Show() => gameObject.SetActive(true);
-        public void Hide() => gameObject.SetActive(false);
     }
 }
