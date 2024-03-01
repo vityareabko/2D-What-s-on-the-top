@@ -1,34 +1,27 @@
-
-using Triggers;
 using UnityEngine;
 
 public class PlayerBounceToMainMenuOnPlatform : MonoBehaviour
 {
-    public float jumpForce = 10f;
-    public float rotationDuration = 1f;
-    
-    private Player _player;
-    private LastJumpToCenter _lastJump;
-
-    private void Update()
-    {
-        if (_lastJump != null)
-            _lastJump.Tick();
-    }
+   
+    private float bounceForceUp = 12f;
+    private float bounceForceSide = 0.8f;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(ConstTags.Player))
         {
-            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-            _player = collision.GetComponent<Player>();
-            _player.enabled = false;
+            EventAggregator.Post(this, new SwitchGameStateToWinGameEvent());
 
-            _lastJump = new LastJumpToCenter(_player, jumpForce, rotationDuration);
-            _lastJump.StartLastJump();
+            var playerTransform = collision.GetComponent<Transform>();
+            playerTransform.rotation = Quaternion.identity;
             
-            // EventAggregator ... SwitchGameStateToWinState ... # todo - подумать как доделать все это дела ( проблеба в том что мне нужно заблокировать игрока пока он ему ну будет показываться менюшка)
+            var rigidbody = collision.GetComponent<Rigidbody2D>();
+            rigidbody.velocity = Vector2.zero;
+            
+            float sideDirection = (rigidbody.position.x >= 0) ? -1 : 1;
+            
+            Vector2 forceDirection = new Vector2(bounceForceSide * sideDirection, bounceForceUp);
+            rigidbody.AddForce(forceDirection, ForceMode2D.Impulse);
         }
     }
 }
-

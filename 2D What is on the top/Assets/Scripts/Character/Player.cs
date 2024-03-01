@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using GameSM;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
@@ -9,68 +10,51 @@ public class Player : MonoBehaviour, IPlayer
     [field: SerializeField] public Transform TransformPlatformDetection { get; private set; }
     
     public Transform Transform { get; private set; }
+    
+    private IGameCurrentState _gameCurrentState;
 
     private SwipeListener _swipeListener;  
     private IPlayerMover _playerMover;
 
     private PlayerAnimationController _animatorController;
     
-    // private CharacterData _characterData;
-    // private Stamina _stamina;
-    
-
-    private IGameCurrentState _gameCurrentState;
-    
     private bool _isBlockSpwipe = false;
     private bool _isBlockMovement = false;
-    // private bool _isLoseCoroutine;
     
-    // private bool _staminaIsInit;
-    
-    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover)//(Stamina stamina, CharacterData characterData, SwipeListener swipeListener, IGameCurrentState gameCurrentState)
+    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover)
     {
-        // _characterData = characterData;
-        // _stamina = stamina;
         _playerMover = playerMover;
         _swipeListener = swipeListener;
         _gameCurrentState = gameCurrentState;
         Transform = transform;
     }
-
-    // private void Awake() => _playerMover = new PlayerMover(this, _transformPlatformDetection); //(_stamina, _characterData, this, _transformPlatformDetection);
-
+    
     private void Awake() => _animatorController = new PlayerAnimationController(GetComponent<Animator>());
     
-
     private void OnEnable()
     {
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
 
+        // EventAggregator.Subscribe<PlayerEnterInFinishBouncePlaceEvent>(OnPlayerEnterInFinshBouncePlaceHandler);
         EventAggregator.Subscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Subscribe<GameIsOnPausedEvent>(OnPausedGame);
-        // EventAggregator.Subscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
     
     private void OnDisable()
     {
         _swipeListener.OnSwipe.RemoveListener(OnSwipeHandler);
         
+        // EventAggregator.Unsubscribe<PlayerEnterInFinishBouncePlaceEvent>(OnPlayerEnterInFinshBouncePlaceHandler);
         EventAggregator.Unsubscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Unsubscribe<GameIsOnPausedEvent>(OnPausedGame);
-        // EventAggregator.Unsubscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
-    
+
     private void Update()
     {
-        // if (_lastJump != null)
-        //     _lastJump.Tick();
-        
         ObserveGameState();
         
         ResetSlowDownToTouch();
         _playerMover.ProcessCheckingToPlayerAction();
-    
-        // IsOnPlatform = _playerMover.CheckOnPlatformOnPlatform();
     }
     
     private void FixedUpdate() => _playerMover.ProcessMovement(_isBlockMovement);
@@ -117,8 +101,6 @@ public class Player : MonoBehaviour, IPlayer
     private void PlayerLose()
     {
         EventAggregator.Post(this, new SwitchGameStateToLoseGameEvent());
-        // _isLoseCoroutine = true;
-        // StartCoroutine(PlayerFallCoroutine());
         StartCoroutine(_playerMover.PlayerFallCoroutine());
     }
     
@@ -136,31 +118,19 @@ public class Player : MonoBehaviour, IPlayer
             return;
     
         if (swipe == DirectionId.ID_LEFT)
-        {
             _playerMover.ProcessJumpinp(false);
-            // EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent(){IsRightWall = false});
-        }
 
         if (swipe == DirectionId.ID_RIGHT)
-        {
             _playerMover.ProcessJumpinp(true);
-            // EventAggregator.Post(this, new PlayerJumpedToAgainsWallEvent() { IsRightWall = true });
-        }
 
         if (swipe == DirectionId.ID_DOWN)
-        {
             _playerMover.ProcessSlowDown(true);
-        }
-    
+        
         if (swipe == DirectionId.ID_UP)
-        {
             _playerMover.ProcessUpwardRoll();
-        }
     }
     
     private void OnPlayerLoseLastJumping(object sender, PlayeLoseLastJumpEvent evenDatat) => PlayerLose();
-    
-    // private void OnStopCoroiteneLoseFall(object sender, ClaimRewardEvent eventData) => _isLoseCoroutine = false;
     
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -177,13 +147,48 @@ public class Player : MonoBehaviour, IPlayer
     {
         if (collision.collider.CompareTag(ConstTags.PlatformMainMenu))
         {
-            if (_gameCurrentState.CurrentState == GameStateType.LoseGame) 
+            if (_gameCurrentState.CurrentState == GameStateType.LoseGame)
             {
                 _animatorController.LoseBounceLanding(true);
                 EventAggregator.Post(this, new SwitchGameStateToMainMenuGameEvent());
             }
+
+            if (_gameCurrentState.CurrentState == GameStateType.WinGame)
+            {
+                EventAggregator.Post(this, new SwitchGameStateToMainMenuGameEvent());
+                EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
+            }
+
+            StartCoroutine(SmothPlayerMoveToCenter());
         }
     }
+
+    private IEnumerator SmothPlayerMoveToCenter()
+    {
+        float duration = 0.5f; // Длительность перемещения, в секундах
+        float elapsedTime = 0; // Время, прошедшее с начала перемещения
+        Vector3 startPosition = transform.position; // Начальная позиция
+        Vector3 targetPosition = new Vector3(0, startPosition.y, startPosition.z); // Целевая позиция
+
+        while (elapsedTime < duration)
+        {
+            // Вычисляем прошедшее время с начала перемещения
+            elapsedTime += Time.deltaTime;
+            // Интерполируем позицию игрока от начальной к целевой
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            yield return null; // Ждем следующего кадра
+        }
+
+        // Убедимся, что игрок точно находится в целевой позиции по окончании перемещения
+        transform.position = targetPosition;
+    }
+
+    // private void OnPlayerEnterInFinshBouncePlaceHandler(object sender, PlayerEnterInFinishBouncePlaceEvent eventData)
+    // {
+    //     Debug.Log("eptishce");
+    //     _isBlockMovement = true;
+    //     _isBlockSpwipe = true;
+    // }
 
 
     #region Gizmoz
@@ -191,19 +196,4 @@ public class Player : MonoBehaviour, IPlayer
         
     #endregion
 }
-
-
-/// Что я хочу:
-/// я хочу чтобы когда игрок проиграл то его подросило на центр и переместил вместе с камерой на y = 50 от стартовой высоты его уровня (если он превышает эту высоту)
-/// и чтобы камера следовала за ним и когда он упадет то показывалась Главное Меню
-///
-/// Что у меня есть :
-/// Сейчась у меня ничего нет ничего просто игрок падает вниз под влиянию гравитации (нужно сделать какой-то класс или в текущем что когда инрок падает то его бросает вверх и постепенно он иде к центру)
-/// 
-/// 
-/// Как я могу сделать:
-/// мне нужно запомнить стартовую высоту чтобы потом прибавить 50 (если игрок прошел большего ростояния чем startPos + 50) и потом переместить игрока на эту позицию 
-///
-///
-/// 
 

@@ -26,7 +26,7 @@ public class PlayerMover : IPlayerMover, IDisposable
     private LayerMask _plarformLayer;
     private Rigidbody2D _rigidbody;
     
-    private CharacterData _characterData;
+    private PlayerConfig playerConfig;
     private PlayerAnimationController _animator;
     private Stamina _stamina;
 
@@ -41,9 +41,9 @@ public class PlayerMover : IPlayerMover, IDisposable
     private bool _isPlatform = false;
     private bool _isRoll = false;
     
-    public PlayerMover(Stamina stamina, CharacterData characterData, Player player)
+    public PlayerMover(Stamina stamina, PlayerConfig playerConfig, Player player)
     {
-        _characterData = characterData;
+        this.playerConfig = playerConfig;
         _stamina = stamina;
         _player = player;
         _rigidbody = player.GetComponent<Rigidbody2D>();
@@ -117,9 +117,9 @@ public class PlayerMover : IPlayerMover, IDisposable
         
         
         if (_isPlatform)
-            _rigidbody.velocity = new Vector2(jumpDirection * _characterData.JumpForce, Mathf.Max(_rigidbody.velocity.y, _characterData.JumpForce));
+            _rigidbody.velocity = new Vector2(jumpDirection * playerConfig.JumpForce, Mathf.Max(_rigidbody.velocity.y, playerConfig.JumpForce));
         else 
-            _rigidbody.velocity = new Vector2(jumpDirection * _characterData.JumpForce, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(jumpDirection * playerConfig.JumpForce, _rigidbody.velocity.y);
                 
         _stamina.DrainRateStaminaJump(); 
     
@@ -158,16 +158,16 @@ public class PlayerMover : IPlayerMover, IDisposable
     private void UpwardRoll()
     {
         _animator.RollUpwardAnimationTrigger();
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _characterData.RollVerticalSpeed);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, playerConfig.RollVerticalSpeed);
         _stamina.DrainRateStaminaUpwardRoll();
     }
 
     private void SlowDown()
     {
-        _animator.WalkAnimation(_characterData.WalkVerticalSpeed);
+        _animator.WalkAnimation(playerConfig.WalkVerticalSpeed);
         
-        float newVerticalSpeed = Mathf.Max(_characterData.WalkVerticalSpeed, _rigidbody.velocity.y - _characterData.DecelerationRate * Time.fixedDeltaTime);
-        newVerticalSpeed = Mathf.Max(newVerticalSpeed, _characterData.WalkVerticalSpeed);
+        float newVerticalSpeed = Mathf.Max(playerConfig.WalkVerticalSpeed, _rigidbody.velocity.y - playerConfig.DecelerationRate * Time.fixedDeltaTime);
+        newVerticalSpeed = Mathf.Max(newVerticalSpeed, playerConfig.WalkVerticalSpeed);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, newVerticalSpeed);
         
         _stamina.DrainRateStaminaWalking(Time.deltaTime);
@@ -177,9 +177,9 @@ public class PlayerMover : IPlayerMover, IDisposable
     
     private void MoveUpward()
     {
-        _animator.RunAnimation(_characterData.RunSpeed);
+        _animator.RunAnimation(playerConfig.RunSpeed);
         
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _characterData.RunSpeed);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, playerConfig.RunSpeed);
         
         _stamina.DrainRateStaminaRun(Time.deltaTime);
         
@@ -200,15 +200,16 @@ public class PlayerMover : IPlayerMover, IDisposable
 
     private void FlipCharacter(float jumpDirection)
     {
-
+        const float characterZRotationOnTheWall = 80f;
+        
         var scale = _playerTransform.localScale;
         scale.x = Mathf.Abs(scale.x) * jumpDirection;
         _playerTransform.localScale = scale;
         
-        _playerTransform.rotation = Quaternion.Euler(  // # todo - можно оставить потому что прикольно что персонаж иногода перемещается задом наперед но нужно что-то придумать с анимацией вогда персонаж пригает вперед 
+        _playerTransform.rotation = Quaternion.Euler(
             _playerTransform.rotation.eulerAngles.x, 
             _playerTransform.rotation.eulerAngles.y, 
-            80f * jumpDirection);
+            characterZRotationOnTheWall * jumpDirection);
     }
     
     private bool ShouldMoveUpward() => _isPlatform && _isSlowdown == false && _isRoll == false;
@@ -218,7 +219,6 @@ public class PlayerMover : IPlayerMover, IDisposable
         _isPlatform = Physics2D.OverlapCircle(_transformDetection.position, RadiusDetectionPlatform, _plarformLayer) is not null;
         _animator.IsPlatform(_isPlatform);
     }
-    
     
     private IEnumerator RollCoroutine()
     {
@@ -231,7 +231,7 @@ public class PlayerMover : IPlayerMover, IDisposable
     public IEnumerator PlayerFallCoroutine()
     {
         const float initialFallSpeed = -5f;
-        const float resetPositionY = 50f;
+        const float resetPositionY = 50f;   // # Todo - сейчась я оставлю 50 но нужно будет поменять StartPointPosition + 50f - потому что это будет работать только для первого уровня а дальше уже будет к примеру чекпоинт на y = 500
         const float minimumYPosition = 10f;
         const float maxFallSpeed = -10f;
         const float gravityAcceleration = -9.8f;
@@ -250,7 +250,7 @@ public class PlayerMover : IPlayerMover, IDisposable
                 var newPos = _player.transform.position;
                 newPos.y = resetPositionY;
                 _player.transform.position = newPos;
-                rigidbody.velocity = new Vector2(0, -5f); 
+                rigidbody.velocity = new Vector2(0, initialFallSpeed); 
             }
             else
             {
@@ -263,7 +263,6 @@ public class PlayerMover : IPlayerMover, IDisposable
             yield return null;
         }
         
-        // _player.GetComponent<Animator>().SetBool("SecondLosePose", true);
         _animator.LoseBouncePrepareToLand(true);
         
         rigidbody.velocity = new Vector2(0, initialFallSpeed); ; 
@@ -278,7 +277,6 @@ public class PlayerMover : IPlayerMover, IDisposable
     {
         while (Mathf.Abs(_playerTransform.position.x) > 0.01f || Mathf.Abs(_playerTransform.eulerAngles.z) > 0.01f)
         {
-            
             // Плавно изменяем позицию игрока к центру
             _playerTransform.position = Vector3.MoveTowards(_playerTransform.position, new Vector3(0, _playerTransform.position.y, _playerTransform.position.z), Time.deltaTime * 2f);
         
@@ -292,7 +290,6 @@ public class PlayerMover : IPlayerMover, IDisposable
         // Включаем гравитацию обратно
         _rigidbody.gravityScale = 1;
         EventAggregator.Post(this, new PlayeLoseLastJumpEvent());
-            
     }
     
     private void OnStartGame(object sender, SwitchGameStateToPlayGameEvent evendData)

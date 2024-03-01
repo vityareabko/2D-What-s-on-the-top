@@ -7,9 +7,9 @@ public class Stamina : IDisposable
     
     private float _currentStamin;
 
-    public Stamina(CharacterData characterData, GameScreenHUDPresenter gameScreenHUDPresenter)
+    public Stamina(PlayerConfig playerConfig, GameScreenHUDPresenter gameScreenHUDPresenter)
     {
-        _staminaData = characterData.StaminaData;
+        _staminaData = playerConfig.StaminaData;
         _gameScreenHUDPresenter = gameScreenHUDPresenter;
         Initialize();
         

@@ -5,12 +5,12 @@ namespace Installers
 {
     public class ConfigsGlobalInstaller : MonoInstaller
     {
-        [SerializeField] private CharacterData _characterData;
+        [SerializeField] private PlayerConfig playerConfig;
        
         
         public override void InstallBindings()
         {
-            Container.Bind<CharacterData>().FromInstance(_characterData).AsSingle();
+            Container.Bind<PlayerConfig>().FromInstance(playerConfig).AsSingle();
         }
     }
 }
