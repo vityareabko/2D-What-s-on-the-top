@@ -1,4 +1,10 @@
 using System;
+using System.Collections;
+using UnityEngine;
+using Zenject;
+
+using System;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -13,13 +19,16 @@ public class FollowCamera : MonoBehaviour
     [SerializeField] private Vector3 _offset = new Vector3(0, 0, -15);
     
     [SerializeField] private float _maxPositionChangePerFrame = 0.5f;
-    
+
+    private Camera _camera;
     private IPlayer _target;
     private ICameraStateMachine _cameraStateMaschine;
     
+    private Vector3 positionVelocity = Vector3.zero;
     private Vector3 positionChange = Vector3.zero;
     private Vector2 _OffsetVelocity;
     private Vector2 _currentoffset;
+    private float _zoomVelocity = 0f;
     
     private bool _isStopFollowing = false;
 
@@ -30,82 +39,113 @@ public class FollowCamera : MonoBehaviour
         _cameraStateMaschine = cameraStateMaschine;
     }
 
-    private void Start() => _offset.x = _offsetCameraPlayerOnRightPlatform;
-    
-    // private void Update()
-    // {
-    //     if(Input.GetKeyDown(KeyCode.Q))
-    //         EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
-    //     if(Input.GetKeyDown(KeyCode.W))
-    //         EventAggregator.Post(this, new SwitchCameraStateOnPlayerLeftPlatform());
-    //     if(Input.GetKeyDown(KeyCode.E))
-    //         EventAggregator.Post(this, new SwitchCameraStateOnPlayerRightPlatform());
-    //     if(Input.GetKeyDown(KeyCode.R))
-    //         EventAggregator.Post(this, new SwitchCameraStateOnPlayerLoseIsNotOnPlatform());
-    //     if(Input.GetKeyDown(KeyCode.T))
-    //         EventAggregator.Post(this, new SwitchCameraStateOnPlayerIsNotOnThePlatform());
-    //     
-    // }
+    private void Awake() => _camera = GetComponent<Camera>();
 
     private void LateUpdate()
     {
         if (_target == null || _isStopFollowing || Time.deltaTime == 0) 
             return;
 
-        ObserveCameraCurrentState();
-
-        // Плавное изменение текущего смещения по оси X до нового значения.
-
-        Vector3 desiredPosition = _target.Transform.position + new Vector3(_currentoffset.x, _offset.y, _offset.z);
-
-        // Вычисляем новую позицию с учетом плавного перехода
-        Vector3 newPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref positionChange, SmoothTime);
-        
-        newPosition = StabilizeCameraPosition(newPosition);
-
-        newPosition.y = _target.Transform.position.y + _currentoffset.y; 
-        
-        transform.position = newPosition;
+        HandleCameraState();
     }
 
-    private Vector3 StabilizeCameraPosition(Vector3 newPosition)
+    private void HandleCameraState()
     {
-        // Ограничиваем максимальную скорость изменения позиции камеры, чтобы избежать резких скачков
-        Vector3 velocity = (newPosition - transform.position) / Time.deltaTime; // Вычисляем скорость
-        velocity = Vector3.ClampMagnitude(velocity, _maxPositionChangePerFrame); // Ограничиваем скорость
-        newPosition = transform.position + velocity * Time.deltaTime; // Применяем ограниченную скорость для вычисления новой позиции
-        
-        return newPosition;
-    }
-
-    private void ObserveCameraCurrentState()
-    {
-        Debug.Log(_cameraStateMaschine.CurrentCameraState);
         switch (_cameraStateMaschine.CurrentCameraState)
         {
             case CameraState.PlayerOnMainMenuPlatform:
-                SetSmoothlyOffset(0, 0);
+                ResetZoomCamera();
+                HandleMainMenuPlatform();
                 break;
             case CameraState.PlayerOnPlatformLeft:
-                SetSmoothlyOffset(_offsetCameraPlayerOnLeftPlatform, 0);
+                HandleLeftPlatform();
                 break;
             case CameraState.PlayerOnPlatformRight:
-                SetSmoothlyOffset(_offsetCameraPlayerOnRightPlatform, 0);
+                HandleRightPlatform();
                 break;
             case CameraState.PlayerIsNotOnThePlatform:
-                SetSmoothlyOffset(0, 0);
+                HandleNotOnPlatform();
                 break;
             case CameraState.PlayerLoseIsNotOnPlatform:
-                SetSmoothlyOffset(0, _offsetCameraPlayerLoseIsNotOnPlatform);
+                HandleLoseNotOnPlatform();
+                break;
+            case CameraState.ShopSkinsMenu:
+                HandleShopSkinsMenu();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
 
-    private void SetSmoothlyOffset (float offsetX, float offsetY)
+    private void HandleMainMenuPlatform()
+    {
+        SetSmoothlyOffset(0, 0);
+    }
+
+    private void HandleLeftPlatform()
+    {
+        SetSmoothlyOffset(_offsetCameraPlayerOnLeftPlatform, 0);
+    }
+
+    private void HandleRightPlatform()
+    {
+        SetSmoothlyOffset(_offsetCameraPlayerOnRightPlatform, 0);
+    }
+
+    private void HandleNotOnPlatform()
+    {
+        SetSmoothlyOffset(0, 0);
+    }
+
+    private void HandleLoseNotOnPlatform()
+    {
+        SetSmoothlyOffset(0, _offsetCameraPlayerLoseIsNotOnPlatform);
+    }
+
+    private void HandleShopSkinsMenu()
+    {
+        ZoomCameraToShopSkins();
+    }
+
+    // Дополнительные методы для работы с камерой
+    private void SetSmoothlyOffset(float offsetX, float offsetY)
     {
         _currentoffset.x = Mathf.SmoothDamp(_currentoffset.x, offsetX, ref _OffsetVelocity.x, SmoothTime);
-        _currentoffset.y = Mathf.SmoothDamp(_currentoffset.y, offsetY, ref _OffsetVelocity.y, 1f);
+        _currentoffset.y = Mathf.SmoothDamp(_currentoffset.y, offsetY, ref _OffsetVelocity.y, SmoothTime);
+        ApplyCameraPosition();
+    }
+
+    private void ApplyCameraPosition()
+    {
+        Vector3 desiredPosition = _target.Transform.position + new Vector3(_currentoffset.x, _offset.y, _offset.z);
+        Vector3 newPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref positionChange, SmoothTime);
+        transform.position = StabilizeCameraPosition(newPosition);
+    }
+
+    private void ZoomCameraToShopSkins()
+    {
+        float targetOrthographicSize = 2f;
+        float smoothTime = 0.08f;
+        
+        _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, targetOrthographicSize, ref _zoomVelocity, smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, _offset, ref positionVelocity, smoothTime);
+    }
+
+    private void ResetZoomCamera()
+    {
+        float targetOrthographicSize = 5f;
+        float smoothTime = 0.08f;
+        _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, targetOrthographicSize, ref _zoomVelocity, smoothTime);
+    }
+
+    private Vector3 StabilizeCameraPosition(Vector3 newPosition)
+    {
+        Vector3 velocity = (newPosition - transform.position) / Time.deltaTime;
+        velocity = Vector3.ClampMagnitude(velocity, _maxPositionChangePerFrame);
+        
+        var newPos = transform.position + velocity * Time.deltaTime;
+
+        newPos.y = _target.Transform.position.y + _currentoffset.y;
+        return newPos;
     }
 }

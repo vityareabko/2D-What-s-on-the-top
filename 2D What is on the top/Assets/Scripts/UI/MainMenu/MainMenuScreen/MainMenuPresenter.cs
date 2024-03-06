@@ -7,12 +7,16 @@ namespace UI.MainMenu
     public interface IMainMenuPresenter : IPresenter < IMainMenuModel, MainMenuVieww>
     {
         public event System.Action ClickedPlayButton;
+        public event System.Action ClickedShopSkinsButton;
         public void OnClickedPlayButton();
+        public void OnClickedShopSkinsButton();
     }
 
     public class MainMenuPresenter : IMainMenuPresenter
     {
         public event Action ClickedPlayButton;
+        public event Action ClickedShopSkinsButton;
+        
         public IMainMenuModel Model { get; }
         public MainMenuVieww View { get; }
 
@@ -39,7 +43,8 @@ namespace UI.MainMenu
         }
         
         public void OnClickedPlayButton() => ClickedPlayButton?.Invoke();
-        
+
+        public void OnClickedShopSkinsButton() => ClickedShopSkinsButton?.Invoke();
     }
 }
 

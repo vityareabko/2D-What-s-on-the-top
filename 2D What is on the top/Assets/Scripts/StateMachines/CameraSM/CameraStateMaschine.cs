@@ -8,6 +8,7 @@ public enum CameraState
     PlayerOnPlatformRight,
     PlayerIsNotOnThePlatform,
     PlayerLoseIsNotOnPlatform,
+    ShopSkinsMenu,
 }
 
 public interface ICameraStateMachine 
@@ -28,8 +29,10 @@ public class CameraStateMaschine : ICameraStateMachine, IDisposable
         EventAggregator.Subscribe<SwitchCameraStateOnPlayerRightPlatform>(OnSwitchToPlayerOnRightPlatformState);
         EventAggregator.Subscribe<SwitchCameraStateOnPlayerIsNotOnThePlatform>(OnSwitchToPlayerIsNotOnPlatformState);
         EventAggregator.Subscribe<SwitchCameraStateOnPlayerLoseIsNotOnPlatform>(OnSwitchToPlayerLoseIsNotOnPlatformState);
+        EventAggregator.Subscribe<SwitchCameraStateOnMainMenuShopSkins>(OnSwitchCameraStateOnMainMenuShopSkins);
     }
-    
+
+
     public void Dispose()
     {
         EventAggregator.Unsubscribe<SwitchCameraStateOnMainMenuPlatform>(OnSwitchToMainMenuPlatfromState);
@@ -37,6 +40,7 @@ public class CameraStateMaschine : ICameraStateMachine, IDisposable
         EventAggregator.Unsubscribe<SwitchCameraStateOnPlayerRightPlatform>(OnSwitchToPlayerOnRightPlatformState);
         EventAggregator.Unsubscribe<SwitchCameraStateOnPlayerIsNotOnThePlatform>(OnSwitchToPlayerIsNotOnPlatformState);
         EventAggregator.Unsubscribe<SwitchCameraStateOnPlayerLoseIsNotOnPlatform>(OnSwitchToPlayerLoseIsNotOnPlatformState);
+        EventAggregator.Unsubscribe<SwitchCameraStateOnMainMenuShopSkins>(OnSwitchCameraStateOnMainMenuShopSkins);
     }
 
     private void SwitchCameraState(CameraState state)
@@ -58,10 +62,17 @@ public class CameraStateMaschine : ICameraStateMachine, IDisposable
             case CameraState.PlayerLoseIsNotOnPlatform:
                 CurrentCameraState = CameraState.PlayerLoseIsNotOnPlatform;
                 break;
+            case CameraState.ShopSkinsMenu:
+                CurrentCameraState = CameraState.ShopSkinsMenu;
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
     }
+
+    private void
+        OnSwitchCameraStateOnMainMenuShopSkins(object sender, SwitchCameraStateOnMainMenuShopSkins eventData) =>
+        SwitchCameraState(CameraState.ShopSkinsMenu);
     
     private void OnSwitchToPlayerLoseIsNotOnPlatformState(object sender, SwitchCameraStateOnPlayerLoseIsNotOnPlatform eventData) =>
         SwitchCameraState(CameraState.PlayerLoseIsNotOnPlatform);

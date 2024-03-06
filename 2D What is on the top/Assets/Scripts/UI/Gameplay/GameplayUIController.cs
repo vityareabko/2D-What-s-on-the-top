@@ -131,6 +131,8 @@ namespace UI
         {
             OnResumeGameButtonIs();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchCameraStateOnMainMenuPlatform());
+            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
         }
 
         private void OnX2RewardButtonClicked()

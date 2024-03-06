@@ -110,20 +110,19 @@ public class PlayerMover : IPlayerMover, IDisposable
 
 
         if (_jumpDirection != jumpDirection && _isPlatform || _isFirstJump)
-        {
                 _animator.JumpAnimationTrigger();
-                _isFirstJump = false;
-        }
         
         
-        if (_isPlatform)
+        if (_isPlatform || _isFirstJump)
             _rigidbody.velocity = new Vector2(jumpDirection * playerConfig.JumpForce, Mathf.Max(_rigidbody.velocity.y, playerConfig.JumpForce));
         else 
             _rigidbody.velocity = new Vector2(jumpDirection * playerConfig.JumpForce, _rigidbody.velocity.y);
                 
+        if(_isFirstJump)
+            _isFirstJump = false;
+        
+        
         _stamina.DrainRateStaminaJump(); 
-    
-
 
         _jumpDirection = jumpDirection;
 

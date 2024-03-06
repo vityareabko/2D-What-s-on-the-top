@@ -15,7 +15,7 @@ MonoBehaviour:
   <RunSpeed>k__BackingField: 5
   <RollVerticalSpeed>k__BackingField: 10
   <WalkVerticalSpeed>k__BackingField: 2
-  <JumpForce>k__BackingField: 9
+  <JumpForce>k__BackingField: 6
   <DecelerationRate>k__BackingField: 1
   <AccelerationRate>k__BackingField: 1
   <StaminaData>k__BackingField:
@@ -26,4 +26,4 @@ MonoBehaviour:
     <StaminaDrainRateRoll>k__BackingField: 0
     <StaminaDrainRateJumping>k__BackingField: 0
     <StaminaDrainObstacleCollision>k__BackingField: 7
-  <CurrentSpawnPoint>k__BackingField: 1
+  <CurrentSpawnPoint>k__BackingField: 0

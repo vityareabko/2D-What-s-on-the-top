@@ -9,7 +9,7 @@ public class PlayerAnimationController
     public PlayerAnimationController(Animator playerAnimator) =>
         _playerAnimator = playerAnimator;
     
-    public void JumpAnimationTrigger() => _playerAnimator.SetTrigger("Jump"); // # Todo : - вынести названия анимации в static class
+        public void JumpAnimationTrigger() => _playerAnimator.SetTrigger("Jump"); // # Todo : - вынести названия анимации в static class
     
     public void RollUpwardAnimationTrigger() => _playerAnimator.SetTrigger("RollUpward");
 
@@ -21,7 +21,7 @@ public class PlayerAnimationController
 
     public void IsPlatform(bool isPlatform) => _playerAnimator.SetBool("IsPlatform", isPlatform); // это для выхода из анимации крутящегошися щита; 
     
-    public void LoseBounceAnimationTrigger() => _playerAnimator.SetTrigger("LoseBounce");
+    public void LoseBounceAnimationTrigger() => _playerAnimator.SetTrigger("StartLoseBounce");
     
     public void LoseBouncePrepareToLand(bool isPrepareToFall) => _playerAnimator.SetBool("LoseBouncePrepareToLand", isPrepareToFall);
 

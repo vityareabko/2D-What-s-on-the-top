@@ -15,6 +15,7 @@ namespace UI.MainMenu
         private void OnEnable()
         {
             _mainMenuPresenter.ClickedPlayButton += OnClickedPlatButton;
+            _mainMenuPresenter.ClickedShopSkinsButton += OnClickedShopSkinsButton;
             EventAggregator.Subscribe<SwitchGameStateToPlayGameEvent>(OnSwitchToGameStateToPlay);
             EventAggregator.Subscribe<SwitchGameStateToMainMenuGameEvent>(OnSwitchToGameStateMainMenu);
         }
@@ -23,6 +24,7 @@ namespace UI.MainMenu
         private void OnDisable()
         {
             _mainMenuPresenter.ClickedPlayButton -= OnClickedPlatButton;
+            _mainMenuPresenter.ClickedShopSkinsButton -= OnClickedShopSkinsButton;
             EventAggregator.Unsubscribe<SwitchGameStateToPlayGameEvent>(OnSwitchToGameStateToPlay);
             EventAggregator.Unsubscribe<SwitchGameStateToMainMenuGameEvent>(OnSwitchToGameStateMainMenu);
         }
@@ -37,6 +39,13 @@ namespace UI.MainMenu
         {
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
             _mainMenuPresenter.Hide();
+        }
+
+        private void OnClickedShopSkinsButton()
+        {
+            EventAggregator.Post(this, new SwitchCameraStateOnMainMenuShopSkins());
+            _mainMenuPresenter.Hide();
+            // сдесь нужно открыть магазаин или Event на который магазин будет реагировать
         }
         
         private void OnClickedPlatButton() => EventAggregator.Post(_mainMenuPresenter, new SwitchGameStateToPlayGameEvent());

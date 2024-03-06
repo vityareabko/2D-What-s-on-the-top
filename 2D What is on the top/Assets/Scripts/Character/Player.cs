@@ -34,8 +34,6 @@ public class Player : MonoBehaviour, IPlayer
     private void OnEnable()
     {
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
-
-        // EventAggregator.Subscribe<PlayerEnterInFinishBouncePlaceEvent>(OnPlayerEnterInFinshBouncePlaceHandler);
         EventAggregator.Subscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Subscribe<GameIsOnPausedEvent>(OnPausedGame);
     }
@@ -43,8 +41,6 @@ public class Player : MonoBehaviour, IPlayer
     private void OnDisable()
     {
         _swipeListener.OnSwipe.RemoveListener(OnSwipeHandler);
-        
-        // EventAggregator.Unsubscribe<PlayerEnterInFinishBouncePlaceEvent>(OnPlayerEnterInFinshBouncePlaceHandler);
         EventAggregator.Unsubscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Unsubscribe<GameIsOnPausedEvent>(OnPausedGame);
     }
@@ -67,22 +63,26 @@ public class Player : MonoBehaviour, IPlayer
         {
             case GameStateType.GameMenu:
                 // Блокируем все кроме сфайпа - желательно только в лево и вправо
-                BlockSwipe(true); // блокирует весь свайп (возможно подвинуть _isBlockSwipe - ниже на два условие а имменоо пропустить вайпы влево в право) // левый и правй свайп включаем только когда игра на платформе MainMenuPlatform 
+                Debug.Log(GameStateType.GameMenu);
+                BlockSwipe(true); 
                 BlockMovement(true);
                 Invoke(nameof(ResetAnimationBounceLanding), 1f);
                 break;
             case GameStateType.GamePlay:
+                Debug.Log(GameStateType.GamePlay);
                 // unblock all game
                 // InitializeStamina();
                 BlockSwipe(false);  
                 BlockMovement(false);
                 break;
             case GameStateType.LoseGame:
+                Debug.Log(GameStateType.LoseGame);
                 // block player mover and block swipping
                 BlockSwipe(true);  
                 BlockMovement(true);
                 break;
             case GameStateType.WinGame:
+                Debug.Log(GameStateType.WinGame);
                 // block player mover and block swipping
                 BlockSwipe(true);  
                 BlockMovement(true);
@@ -165,35 +165,24 @@ public class Player : MonoBehaviour, IPlayer
 
     private IEnumerator SmothPlayerMoveToCenter()
     {
-        float duration = 0.5f; // Длительность перемещения, в секундах
-        float elapsedTime = 0; // Время, прошедшее с начала перемещения
-        Vector3 startPosition = transform.position; // Начальная позиция
+        float duration = 0.5f;
+        float elapsedTime = 0; 
+        Vector3 startPosition = transform.position; 
         Vector3 targetPosition = new Vector3(0, startPosition.y, startPosition.z); // Целевая позиция
 
         while (elapsedTime < duration)
         {
-            // Вычисляем прошедшее время с начала перемещения
             elapsedTime += Time.deltaTime;
-            // Интерполируем позицию игрока от начальной к целевой
             transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-            yield return null; // Ждем следующего кадра
+            yield return null;
         }
 
-        // Убедимся, что игрок точно находится в целевой позиции по окончании перемещения
         transform.position = targetPosition;
     }
-
-    // private void OnPlayerEnterInFinshBouncePlaceHandler(object sender, PlayerEnterInFinishBouncePlaceEvent eventData)
-    // {
-    //     Debug.Log("eptishce");
-    //     _isBlockMovement = true;
-    //     _isBlockSpwipe = true;
-    // }
 
 
     #region Gizmoz
         private void OnDrawGizmos() => Gizmos.DrawWireSphere(TransformPlatformDetection.position, 0.2f);
-        
     #endregion
 }
 
