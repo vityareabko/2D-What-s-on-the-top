@@ -1,3 +1,4 @@
+using UI.MainMenu.ShopSkinsScreen;
 using UnityEngine;
 using Zenject;
 
@@ -6,10 +7,12 @@ namespace UI.MainMenu
     public class MainMenuUIController : MonoBehaviour
     {
         private IMainMenuPresenter _mainMenuPresenter;
+        private IShopSkinsScreenPresenter _shopSkinsPresenter;
         
-        [Inject] private void Construct(IMainMenuPresenter mainMenuPresenter)
+        [Inject] private void Construct(IMainMenuPresenter mainMenuPresenter, IShopSkinsScreenPresenter shopSkinsPresenter)
         {
             _mainMenuPresenter = mainMenuPresenter;
+            _shopSkinsPresenter = shopSkinsPresenter;
         }
 
         private void OnEnable()
@@ -33,6 +36,7 @@ namespace UI.MainMenu
         {
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
             _mainMenuPresenter.Show();
+            _shopSkinsPresenter.Hide();
         }
 
         private void OnSwitchToGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent eventData) 
@@ -45,6 +49,7 @@ namespace UI.MainMenu
         {
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuShopSkins());
             _mainMenuPresenter.Hide();
+            _shopSkinsPresenter.Show();
             // сдесь нужно открыть магазаин или Event на который магазин будет реагировать
         }
         

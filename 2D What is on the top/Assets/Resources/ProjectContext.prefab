@@ -78,7 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7db2ad00d59480c93c56ad57e993398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerConfig: {fileID: 11400000, guid: bc3e01d872f35c045acb186e34a6f12a, type: 2}
+  _playerConfig: {fileID: 11400000, guid: bc3e01d872f35c045acb186e34a6f12a, type: 2}
+  _shopSkinDB: {fileID: 11400000, guid: a83c1b4e611ef5940bb8b564826199e4, type: 2}
+  _shopSkinFactory: {fileID: 11400000, guid: a164bccfa655f094a94dcdfd6184c2fb, type: 2}
 --- !u!114 &-3727844505535398464
 MonoBehaviour:
   m_ObjectHideFlags: 0

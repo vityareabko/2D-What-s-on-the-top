@@ -9,10 +9,11 @@ namespace UI.MVP
         
         
         MainMenu,
+        ShopSkins,
         
-        ChooserLevel,
-        
-        LoadingScreen,
+        // ChooserLevel,
+        //
+        // LoadingScreen,
         
     }
 }

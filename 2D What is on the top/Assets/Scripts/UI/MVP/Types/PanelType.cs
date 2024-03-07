@@ -2,8 +2,9 @@ namespace UI.MVP
 {
     public enum PanelType
     {
-        HealthBarPanel,
-        ScorePanel,
-        MiniMapPanel,
+        // HealthBarPanel,
+        // ScorePanel,
+        // MiniMapPanel,
+        ShopItem,
     }
 }

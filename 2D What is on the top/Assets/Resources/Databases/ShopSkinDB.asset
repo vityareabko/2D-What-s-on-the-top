@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5630760bbb8742e6ad5b2a8dbc30e9cd, type: 3}
+  m_Name: ShopSkinDB
+  m_EditorClassIdentifier: 
+  <Skins>k__BackingField:
+  - {fileID: 11400000, guid: 2767812f2ac05cb4e8c4f74671f4fbfb, type: 2}
+  - {fileID: 11400000, guid: ff993aac38065714eadea9f9ec52780e, type: 2}
+  - {fileID: 11400000, guid: a03ea72743d658e4eb8e26ac47b8514f, type: 2}
+  - {fileID: 11400000, guid: 68168b8fdbfa0de4eaf3f6cd2de2fcbc, type: 2}
+  - {fileID: 11400000, guid: 338fce96f92179b40ae0485a38eae635, type: 2}
+  - {fileID: 11400000, guid: 8032d80df603ecc45a04f66540c79f10, type: 2}
+  - {fileID: 11400000, guid: 1a3b26879a16f4d4aa163f370557727d, type: 2}
+  - {fileID: 11400000, guid: 30fb78df0c7038d42b18da9cc3b09295, type: 2}
+  - {fileID: 11400000, guid: 80267fbef03e77c4c8dc5cc4c7e8d84f, type: 2}
+  - {fileID: 11400000, guid: c8680aef58dd9bc4eaad8141d1a30112, type: 2}
+  - {fileID: 11400000, guid: 347630aa920705448abfd97716728a16, type: 2}
+  - {fileID: 11400000, guid: c67f1a29ee8abb343b65fd1382c39f5a, type: 2}
