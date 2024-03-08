@@ -136,15 +136,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 79e4cecbc2d6d4aeca7df44b6083a17e, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 8c56c5fdda92b4c74b0de742465022b5, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -386,6 +386,8 @@ MonoBehaviour:
   _lockPanel: {fileID: 1351970495742338906}
   _price: {fileID: 3940238015564894873}
   _selectedText: {fileID: 5391642519738714394}
+  _colorDefault: {r: 1, g: 0.7529412, b: 0, a: 1}
+  _colorDosentEnoughMoney: {r: 1, g: 0.043137256, b: 0, a: 1}
 --- !u!1 &4165096315324455881
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,8 +463,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278239487
-  m_fontColor: {r: 1, g: 0.7529935, b: 0, a: 1}
+    rgba: 4278192895
+  m_fontColor: {r: 1, g: 0.039559267, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

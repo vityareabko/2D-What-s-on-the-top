@@ -40,7 +40,7 @@ public class SpawnerFallingObject : MonoBehaviour
     private void Awake()
     {
         _camera = Camera.main;
-        _offset.y = 2f * _camera.orthographicSize;
+        _offset.y = 3f * _camera.orthographicSize;
         
         _spawnRateController = new DynamicSpawnRateController(_levelConfig.LevelDatas.MaxHeightLevel);
         _balancer = new ResourceBalancer(_levelConfig);

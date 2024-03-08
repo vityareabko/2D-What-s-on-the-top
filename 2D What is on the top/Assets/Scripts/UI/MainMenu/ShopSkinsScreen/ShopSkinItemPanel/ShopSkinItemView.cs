@@ -3,6 +3,7 @@ using Assets.HeroEditor.Common.Scripts.Common;
 using Extensions;
 using TMPro;
 using UI.MVP;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,11 +13,11 @@ namespace UI.MainMenu.ShopSkinItemPanel
 {
     public interface IShopSkinItemView : IView
     {
-        public event Action<ShopSkinItemView> ClickedOnView; 
+        public event Action<SkinItemConfig> ClickedOnView; 
         
         public void Unlock();
         public void Lock();
-
+        
         public void Select();
         public void Unselect();
     }
@@ -25,29 +26,35 @@ namespace UI.MainMenu.ShopSkinItemPanel
     {
         public override PanelType PanelType { get; } = PanelType.ShopItem;
 
-        public event Action<ShopSkinItemView> ClickedOnView;
+        public event Action<SkinItemConfig> ClickedOnView;
         
         [SerializeField] private Image _contentImage;
         [SerializeField] private Image _lockPanel;
         [SerializeField] private TMP_Text _price;
         [SerializeField] private Image _selectedText;
 
-        private SkinItemConfig Item;
+        [SerializeField] private Color _colorDefault;
+        [SerializeField] private Color _colorDosentEnoughMoney;
+
+        public SkinItemConfig Item;
 
         public bool IsLock { get; private set; }
 
-        // public int Price => Item.Price;
+        // public int PriceCoin => Item.PriceCoin;
 
         public void Initialize(SkinItemConfig config)
         {
             Item = config;
             _contentImage.sprite = config.ShopIcon;
-            // IsLock = config.IsLock;
  
-            _price.Show(config.Price); // нужно протестить если работает Show этот метод расширения для TMP_Text
+            _price.Show(config.PriceCoin); 
         }
         
         protected override void OnAwake() => _selectedText.SetActive(false);
+
+        public void RedPriceTextColor() => _price.color = _colorDosentEnoughMoney;
+
+        public void DefaultPriceTextColor() => _price.color = _colorDefault;
 
         public void Unlock()
         {
@@ -61,11 +68,12 @@ namespace UI.MainMenu.ShopSkinItemPanel
             IsLock = true;
             _lockPanel.SetActive(true);
             _price.SetActive(true);
+            Unselect();
         }
 
         public void Select() => _selectedText.SetActive(true);  
         public void Unselect() => _selectedText.SetActive(false);
 
-        public void OnPointerClick(PointerEventData eventData) => ClickedOnView?.Invoke(this);
+        public void OnPointerClick(PointerEventData eventData) => ClickedOnView?.Invoke(Item);
     }
 }

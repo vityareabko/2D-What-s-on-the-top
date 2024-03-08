@@ -14,6 +14,6 @@ public class ShopSkinFactory : ScriptableObject
         var instance = Instantiate(_itemSkinPrefab, parentTransform);
         instance.Initialize(config);
         
-        return null;
+        return instance;
     }
 }
