@@ -25,7 +25,7 @@ namespace MyNamespace.Services.StorageService.SelectorSkin
             LoadData();
             CurrentSkin = _data.SelectedSkin;
         }
-        
+
         public void Select(ShopSkinType type)
         {
             LoadData(); // ВАЖНО (это не трогаем) - это мы загружаем данные для того чтобы получить обновленый саписок разблокированых скинов

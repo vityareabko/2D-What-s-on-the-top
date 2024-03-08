@@ -33,7 +33,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         
         private List<ShopSkinItemView> _shopItems = new();
         private ShopSkinFactory _skinFactory;
-        private ShopSkinDB _shopSkinDB;
+        // private ShopSkinDB _shopSkinDB;
 
         private ISelectSkin _selectSkin;
         private IUnlockerSkin _unlockerSkins;
@@ -43,7 +43,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         
         private ShopSkinsScreenPresenter(IShopSkinsScreenModel model, 
             IShopSkinsScreenView view, 
-            ShopSkinDB shopSkinDB, 
+            // ShopSkinDB shopSkinDB, 
             ShopSkinFactory shopSkinFactory, 
             ISelectSkin selectSkin, 
             IUnlockerSkin unlockerSkins,
@@ -52,7 +52,7 @@ namespace UI.MainMenu.ShopSkinsScreen
             Model = model;
             View = view;
 
-            _shopSkinDB = shopSkinDB;
+            // _shopSkinDB = shopSkinDB;
             _skinFactory = shopSkinFactory;
             _selectSkin = selectSkin;
             _unlockerSkins = unlockerSkins;
@@ -80,7 +80,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         private void GenerateShopContent()
         {
             Clear();
-            foreach (var skinItemConfig in _shopSkinDB.Skins)
+            foreach (var skinItemConfig in Model.GetSkins())
             {
                 var instance = _skinFactory.Get(skinItemConfig, View.ContentTransform);
                 instance.ClickedOnView += OnClickeSkinItemView;
@@ -99,6 +99,8 @@ namespace UI.MainMenu.ShopSkinsScreen
                     instance.Lock();
             }
 
+            // Model.GenerateShopContent(View.ContentTransform);
+            
             CheckOnEnoughMoneyForItems();
         }
 
@@ -110,7 +112,7 @@ namespace UI.MainMenu.ShopSkinsScreen
             _shopItems.Clear();
         }
 
-        private bool BuySkin() => _walletResource.Spend(_previewSkin.ResourceTypeByBuySkin, _previewSkin.PriceCoin);
+        // private bool BuySkin() => _walletResource.Spend(_previewSkin.ResourceTypeByBuySkin, _previewSkin.PriceCoin);
 
         private void CheckOnEnoughMoneyForItems()
         {
@@ -147,27 +149,31 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         public void OnClickBuyButton()
         {
-            if (BuySkin() == false) 
-            {
-                // оповистить игрока
-                // View.ShakeBuyButton 
-                
-                Debug.Log("Don't have enough money");
-                
-                return;
-            }
+            // if (BuySkin() == false) 
+            // {
+            //     // оповистить игрока
+            //     // View.ShakeBuyButton 
+            //     
+            //     Debug.Log("Don't have enough money");
+            //     
+            //     return;
+            // }
+            //
+            // _unlockerSkins.Unlock(_previewSkin.Type);
+            // _selectSkin.Select(_previewSkin.Type);
+            //
 
-            _unlockerSkins.Unlock(_previewSkin.Type);
-            _selectSkin.Select(_previewSkin.Type);
-            
-            GenerateShopContent();
+            if (Model.TryBuySkin(_previewSkin))
+                GenerateShopContent();
         }
         
 
         public void OnClickSelectButton()
         {
             // ClickSelectButton?.Invoke();
-            _selectSkin.Select(_previewSkin.Type);
+            // _selectSkin.Select(_previewSkin.Type);
+            
+            Model.SelectSkin(_previewSkin.Type);
             GenerateShopContent();
             
         }

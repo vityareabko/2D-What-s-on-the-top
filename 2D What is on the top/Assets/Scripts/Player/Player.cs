@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using GameSM;
 using GG.Infrastructure.Utils.Swipe;
+using MyNamespace.Services.StorageService.SelectorSkin;
 using UnityEngine;
 using Zenject;
 
@@ -21,12 +22,14 @@ public class Player : MonoBehaviour, IPlayer
     private bool _isBlockSpwipe = false;
     private bool _isBlockMovement = false;
     
-    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover)
+    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover, ISelectSkin selectSkin)
     {
         _playerMover = playerMover;
         _swipeListener = swipeListener;
         _gameCurrentState = gameCurrentState;
         Transform = transform;
+        
+        EventAggregator.Post(this, new ApplySelectedSkinEvent() { CurrentSkin = selectSkin.CurrentSkin});
     }
     
     private void Awake() => _animatorController = new PlayerAnimationController(GetComponent<Animator>());
