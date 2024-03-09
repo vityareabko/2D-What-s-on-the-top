@@ -1,6 +1,7 @@
 using System;
 using Services.StorageService;
 using Services.StorageService.JsonDatas;
+using UI.MainMenu.ShopSkinsScreen;
 using UnityEngine;
 
 namespace MyNamespace.Services.StorageService.SelectorSkin
@@ -8,13 +9,15 @@ namespace MyNamespace.Services.StorageService.SelectorSkin
 
     public interface ISelectSkin 
     {
-        public ShopSkinType CurrentSkin { get; }
-        public void Select(ShopSkinType type);
+        public ShopSkinType CurrentHeroSkin { get; }
+        public ShopSkinType CurrentShieldSkin { get; }
+        public void Select(ShopSkinType type, ShopSkinTabType tabType);
     }
 
     public class SelectSkin : ISelectSkin
     {
-        public ShopSkinType CurrentSkin { get; private set; }
+        public ShopSkinType CurrentHeroSkin { get; private set; }
+        public ShopSkinType CurrentShieldSkin { get; private set; }
 
         private IStorageService _storageService;
         private PlayerJsonData _data;
@@ -23,21 +26,35 @@ namespace MyNamespace.Services.StorageService.SelectorSkin
         {
             _storageService = storageService;
             LoadData();
-            CurrentSkin = _data.SelectedSkin;
+            CurrentHeroSkin = _data.SelectedHeroSkin;
+            CurrentShieldSkin = _data.SelectedShieldSkin;
         }
-
-        public void Select(ShopSkinType type)
+        
+        public void Select(ShopSkinType type, ShopSkinTabType tabType)
         {
             LoadData(); // ВАЖНО (это не трогаем) - это мы загружаем данные для того чтобы получить обновленый саписок разблокированых скинов
+            
             
             if (TryToSelectSkin(type) == false)
                 throw new ArgumentException($"skin - {type} is block");
 
-            CurrentSkin = type;
-            _data.SelectedSkin = type;
+            switch (tabType)
+            {
+                case ShopSkinTabType.HeroTab:
+                    CurrentHeroSkin = type;
+                    _data.SelectedHeroSkin = type;
+                    break;
+                case ShopSkinTabType.ShieldTab:
+                    CurrentShieldSkin = type;
+                    _data.SelectedShieldSkin = type;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(tabType), tabType, null);
+            }
             
             SaveData();
         }
+        
 
         private bool TryToSelectSkin(ShopSkinType type)
         {
@@ -63,9 +80,9 @@ namespace MyNamespace.Services.StorageService.SelectorSkin
             _storageService.Save(StorageKeysType.PlayerData, _data, (b) =>
             {
                 if (b)
-                    Debug.Log($"update CurrentSkin: {CurrentSkin} success");
+                    Debug.Log($"update CurrentHeroSkin: {CurrentHeroSkin} success");
                 else
-                    Debug.Log($"Failed save - CurrentSkin: {CurrentSkin}");
+                    Debug.Log($"Failed save - CurrentHeroSkin: {CurrentHeroSkin}");
             });
         }
     }

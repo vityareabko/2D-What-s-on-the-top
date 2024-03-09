@@ -30,8 +30,13 @@ namespace UnlockerSkins
 
         private void InitializeDefaultSkins()
         {
-            if (UnlockSkins.Count < 1)
-                _playerData.AvailableSkins.Add(_playerData.SelectedSkin);
+            if (UnlockSkins.Count < 2)
+            {
+                _playerData.AvailableSkins.Add(_playerData.SelectedHeroSkin);
+                _playerData.AvailableSkins.Add(_playerData.SelectedShieldSkin);
+            }
+
+            _storageService.Save(StorageKeysType.PlayerData, _playerData);
         }
 
         public void Unlock(ShopSkinType type)

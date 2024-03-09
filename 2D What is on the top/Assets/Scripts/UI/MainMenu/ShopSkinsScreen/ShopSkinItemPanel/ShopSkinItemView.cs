@@ -1,9 +1,7 @@
 using System;
-using Assets.HeroEditor.Common.Scripts.Common;
 using Extensions;
 using TMPro;
 using UI.MVP;
-using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -47,10 +45,10 @@ namespace UI.MainMenu.ShopSkinItemPanel
             Item = config;
             _contentImage.sprite = config.ShopIcon;
  
+            _selectedText.gameObject.SetActive(false);
             _price.Show(config.PriceCoin); 
         }
         
-        protected override void OnAwake() => _selectedText.SetActive(false);
 
         public void RedPriceTextColor() => _price.color = _colorDosentEnoughMoney;
 
@@ -59,20 +57,19 @@ namespace UI.MainMenu.ShopSkinItemPanel
         public void Unlock()
         {
             IsLock = false;
-            _lockPanel.SetActive(false);
-            _price.SetActive(false);
+            _lockPanel.gameObject.SetActive(false);
+            _price.gameObject.SetActive(false);
         }
 
         public void Lock()
         {
             IsLock = true;
-            _lockPanel.SetActive(true);
-            _price.SetActive(true);
-            Unselect();
+            _lockPanel.gameObject.SetActive(true);
+            _price.gameObject.SetActive(true);
         }
 
-        public void Select() => _selectedText.SetActive(true);  
-        public void Unselect() => _selectedText.SetActive(false);
+        public void Select() => _selectedText.gameObject.SetActive(true);  
+        public void Unselect() => _selectedText.gameObject.SetActive(false);
 
         public void OnPointerClick(PointerEventData eventData) => ClickedOnView?.Invoke(Item);
     }

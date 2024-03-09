@@ -8,38 +8,33 @@ namespace UI.MainMenu.ShopSkinsScreen
 {
     public interface IShopSkinsScreenModel : IModel
     {
-        public IEnumerable<SkinItemConfig> GetSkins();
-        public void SelectSkin(ShopSkinType type);
-        public bool TryBuySkin(SkinItemConfig item);
+        public void SelectSkin(ShopSkinType type, ShopSkinTabType tabType);
+        public bool TryBuySkin(SkinItemConfig item, ShopSkinTabType tabType);
     }
 
     public class ShopSkinsScreenModel : IShopSkinsScreenModel
     {
         
-        private ShopSkinDB _shopSkinDB;
         private ISelectSkin _selectSkin;
         private IUnlockerSkin _unlockerSkins;
         private IWalletResource _walletResource;
 
-        public ShopSkinsScreenModel(ShopSkinDB shopSkinDB, ISelectSkin selectSkin, IUnlockerSkin unlockerSkins, IWalletResource walletResource)
+        public ShopSkinsScreenModel(ISelectSkin selectSkin, IUnlockerSkin unlockerSkins, IWalletResource walletResource)
         {
-            _shopSkinDB = shopSkinDB;
             _selectSkin = selectSkin;
             _unlockerSkins = unlockerSkins;
             _walletResource = walletResource;
         }
-
-        public IEnumerable<SkinItemConfig> GetSkins() => _shopSkinDB.Skins;
-
-        public void SelectSkin(ShopSkinType type) => _selectSkin.Select(type);
         
-        public bool TryBuySkin(SkinItemConfig item)
+        public void SelectSkin(ShopSkinType type, ShopSkinTabType tabType) => _selectSkin.Select(type, tabType);
+        
+        public bool TryBuySkin(SkinItemConfig item, ShopSkinTabType tabType)
         {
             if (CanAffordSkin(item) == false)
                 return false;
             
             _unlockerSkins.Unlock(item.Type);
-            _selectSkin.Select(item.Type);
+            _selectSkin.Select(item.Type, tabType);
             return true;
         }
 

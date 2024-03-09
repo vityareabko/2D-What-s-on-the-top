@@ -1,5 +1,5 @@
 
 public class TryOnSkinEvent
 {
-    public ShopSkinType TypeSkin;
+    public ShopSkinType Skin;
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5630760bbb8742e6ad5b2a8dbc30e9cd, type: 3}
   m_Name: ShopSkinDB
   m_EditorClassIdentifier: 
-  <Skins>k__BackingField:
+  <HeroSkins>k__BackingField:
   - {fileID: 11400000, guid: 2767812f2ac05cb4e8c4f74671f4fbfb, type: 2}
   - {fileID: 11400000, guid: ff993aac38065714eadea9f9ec52780e, type: 2}
   - {fileID: 11400000, guid: a03ea72743d658e4eb8e26ac47b8514f, type: 2}
@@ -25,3 +25,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c8680aef58dd9bc4eaad8141d1a30112, type: 2}
   - {fileID: 11400000, guid: 347630aa920705448abfd97716728a16, type: 2}
   - {fileID: 11400000, guid: c67f1a29ee8abb343b65fd1382c39f5a, type: 2}
+  <ShieldSkins>k__BackingField:
+  - {fileID: 11400000, guid: 22d5d8dd4c2952442b5dddb66b871728, type: 2}
+  - {fileID: 11400000, guid: 547d14f5adfb947458c178c3d3f2b1fa, type: 2}

@@ -19,8 +19,8 @@ public class Player : MonoBehaviour, IPlayer
 
     private PlayerAnimationController _animatorController;
     
-    private bool _isBlockSpwipe = false;
-    private bool _isBlockMovement = false;
+    private bool _isBlockSpwipe;
+    private bool _isBlockMovement;
     
     [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover, ISelectSkin selectSkin)
     {
@@ -29,7 +29,8 @@ public class Player : MonoBehaviour, IPlayer
         _gameCurrentState = gameCurrentState;
         Transform = transform;
         
-        EventAggregator.Post(this, new ApplySelectedSkinEvent() { CurrentSkin = selectSkin.CurrentSkin});
+        EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() { CurrentSkin = selectSkin.CurrentHeroSkin});
+        EventAggregator.Post(this, new ApplySelectedShieldSkinEvent { CurrentShieldSkin = selectSkin.CurrentShieldSkin});
     }
     
     private void Awake() => _animatorController = new PlayerAnimationController(GetComponent<Animator>());

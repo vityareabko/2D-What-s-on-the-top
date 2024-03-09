@@ -1,15 +1,28 @@
 public enum ShopSkinType
 {
-    FlameWarrior,
-    GreenWarrior,
-    KnightSky,
-    SacredGuardian,
-    SilentShuriken,
-    WildKin,
-    DesertNomad,
-    CrimsonWarrior,
-    VerdanKeeper,
-    DragonsHonor,
-    DwellerArmor,
-    WarlockArmor,
+    
+    // Todo: - ВАЖНО - при добовлении нового элемента нужно дать ему последнее индекс
+    
+    // Hero
+    FlameWarrior   = 0,
+    GreenWarrior   = 1,
+    KnightSky      = 2, 
+    SacredGuardian = 3,
+    SilentShuriken = 4,
+    WildKin        = 5,
+    DesertNomad    = 6,
+    CrimsonWarrior = 7,
+    VerdanKeeper   = 8,
+    DragonsHonor   = 9,
+    DwellerArmor   = 10,
+    WarlockArmor   = 11,
+    
+    
+    
+    // shields
+    CapitanAmerica = 100,
+    DwellerBucket  = 101,
+    
+    
+    
 }

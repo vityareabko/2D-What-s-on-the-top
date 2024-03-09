@@ -12,18 +12,16 @@ namespace UI.MainMenu.ShopSkinsScreen
 {
     public interface IShopSkinsScreenPresenter : IPresenter<IShopSkinsScreenModel, IShopSkinsScreenView>
     {
-        // public event Action ClickBuyButton; 
-        // public event Action ClickSelectButton; 
         public event Action ClickBackButton; 
         public void OnClickBuyButton();
         public void OnClickSelectButton();
         public void OnClickBackButton();
+
+        public void GenerateShopContent();
     }
 
     public class ShopSkinsScreenPresenter : IShopSkinsScreenPresenter, IDisposable
     {
-        // public event Action ClickBuyButton;
-        // public event Action ClickSelectButton;
         public event Action ClickBackButton;
 
         public IShopSkinsScreenModel Model { get; private set; }
@@ -31,9 +29,11 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         private bool _isInit;
         
-        private List<ShopSkinItemView> _shopItems = new();
+        private List<ShopSkinItemView> _shopSkinsItems = new();
+        // private List<ShopSkinItemView> _shopShieldSkinsItems = new(); // возможно это лишний так как можно все делать в _shopSkinsItems
+        
         private ShopSkinFactory _skinFactory;
-        // private ShopSkinDB _shopSkinDB;
+        private ShopSkinDB _shopSkinDB;
 
         private ISelectSkin _selectSkin;
         private IUnlockerSkin _unlockerSkins;
@@ -41,22 +41,23 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         private SkinItemConfig _previewSkin;
         
-        private ShopSkinsScreenPresenter(IShopSkinsScreenModel model, 
+        private ShopSkinsScreenPresenter(
+            IShopSkinsScreenModel model, 
             IShopSkinsScreenView view, 
-            // ShopSkinDB shopSkinDB, 
-            ShopSkinFactory shopSkinFactory, 
             ISelectSkin selectSkin, 
             IUnlockerSkin unlockerSkins,
-            IWalletResource walletResource)
+            IWalletResource walletResource,
+            ShopSkinDB shopSkinDB,
+            ShopSkinFactory shopSkinFactory) 
         {
             Model = model;
             View = view;
-
-            // _shopSkinDB = shopSkinDB;
+            
             _skinFactory = shopSkinFactory;
             _selectSkin = selectSkin;
             _unlockerSkins = unlockerSkins;
             _walletResource = walletResource;
+            _shopSkinDB = shopSkinDB;
             Init();
         }
 
@@ -77,46 +78,78 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         public void Hide() => View.Hide();
 
-        private void GenerateShopContent()
+        public void GenerateShopContent()
         {
             Clear();
-            foreach (var skinItemConfig in Model.GetSkins())
+         
+            switch (View.ActiveSkinTab)
             {
-                var instance = _skinFactory.Get(skinItemConfig, View.ContentTransform);
+                case ShopSkinTabType.HeroTab:
+                    // генерируем контент скинов
+                    GenerateHeroSkinContent(_shopSkinDB.HeroSkins, View.HeroSkinsContent);
+                    break;
+                case ShopSkinTabType.ShieldTab:
+                    GenerateHeroSkinContent(_shopSkinDB.ShieldSkins, View.ShieldSkinsContent);
+                    // генерируем контет щитов
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            CheckOnEnoughMoneyForItems();
+        }
+
+        private void GenerateHeroSkinContent(List<SkinItemConfig> skins, Transform contentTransform)
+        {
+            foreach (var skinItemConfig in skins)
+            {
+                var instance = _skinFactory.Get(skinItemConfig, contentTransform);
                 instance.ClickedOnView += OnClickeSkinItemView;
-                _shopItems.Add(instance);
-                
-                if (_selectSkin.CurrentSkin == instance.Item.Type)
-                {
-                    instance.Select();
-                    OnClickeSkinItemView(instance.Item);
-                }
+                _shopSkinsItems.Add(instance);
                 
                 if (_unlockerSkins.UnlockSkins.Contains(instance.Item.Type))
                     instance.Unlock();
                 
                 if (_unlockerSkins.UnlockSkins.Contains(instance.Item.Type) == false)
                     instance.Lock();
+                
+                switch (View.ActiveSkinTab)
+                {
+                    case ShopSkinTabType.HeroTab:
+                        if (_selectSkin.CurrentHeroSkin == instance.Item.Type)
+                        {
+                            instance.Select(); // item 
+                            OnClickeSkinItemView(instance.Item); // change skin
+                            Model.SelectSkin(instance.Item.Type, View.ActiveSkinTab); // screen buttons update
+                        }
+                        break;
+                    
+                    case ShopSkinTabType.ShieldTab:
+                        if (_selectSkin.CurrentShieldSkin == instance.Item.Type)
+                        {
+                            instance.Select();
+                            OnClickeSkinItemView(instance.Item);
+                            Model.SelectSkin(instance.Item.Type, View.ActiveSkinTab);
+                            
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
-
-            // Model.GenerateShopContent(View.ContentTransform);
-            
-            CheckOnEnoughMoneyForItems();
         }
 
         private void Clear()
         {
-            foreach (var item in _shopItems)
+            foreach (var item in _shopSkinsItems)
                 item.gameObject.Destroy();
             
-            _shopItems.Clear();
+            _shopSkinsItems.Clear();
         }
-
-        // private bool BuySkin() => _walletResource.Spend(_previewSkin.ResourceTypeByBuySkin, _previewSkin.PriceCoin);
 
         private void CheckOnEnoughMoneyForItems()
         {
-            foreach (var item in _shopItems)
+            foreach (var item in _shopSkinsItems)
             {
                 if(_walletResource.HasEnoughResourceAmount(item.Item.ResourceTypeByBuySkin, item.Item.PriceCoin))
                     item.DefaultPriceTextColor();
@@ -127,7 +160,17 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         private void OnClickeSkinItemView(SkinItemConfig itemView)
         {
-            EventAggregator.Post(this, new TryOnSkinEvent() {TypeSkin = itemView.Type});
+            switch (View.ActiveSkinTab)
+            {
+                case ShopSkinTabType.HeroTab:
+                    EventAggregator.Post(this, new TryOnSkinEvent() {Skin = itemView.Type});
+                    break;
+                case ShopSkinTabType.ShieldTab:
+                    EventAggregator.Post(this, new TryOnShieldSkinEvent() {Skin = itemView.Type});
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             _previewSkin = itemView;
             
@@ -136,11 +179,30 @@ namespace UI.MainMenu.ShopSkinsScreen
             else
                 View.RedPriceTextColor();
             
-            if (_selectSkin.CurrentSkin == itemView.Type)
-                View.ShowSelectedText();
+            switch (View.ActiveSkinTab)
+            {
+                case ShopSkinTabType.HeroTab:
+                    
+                    if (_selectSkin.CurrentHeroSkin == itemView.Type)
+                        View.ShowSelectedText();
+                    
+                    if (_unlockerSkins.UnlockSkins.Contains(itemView.Type) && (_selectSkin.CurrentHeroSkin != itemView.Type))
+                        View.ShowSelectButton();
+                    
+                    break;
+                case ShopSkinTabType.ShieldTab:
+                    
+                    if (_selectSkin.CurrentShieldSkin == itemView.Type)
+                        View.ShowSelectedText();
+                    
+                    if (_unlockerSkins.UnlockSkins.Contains(itemView.Type) && (_selectSkin.CurrentShieldSkin != itemView.Type))
+                        View.ShowSelectButton();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             
-            if (_unlockerSkins.UnlockSkins.Contains(itemView.Type) && (_selectSkin.CurrentSkin != itemView.Type))
-                View.ShowSelectButton();
+            
             
             if (_unlockerSkins.UnlockSkins.Contains(itemView.Type) == false)
                 View.ShowBuyButton(itemView.PriceCoin);
@@ -149,44 +211,25 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         public void OnClickBuyButton()
         {
-            // if (BuySkin() == false) 
-            // {
-            //     // оповистить игрока
-            //     // View.ShakeBuyButton 
-            //     
-            //     Debug.Log("Don't have enough money");
-            //     
-            //     return;
-            // }
-            //
-            // _unlockerSkins.Unlock(_previewSkin.Type);
-            // _selectSkin.Select(_previewSkin.Type);
-            //
-
-            if (Model.TryBuySkin(_previewSkin))
+            if (Model.TryBuySkin(_previewSkin, View.ActiveSkinTab))
                 GenerateShopContent();
         }
-        
 
         public void OnClickSelectButton()
         {
-            // ClickSelectButton?.Invoke();
-            // _selectSkin.Select(_previewSkin.Type);
-            
-            Model.SelectSkin(_previewSkin.Type);
+            Model.SelectSkin(_previewSkin.Type, View.ActiveSkinTab);
             GenerateShopContent();
-            
         }
 
         public void OnClickBackButton()
         {
-            EventAggregator.Post(this, new ApplySelectedSkinEvent() {CurrentSkin = _selectSkin.CurrentSkin} );
+            EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() {CurrentSkin = _selectSkin.CurrentHeroSkin} );
             ClickBackButton?.Invoke();
         }
 
         public void Dispose()
         {
-            foreach (var item in _shopItems)
+            foreach (var item in _shopSkinsItems)
                 item.ClickedOnView -= OnClickeSkinItemView;
         }
     }
