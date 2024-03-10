@@ -1,4 +1,5 @@
 using MyNamespace.Scriptable.Configs.ShopSkins._1111;
+using Scriptable.Configs.ShopSkins.@base;
 using ShopSkinVisitor.Visitable;
 using UnityEngine;
 

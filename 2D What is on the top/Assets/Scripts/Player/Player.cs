@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using GameSM;
 using GG.Infrastructure.Utils.Swipe;
-using PersistentPlayerData;
+using PersistentData;
 using UnityEngine;
 using Zenject;
 
@@ -22,13 +22,13 @@ public class Player : MonoBehaviour, IPlayer
     private bool _isBlockSpwipe;
     private bool _isBlockMovement;
     
-    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover, IPersistentData persistentData)
+    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover, IPersistentPlayerData persistentData)
     {
         _playerMover = playerMover;
         _swipeListener = swipeListener;
         _gameCurrentState = gameCurrentState;
         Transform = transform;
-        
+
         EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() { SelectedHeroSkin = persistentData.PlayerData.SelectedHeroSkin});
         EventAggregator.Post(this, new ApplySelectedShieldSkinEvent { SelectedShieldSkin = persistentData.PlayerData.SelectedShieldSkin});
     }

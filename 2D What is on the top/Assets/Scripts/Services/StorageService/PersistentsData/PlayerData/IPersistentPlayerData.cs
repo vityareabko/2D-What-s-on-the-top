@@ -1,10 +1,9 @@
 using Services.StorageService.JsonDatas;
 
-namespace PersistentPlayerData
+namespace PersistentData
 {
-    public interface IPersistentData
+    public interface IPersistentPlayerData : IPersistentData
     {
         public PlayerJsonData PlayerData { get; }
-        public void SavePlayerData();
     }
 }

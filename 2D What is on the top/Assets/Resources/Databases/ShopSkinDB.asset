@@ -12,25 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5630760bbb8742e6ad5b2a8dbc30e9cd, type: 3}
   m_Name: ShopSkinDB
   m_EditorClassIdentifier: 
-  <HeroSkins>k__BackingField:
-  - {fileID: 11400000, guid: 2767812f2ac05cb4e8c4f74671f4fbfb, type: 2}
-  - {fileID: 11400000, guid: ff993aac38065714eadea9f9ec52780e, type: 2}
-  - {fileID: 11400000, guid: a03ea72743d658e4eb8e26ac47b8514f, type: 2}
-  - {fileID: 11400000, guid: 68168b8fdbfa0de4eaf3f6cd2de2fcbc, type: 2}
-  - {fileID: 11400000, guid: 338fce96f92179b40ae0485a38eae635, type: 2}
-  - {fileID: 11400000, guid: 8032d80df603ecc45a04f66540c79f10, type: 2}
-  - {fileID: 11400000, guid: 1a3b26879a16f4d4aa163f370557727d, type: 2}
-  - {fileID: 11400000, guid: 30fb78df0c7038d42b18da9cc3b09295, type: 2}
-  - {fileID: 11400000, guid: 80267fbef03e77c4c8dc5cc4c7e8d84f, type: 2}
-  - {fileID: 11400000, guid: c8680aef58dd9bc4eaad8141d1a30112, type: 2}
-  - {fileID: 11400000, guid: 347630aa920705448abfd97716728a16, type: 2}
-  - {fileID: 11400000, guid: c67f1a29ee8abb343b65fd1382c39f5a, type: 2}
-  <ShieldSkins>k__BackingField:
-  - {fileID: 11400000, guid: 22d5d8dd4c2952442b5dddb66b871728, type: 2}
-  - {fileID: 11400000, guid: 547d14f5adfb947458c178c3d3f2b1fa, type: 2}
   _heroSkinItems:
+  - {fileID: 11400000, guid: c9030cf0964d93f469cefa189d43668b, type: 2}
   - {fileID: 11400000, guid: 19f5e8a0958d38340b4df1e0e4d60ad8, type: 2}
+  - {fileID: 11400000, guid: cd3c980750e90324a81c764acc52aacf, type: 2}
+  - {fileID: 11400000, guid: 5713981df49890349814d0a2aa702638, type: 2}
+  - {fileID: 11400000, guid: 66c52a5d22d6991468a31234c74fa5c7, type: 2}
+  - {fileID: 11400000, guid: b7de852989403ab4b9d1d2131740d814, type: 2}
+  - {fileID: 11400000, guid: 0330fab4dc04d1849bc31ad0bd1370ec, type: 2}
   - {fileID: 11400000, guid: 5294a78e6a98bc544a4e3ff09eef6277, type: 2}
+  - {fileID: 11400000, guid: d5b4431e76ec44442bbca021f3174afb, type: 2}
+  - {fileID: 11400000, guid: 9db6df009d62ade47af55ba27c1c2047, type: 2}
+  - {fileID: 11400000, guid: eb026e883ede6f3459d17fa48df0bcf1, type: 2}
+  - {fileID: 11400000, guid: dafaf6926cb73ed4d98508cee19b5751, type: 2}
   _shieldSkinItems:
   - {fileID: 11400000, guid: f776a0acf974dea4899f8578d9d23b87, type: 2}
   - {fileID: 11400000, guid: f09d881461d0b59429dc01f95913479d, type: 2}

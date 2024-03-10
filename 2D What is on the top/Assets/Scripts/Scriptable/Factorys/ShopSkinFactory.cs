@@ -1,6 +1,7 @@
 using System;
 using MyNamespace.Scriptable.Configs.ShopSkins._1111;
 using Scriptable.Configs.ShopSkins;
+using Scriptable.Configs.ShopSkins.@base;
 using ShopSkinVisitor;
 using ShopSkinVisitor.Visitable;
 using UI.MainMenu.ShopSkinItemPanel;

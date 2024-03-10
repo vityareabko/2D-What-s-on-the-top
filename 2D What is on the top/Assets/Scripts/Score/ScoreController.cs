@@ -1,5 +1,5 @@
 using System;
-using WalletResources;
+using PersistentData;
 using ResourcesCollector;
 using Services.StorageService.JsonDatas;
 
@@ -10,9 +10,9 @@ namespace Score
         private ResourcesJsonData _resourcesData;
         
         private IResourceCollector _resourceCollector;
-        private IWalletResource _walletResource;
+        private IPersistentResourceData _walletResource;
         
-        private ScoreController(IResourceCollector resourceCollector, IWalletResource walletResource)
+        private ScoreController(IResourceCollector resourceCollector, IPersistentResourceData walletResource)
         {
             _resourceCollector = resourceCollector;
             _walletResource = walletResource;
@@ -24,7 +24,8 @@ namespace Score
         private void OnPickedUpHandler(object sender, ResourcePickedUpEvent eventData)
         {
             _resourceCollector.AddResource(eventData.Resource);
-            _walletResource.Add(eventData.Resource.Type, eventData.Resource.AmountResources);
+            _walletResource.ResourcesJsonData.Add(eventData.Resource.Type, eventData.Resource.AmountResources);
+            _walletResource.SaveData();
         }
     }
 }

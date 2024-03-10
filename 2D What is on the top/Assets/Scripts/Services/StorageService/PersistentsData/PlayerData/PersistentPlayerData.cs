@@ -2,14 +2,14 @@ using Services.StorageService;
 using Services.StorageService.JsonDatas;
 using UnityEngine;
 
-namespace PersistentPlayerData
+namespace PersistentData
 {
-    public class PersistentData : IPersistentData
+    public class PersistentPlayerData : IPersistentPlayerData
     {
         private PlayerJsonData _playerData;
         private IStorageService _storageService;
 
-        public PersistentData(IStorageService storageService)
+        public PersistentPlayerData(IStorageService storageService)
         {
             _storageService = storageService;
             LoadPlayerData();
@@ -17,7 +17,7 @@ namespace PersistentPlayerData
 
         public PlayerJsonData PlayerData => _playerData;
         
-        public void SavePlayerData()
+        public void SaveData()
         {
             _storageService.Save(StorageKeysType.PlayerData, _playerData, (success) =>
             {

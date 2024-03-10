@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using MyNamespace.Scriptable.Configs.ShopSkins._1111;
-using PersistentPlayerData;
+using PersistentData;
+using Scriptable.Configs.ShopSkins.@base;
 using ShopSkinVisitor.Visitable;
 using UI.MainMenu.ShopSkinItemPanel;
 using UI.MVP;
 using UnityEngine;
 using VHierarchy.Libs;
-using WalletResources;
+// using WalletResources;
 
 namespace UI.MainMenu.ShopSkinsScreen
 {
@@ -34,7 +35,8 @@ namespace UI.MainMenu.ShopSkinsScreen
         private ShopSkinFactory _skinFactory;
         private ShopSkinDB _shopSkinDB;
 
-        private IWalletResource _walletResource;
+        // private IWalletResource _walletResource;
+        private IPersistentResourceData _walletResource;
 
         private SkinItem _previewSkin;
 
@@ -42,14 +44,14 @@ namespace UI.MainMenu.ShopSkinsScreen
         private SelectSkinChecher _skinSeletChecker;
         private ClickSkinItemView _clickSkinItem;
 
-        private IPersistentData _persistentData;
+        private IPersistentPlayerData _persistentData;
         
         private ShopSkinsScreenPresenter(
             IShopSkinsScreenModel model, 
             IShopSkinsScreenView view, 
 
-            IWalletResource walletResource,
-            IPersistentData persistentData,
+            IPersistentResourceData walletResource,
+            IPersistentPlayerData persistentData,
             
             ShopSkinDB shopSkinDB,
             ShopSkinFactory shopSkinFactory, 
@@ -141,7 +143,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         {
             foreach (var item in _shopSkinsItems)
             {
-                if(_walletResource.HasEnoughResourceAmount(item.Item.ResourceTypeByBuySkin, item.Item.PriceCoin))
+                if(_walletResource.ResourcesJsonData.HasEnoughResourceAmount(item.Item.ResourceTypeByBuySkin, item.Item.PriceCoin))
                     item.DefaultPriceTextColor();
                 else
                     item.RedPriceTextColor();
@@ -171,8 +173,8 @@ namespace UI.MainMenu.ShopSkinsScreen
 
             _previewSkin = item;
 
-            item.Accept(_skinSeletChecker);
             item.Accept(_openSkinChecker);
+            item.Accept(_skinSeletChecker);
             
             if(_skinSeletChecker.IsSelect)
                 View.ShowSelectedText();
@@ -189,7 +191,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         {
             if (Model.TryBuySkin(_previewSkin))
             {
-                _persistentData.SavePlayerData();
+                _persistentData.SaveData();
                 GenerateShopContent();
             }
         }
@@ -197,7 +199,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         public void OnClickSelectButton()
         {
             Model.SelectSkin(_previewSkin);
-            _persistentData.SavePlayerData();
+            _persistentData.SaveData();
             GenerateShopContent();
         }
 

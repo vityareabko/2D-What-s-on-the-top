@@ -1,3 +1,4 @@
+using Scriptable.Configs.ShopSkins.@base;
 using ShopSkinVisitor.Visitable;
 using UnityEngine;
 

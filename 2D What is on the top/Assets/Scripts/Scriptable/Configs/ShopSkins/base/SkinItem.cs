@@ -1,7 +1,7 @@
 using ShopSkinVisitor.Visitable;
 using UnityEngine;
 
-namespace MyNamespace.Scriptable.Configs.ShopSkins._1111
+namespace Scriptable.Configs.ShopSkins.@base
 {
     public abstract class SkinItem : ScriptableObject
     {
