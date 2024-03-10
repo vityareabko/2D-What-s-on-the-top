@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using MyNamespace.Scriptable.Configs.ShopSkins._1111;
 using PersistentData;
 using Scriptable.Configs.ShopSkins.@base;
 using ShopSkinVisitor.Visitable;
@@ -8,7 +7,7 @@ using UI.MainMenu.ShopSkinItemPanel;
 using UI.MVP;
 using UnityEngine;
 using VHierarchy.Libs;
-// using WalletResources;
+
 
 namespace UI.MainMenu.ShopSkinsScreen
 {
@@ -35,7 +34,6 @@ namespace UI.MainMenu.ShopSkinsScreen
         private ShopSkinFactory _skinFactory;
         private ShopSkinDB _shopSkinDB;
 
-        // private IWalletResource _walletResource;
         private IPersistentResourceData _walletResource;
 
         private SkinItem _previewSkin;
@@ -175,6 +173,11 @@ namespace UI.MainMenu.ShopSkinsScreen
 
             item.Accept(_openSkinChecker);
             item.Accept(_skinSeletChecker);
+            
+            if (_walletResource.ResourcesJsonData.HasEnoughResourceAmount(item.ResourceTypeByBuySkin, item.PriceCoin))
+                View.DefaultPriceColor();
+            else
+                View.RedPriceTextColor();
             
             if(_skinSeletChecker.IsSelect)
                 View.ShowSelectedText();

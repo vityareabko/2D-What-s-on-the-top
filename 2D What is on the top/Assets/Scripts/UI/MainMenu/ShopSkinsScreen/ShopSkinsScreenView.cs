@@ -2,7 +2,9 @@ using Extensions;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
-using UnityEngine.UI;
+
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 namespace UI.MainMenu.ShopSkinsScreen
 {
@@ -31,7 +33,8 @@ namespace UI.MainMenu.ShopSkinsScreen
     {
         public override ScreenType ScreenType => ScreenType.ShopSkins;
 
-        
+
+        [SerializeField] private TabsUIController _tabsUIController;
         [SerializeField] private Transform _heroSkinsContent;
         [SerializeField] private Transform _shieldSkinsContetn;
         
@@ -51,7 +54,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         private ShopSkinTabType _currentActiveSkinTab = ShopSkinTabType.HeroTab;
 
         public ShopSkinTabType ActiveSkinTab => _currentActiveSkinTab;
-        
+  
         public IShopSkinsScreenPresenter Presentor { get; set; }
         
         public void InitPresentor(IShopSkinsScreenPresenter presentor) => Presentor = presentor;
@@ -105,7 +108,33 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         public void RedPriceTextColor() => _priceBuyButtonText.color = _colorDosentEnoughMoney;
 
-        private void OnClickedBackButton() => Presentor.OnClickBackButton();
+        private void ResetView()
+        {
+            _tabsUIController.OnTabButtonClicked((int)ShopSkinTabType.HeroTab);
+            _currentActiveSkinTab = ShopSkinTabType.HeroTab;
+            
+            ResetScrollPosition(_heroSkinsContent);
+            ResetScrollPosition(_shieldSkinsContetn);
+            
+            Presentor.GenerateShopContent();
+        }
+        
+        private void ResetScrollPosition(Transform contentTransform)
+        {
+            if (contentTransform.GetComponent<RectTransform>() is RectTransform rectTransform)
+                rectTransform.anchoredPosition = Vector2.zero;
+            
+        }
+
+        private void OnClickedBackButton()
+        {
+            
+            if (ActiveSkinTab == ShopSkinTabType.ShieldTab)
+                EventAggregator.Post(this, new EndShowShieldSkinEvent());
+            
+            ResetView();
+            Presentor.OnClickBackButton();
+        }
 
         private void OnClickedSelectSkinButton() => Presentor.OnClickSelectButton();
 
@@ -113,12 +142,14 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         private void OnActivateShielTabButton()
         {
+            EventAggregator.Post(this, new StartShowShieldSkinEvent());
             _currentActiveSkinTab = ShopSkinTabType.ShieldTab;
             Presentor.GenerateShopContent();
         }
 
         private void OnActivateHeroTabButton()
         {
+            EventAggregator.Post(this, new EndShowShieldSkinEvent());
             _currentActiveSkinTab = ShopSkinTabType.HeroTab;
             Presentor.GenerateShopContent();
         }

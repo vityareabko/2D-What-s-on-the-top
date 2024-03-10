@@ -40,6 +40,9 @@ public class Player : MonoBehaviour, IPlayer
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);
         EventAggregator.Subscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Subscribe<GameIsOnPausedEvent>(OnPausedGame);
+        
+        EventAggregator.Subscribe<StartShowShieldSkinEvent>(OnStartShowShopShieldSkinAnimation);
+        EventAggregator.Subscribe<EndShowShieldSkinEvent>(OnEndShowShopShieldSkinAnimation);
     }
     
     private void OnDisable()
@@ -47,7 +50,15 @@ public class Player : MonoBehaviour, IPlayer
         _swipeListener.OnSwipe.RemoveListener(OnSwipeHandler);
         EventAggregator.Unsubscribe<PlayeLoseLastJumpEvent>(OnPlayerLoseLastJumping);
         EventAggregator.Unsubscribe<GameIsOnPausedEvent>(OnPausedGame);
+        
+        EventAggregator.Unsubscribe<StartShowShieldSkinEvent>(OnStartShowShopShieldSkinAnimation);
+        EventAggregator.Unsubscribe<EndShowShieldSkinEvent>(OnEndShowShopShieldSkinAnimation);
     }
+
+    private void OnEndShowShopShieldSkinAnimation(object sender, EndShowShieldSkinEvent eventData) => _animatorController.EndShopShowShield();
+
+    private void OnStartShowShopShieldSkinAnimation(object sender, StartShowShieldSkinEvent eventData) => _animatorController.StartShopShowShield();
+    
 
     private void Update()
     {

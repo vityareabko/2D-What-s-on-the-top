@@ -9,7 +9,7 @@ public class PlayerAnimationController
     public PlayerAnimationController(Animator playerAnimator) =>
         _playerAnimator = playerAnimator;
     
-        public void JumpAnimationTrigger() => _playerAnimator.SetTrigger("Jump"); // # Todo : - вынести названия анимации в static class
+    public void JumpAnimationTrigger() => _playerAnimator.SetTrigger("Jump"); // # Todo : - вынести названия анимации в static class
     
     public void RollUpwardAnimationTrigger() => _playerAnimator.SetTrigger("RollUpward");
 
@@ -24,6 +24,11 @@ public class PlayerAnimationController
     public void LoseBounceAnimationTrigger() => _playerAnimator.SetTrigger("StartLoseBounce");
     
     public void LoseBouncePrepareToLand(bool isPrepareToFall) => _playerAnimator.SetBool("LoseBouncePrepareToLand", isPrepareToFall);
+
+    public void StartShopShowShield() => _playerAnimator.SetTrigger("StartShowShiledSkin");
+
+    public void EndShopShowShield() => _playerAnimator.SetTrigger("EndShowShieldSkin");
+    
 
     public void LoseBounceLanding(bool isMainPlatform)
     { 

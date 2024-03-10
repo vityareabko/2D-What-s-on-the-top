@@ -72,9 +72,7 @@ public class FollowCamera : MonoBehaviour
 
     private void HandleMainMenuPlatform()
     {
-        ZoomCamera(5f);
-        
-        SetSmoothlyOffset(0, 0);
+        ZoomCamera(5f, new Vector3(0,0,-15));
     }
 
     private void HandleLeftPlatform()
@@ -99,7 +97,7 @@ public class FollowCamera : MonoBehaviour
 
     private void HandleShopSkinsMenu()
     {
-        ZoomCamera(2f);
+        ZoomCamera(2f, new Vector3(.4f, 0, -15f));
     }
 
     // Дополнительные методы для работы с камерой
@@ -117,14 +115,19 @@ public class FollowCamera : MonoBehaviour
         transform.position = StabilizeCameraPosition(newPosition);
     }
 
-    private void ZoomCamera(float targetOrthographicSize)
+    private void ZoomCamera(float targetOrthographicSize, Vector3 offset)
     {
-        float smoothTime = 0.08f;
+        float smoothTime = 0.88f ; // 0.1f;
         
         // Todo: - при переходе из ShopSkins в MainMenu - то быстро смещается камера нужно бы поисправить
         
+        if(_camera.orthographicSize == targetOrthographicSize- 0.1f)
+        {
+            SetSmoothlyOffset(offset.x, offset.y);
+            return;
+        }
         _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, targetOrthographicSize, ref _zoomVelocity, smoothTime);
-        transform.position = Vector3.SmoothDamp(transform.position, _offset, ref positionVelocity, smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, offset, ref positionVelocity, smoothTime);
     }
     
 

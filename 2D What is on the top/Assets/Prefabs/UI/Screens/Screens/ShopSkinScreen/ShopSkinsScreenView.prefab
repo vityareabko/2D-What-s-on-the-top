@@ -763,6 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hideOnAwake: 1
+  _tabsUIController: {fileID: 4403934248890444252}
   _heroSkinsContent: {fileID: 2525624902301158329}
   _shieldSkinsContetn: {fileID: 6731458123215114895}
   _heroSkinsTabButton: {fileID: 459089314790403717}
@@ -2263,7 +2264,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.008239746, y: 0.00012207031}
+  m_AnchoredPosition: {x: -0.008178711, y: 0.00012207031}
   m_SizeDelta: {x: -17, y: -17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6096182015977171367

@@ -1,10 +1,7 @@
 
 using UnityEngine;
 
-
-
-
-public class TabsUI : MonoBehaviour {
+public class TabsUIController : MonoBehaviour {
     [Header("Tabs Customization")]
     [SerializeField] private Color themeColor = Color.gray;
     [Space]
@@ -40,7 +37,7 @@ public class TabsUI : MonoBehaviour {
         UpdateUIState();
     }
 
-    private void OnTabButtonClicked(int tabIndex) 
+    public void OnTabButtonClicked(int tabIndex) 
     {
         if (currentTabIndex != tabIndex) 
         {
