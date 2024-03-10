@@ -1,23 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyNamespace.Scriptable.Configs.ShopSkins._1111;
+using Scriptable.Configs.ShopSkins;
 using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "ShopSkinDB", menuName = "Databases/ShopSkinDB")]
 public class ShopSkinDB : ScriptableObject
 {
-    [field: SerializeField] public List<SkinItemConfig> HeroSkins { get; private set; } 
-    
-    [field: SerializeField] public List<SkinItemConfig> ShieldSkins { get; private set; } 
-    
-    // Todo: OnValidate - проверка на повторение типов сделать
+    [SerializeField] private List<HeroSkinItem> _heroSkinItems;
+    [SerializeField] private List<ShieldSkinItem> _shieldSkinItems;
+
     private void OnValidate()
     {
-        if (HeroSkins.GroupBy(t => t.Type).Any(d => d.Count() > 1))
+        if (_heroSkinItems.GroupBy(t => t.Type).Any(d => d.Count() > 1))
             Debug.LogError($"[ShopSkinDB] Обнаружены дубликаты ", this);
         
-        if (ShieldSkins.GroupBy(t => t.Type).Any(d => d.Count() > 1))
+        if (_shieldSkinItems.GroupBy(t => t.Type).Any(d => d.Count() > 1))
             Debug.LogError($"[ShopSkinDB] Обнаружены дубликаты ", this);
     }
+    
+    public IEnumerable<HeroSkinItem> HeroSkinItems => _heroSkinItems;
+    public IEnumerable<ShieldSkinItem> ShieldSkinItems => _shieldSkinItems;
+
+
 }

@@ -28,3 +28,9 @@ MonoBehaviour:
   <ShieldSkins>k__BackingField:
   - {fileID: 11400000, guid: 22d5d8dd4c2952442b5dddb66b871728, type: 2}
   - {fileID: 11400000, guid: 547d14f5adfb947458c178c3d3f2b1fa, type: 2}
+  _heroSkinItems:
+  - {fileID: 11400000, guid: 19f5e8a0958d38340b4df1e0e4d60ad8, type: 2}
+  - {fileID: 11400000, guid: 5294a78e6a98bc544a4e3ff09eef6277, type: 2}
+  _shieldSkinItems:
+  - {fileID: 11400000, guid: f776a0acf974dea4899f8578d9d23b87, type: 2}
+  - {fileID: 11400000, guid: f09d881461d0b59429dc01f95913479d, type: 2}

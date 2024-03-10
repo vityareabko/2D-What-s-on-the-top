@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using GameSM;
 using GG.Infrastructure.Utils.Swipe;
-using MyNamespace.Services.StorageService.SelectorSkin;
+using PersistentPlayerData;
 using UnityEngine;
 using Zenject;
 
@@ -22,15 +22,15 @@ public class Player : MonoBehaviour, IPlayer
     private bool _isBlockSpwipe;
     private bool _isBlockMovement;
     
-    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover, ISelectSkin selectSkin)
+    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover, IPersistentData persistentData)
     {
         _playerMover = playerMover;
         _swipeListener = swipeListener;
         _gameCurrentState = gameCurrentState;
         Transform = transform;
         
-        EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() { CurrentSkin = selectSkin.CurrentHeroSkin});
-        EventAggregator.Post(this, new ApplySelectedShieldSkinEvent { CurrentShieldSkin = selectSkin.CurrentShieldSkin});
+        EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() { SelectedHeroSkin = persistentData.PlayerData.SelectedHeroSkin});
+        EventAggregator.Post(this, new ApplySelectedShieldSkinEvent { SelectedShieldSkin = persistentData.PlayerData.SelectedShieldSkin});
     }
     
     private void Awake() => _animatorController = new PlayerAnimationController(GetComponent<Animator>());

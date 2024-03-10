@@ -1,43 +1,43 @@
-using System.Collections.Generic;
-using MyNamespace.Services.StorageService.SelectorSkin;
+using MyNamespace.Scriptable.Configs.ShopSkins._1111;
+using ShopSkinVisitor.Visitable;
 using UI.MVP;
-using UnlockerSkins;
+
 using WalletResources;
 
 namespace UI.MainMenu.ShopSkinsScreen
 {
     public interface IShopSkinsScreenModel : IModel
     {
-        public void SelectSkin(ShopSkinType type, ShopSkinTabType tabType);
-        public bool TryBuySkin(SkinItemConfig item, ShopSkinTabType tabType);
+        public void SelectSkin(SkinItem item);
+        public bool TryBuySkin(SkinItem item);
     }
 
     public class ShopSkinsScreenModel : IShopSkinsScreenModel
     {
-        
-        private ISelectSkin _selectSkin;
-        private IUnlockerSkin _unlockerSkins;
         private IWalletResource _walletResource;
-
-        public ShopSkinsScreenModel(ISelectSkin selectSkin, IUnlockerSkin unlockerSkins, IWalletResource walletResource)
+        
+        private OpenShopSkin _openShopSkin;
+        private SelectShopSkin _selectSkin;
+        
+        public ShopSkinsScreenModel(IWalletResource walletResource, OpenShopSkin openShopSkin, SelectShopSkin selectSkin)
         {
-            _selectSkin = selectSkin;
-            _unlockerSkins = unlockerSkins;
             _walletResource = walletResource;
+            _openShopSkin = openShopSkin;
+            _selectSkin = selectSkin;
         }
+
+        public void SelectSkin(SkinItem item) => item.Accept(_selectSkin);
         
-        public void SelectSkin(ShopSkinType type, ShopSkinTabType tabType) => _selectSkin.Select(type, tabType);
-        
-        public bool TryBuySkin(SkinItemConfig item, ShopSkinTabType tabType)
+        public bool TryBuySkin(SkinItem item)
         {
-            if (CanAffordSkin(item) == false)
+            if (_walletResource.HasEnoughResourceAmount(item.ResourceTypeByBuySkin, item.PriceCoin) == false)
                 return false;
             
-            _unlockerSkins.Unlock(item.Type);
-            _selectSkin.Select(item.Type, tabType);
+            item.Accept(_openShopSkin);
+            _walletResource.Spend(item.ResourceTypeByBuySkin, item.PriceCoin);
+            item.Accept(_selectSkin);
+            
             return true;
         }
-
-        private bool CanAffordSkin(SkinItemConfig item) => _walletResource.Spend(item.ResourceTypeByBuySkin, item.PriceCoin);
     }
 }

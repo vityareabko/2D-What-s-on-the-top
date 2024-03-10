@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09280ef637ab458eb7d3039ac226afcb, type: 3}
   m_Name: ShopSkinFactory
   m_EditorClassIdentifier: 
-  _itemSkinPrefab: {fileID: 4386834687672585565, guid: 1c4b64d2809723844972ea1a59467155, type: 3}
+  _heroSkinItemView: {fileID: 4386834687672585565, guid: 1c4b64d2809723844972ea1a59467155, type: 3}
+  _shieldSkinItemView: {fileID: 4386834687672585565, guid: 1c4b64d2809723844972ea1a59467155, type: 3}

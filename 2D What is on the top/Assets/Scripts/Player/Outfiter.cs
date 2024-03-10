@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
@@ -27,7 +26,15 @@ public class Outfitter : MonoBehaviour
         EventAggregator.Unsubscribe<ApplySelectedShieldSkinEvent>(OnApplyCurrentShielSkin);
     }
 
-    private void ChangeHerSkinSetByType(ShopSkinType type)
+    // private void ChangeHerSkinSetByType(ShopSkinType type)
+    // {
+    //     foreach (var resolver in _resolvers)
+    //     {
+    //         resolver.SetCategoryAndLabel(type.ToString(), resolver.GetLabel());
+    //     }
+    // }
+    //
+    private void ChangeHerSkinSetByType(HeroSkinType type)
     {
         foreach (var resolver in _resolvers)
         {
@@ -36,19 +43,20 @@ public class Outfitter : MonoBehaviour
     }
 
 
-    private void OnApplyCurrentSkin(object sender, ApplySelectedHeroSkinEvent eventData) => ChangeHerSkinSetByType(eventData.CurrentSkin);
+    // private void OnApplyCurrentSkin(object sender, ApplySelectedHeroSkinEvent eventData) => ChangeHerSkinSetByType(eventData.CurrentSkin);
+    private void OnApplyCurrentSkin(object sender, ApplySelectedHeroSkinEvent eventData) => ChangeHerSkinSetByType(eventData.SelectedHeroSkin);
     
-    private void OnTryOnSkinHandler(object sender, TryOnSkinEvent eventData) => ChangeHerSkinSetByType(eventData.Skin);
+    private void OnTryOnSkinHandler(object sender, TryOnSkinEvent eventData) => ChangeHerSkinSetByType(eventData.selectedHeroSkinTypeSkin);
 
     
     
 
-    private void ChangeShieldSkinByType(ShopSkinType type) =>
-        _resolverShieldSkin.SetCategoryAndLabel(type.ToString(), _resolverShieldSkin.GetLabel());
+    // private void ChangeShieldSkinByType(ShopSkinType type) => _resolverShieldSkin.SetCategoryAndLabel(type.ToString(), _resolverShieldSkin.GetLabel());
+    private void ChangeShieldSkinByType(ShieldSkinType type) => _resolverShieldSkin.SetCategoryAndLabel(type.ToString(), _resolverShieldSkin.GetLabel());
     
-    private void OnApplyCurrentShielSkin(object sender, ApplySelectedShieldSkinEvent eventData) => ChangeShieldSkinByType(eventData.CurrentShieldSkin);
+    private void OnApplyCurrentShielSkin(object sender, ApplySelectedShieldSkinEvent eventData) => ChangeShieldSkinByType(eventData.SelectedShieldSkin);
     
-    private void OnTryOnShieldSkinHandler(object sender, TryOnShieldSkinEvent eventData) => ChangeShieldSkinByType(eventData.Skin);
+    private void OnTryOnShieldSkinHandler(object sender, TryOnShieldSkinEvent eventData) => ChangeShieldSkinByType(eventData.shieldSkin);
 
 
 

@@ -1,5 +1,6 @@
 using System;
 using Extensions;
+using MyNamespace.Scriptable.Configs.ShopSkins._1111;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace UI.MainMenu.ShopSkinItemPanel
 {
     public interface IShopSkinItemView : IView
     {
-        public event Action<SkinItemConfig> ClickedOnView; 
+        public event Action<SkinItem> ClickedOnView; 
         
         public void Unlock();
         public void Lock();
@@ -23,8 +24,8 @@ namespace UI.MainMenu.ShopSkinItemPanel
     public class ShopSkinItemView : BasePanelView, IShopSkinItemView, IPointerClickHandler
     {
         public override PanelType PanelType { get; } = PanelType.ShopItem;
-
-        public event Action<SkinItemConfig> ClickedOnView;
+        
+        public event Action<SkinItem> ClickedOnView;
         
         [SerializeField] private Image _contentImage;
         [SerializeField] private Image _lockPanel;
@@ -33,20 +34,18 @@ namespace UI.MainMenu.ShopSkinItemPanel
 
         [SerializeField] private Color _colorDefault;
         [SerializeField] private Color _colorDosentEnoughMoney;
-
-        public SkinItemConfig Item;
+        
+        public SkinItem Item;
 
         public bool IsLock { get; private set; }
-
-        // public int PriceCoin => Item.PriceCoin;
-
-        public void Initialize(SkinItemConfig config)
+        
+        public void Initialize(SkinItem config)
         {
             Item = config;
             _contentImage.sprite = config.ShopIcon;
- 
-            _selectedText.gameObject.SetActive(false);
+            
             _price.Show(config.PriceCoin); 
+            _selectedText.gameObject.SetActive(false);
         }
         
 

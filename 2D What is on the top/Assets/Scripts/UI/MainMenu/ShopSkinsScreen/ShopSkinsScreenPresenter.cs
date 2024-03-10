@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using MyNamespace.Services.StorageService.SelectorSkin;
+using MyNamespace.Scriptable.Configs.ShopSkins._1111;
+using PersistentPlayerData;
+using ShopSkinVisitor.Visitable;
 using UI.MainMenu.ShopSkinItemPanel;
 using UI.MVP;
 using UnityEngine;
-using UnlockerSkins;
 using VHierarchy.Libs;
 using WalletResources;
 
@@ -16,7 +17,6 @@ namespace UI.MainMenu.ShopSkinsScreen
         public void OnClickBuyButton();
         public void OnClickSelectButton();
         public void OnClickBackButton();
-
         public void GenerateShopContent();
     }
 
@@ -30,34 +30,47 @@ namespace UI.MainMenu.ShopSkinsScreen
         private bool _isInit;
         
         private List<ShopSkinItemView> _shopSkinsItems = new();
-        // private List<ShopSkinItemView> _shopShieldSkinsItems = new(); // возможно это лишний так как можно все делать в _shopSkinsItems
         
         private ShopSkinFactory _skinFactory;
         private ShopSkinDB _shopSkinDB;
 
-        private ISelectSkin _selectSkin;
-        private IUnlockerSkin _unlockerSkins;
         private IWalletResource _walletResource;
 
-        private SkinItemConfig _previewSkin;
+        private SkinItem _previewSkin;
+
+        private OpenSkinChecher _openSkinChecker;
+        private SelectSkinChecher _skinSeletChecker;
+        private ClickSkinItemView _clickSkinItem;
+
+        private IPersistentData _persistentData;
         
         private ShopSkinsScreenPresenter(
             IShopSkinsScreenModel model, 
             IShopSkinsScreenView view, 
-            ISelectSkin selectSkin, 
-            IUnlockerSkin unlockerSkins,
+
             IWalletResource walletResource,
+            IPersistentData persistentData,
+            
             ShopSkinDB shopSkinDB,
-            ShopSkinFactory shopSkinFactory) 
+            ShopSkinFactory shopSkinFactory, 
+            
+            OpenSkinChecher openSkinChecker,
+            SelectSkinChecher skinSeletChecker,
+            ClickSkinItemView clickSkinItem)
         {
             Model = model;
             View = view;
             
             _skinFactory = shopSkinFactory;
-            _selectSkin = selectSkin;
-            _unlockerSkins = unlockerSkins;
-            _walletResource = walletResource;
+
             _shopSkinDB = shopSkinDB;
+            _walletResource = walletResource;
+            _persistentData = persistentData;
+            
+            _openSkinChecker = openSkinChecker;
+            _skinSeletChecker = skinSeletChecker;
+            _clickSkinItem = clickSkinItem;
+            
             Init();
         }
 
@@ -85,12 +98,10 @@ namespace UI.MainMenu.ShopSkinsScreen
             switch (View.ActiveSkinTab)
             {
                 case ShopSkinTabType.HeroTab:
-                    // генерируем контент скинов
-                    GenerateHeroSkinContent(_shopSkinDB.HeroSkins, View.HeroSkinsContent);
+                    GenerateHeroSkinContent(_shopSkinDB.HeroSkinItems, View.HeroSkinsContent);
                     break;
                 case ShopSkinTabType.ShieldTab:
-                    GenerateHeroSkinContent(_shopSkinDB.ShieldSkins, View.ShieldSkinsContent);
-                    // генерируем контет щитов
+                    GenerateHeroSkinContent(_shopSkinDB.ShieldSkinItems, View.ShieldSkinsContent);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -98,52 +109,31 @@ namespace UI.MainMenu.ShopSkinsScreen
             
             CheckOnEnoughMoneyForItems();
         }
-
-        private void GenerateHeroSkinContent(List<SkinItemConfig> skins, Transform contentTransform)
+        
+        private void GenerateHeroSkinContent(IEnumerable<SkinItem> items, Transform parent)
         {
-            foreach (var skinItemConfig in skins)
+            Clear();
+            
+            foreach (var item in items)
             {
-                var instance = _skinFactory.Get(skinItemConfig, contentTransform);
-                instance.ClickedOnView += OnClickeSkinItemView;
-                _shopSkinsItems.Add(instance);
+                var spawnedItem = _skinFactory.Get(item, parent);
+                spawnedItem.ClickedOnView += OnClickeSkinItemView;
                 
-                if (_unlockerSkins.UnlockSkins.Contains(instance.Item.Type))
-                    instance.Unlock();
+                spawnedItem.Unselect();
+                spawnedItem.Lock();
+
+                ChekSkinOnOpenAndSelect(spawnedItem);
                 
-                if (_unlockerSkins.UnlockSkins.Contains(instance.Item.Type) == false)
-                    instance.Lock();
-                
-                switch (View.ActiveSkinTab)
-                {
-                    case ShopSkinTabType.HeroTab:
-                        if (_selectSkin.CurrentHeroSkin == instance.Item.Type)
-                        {
-                            instance.Select(); // item 
-                            OnClickeSkinItemView(instance.Item); // change skin
-                            Model.SelectSkin(instance.Item.Type, View.ActiveSkinTab); // screen buttons update
-                        }
-                        break;
-                    
-                    case ShopSkinTabType.ShieldTab:
-                        if (_selectSkin.CurrentShieldSkin == instance.Item.Type)
-                        {
-                            instance.Select();
-                            OnClickeSkinItemView(instance.Item);
-                            Model.SelectSkin(instance.Item.Type, View.ActiveSkinTab);
-                            
-                        }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                _shopSkinsItems.Add(spawnedItem);
             }
         }
 
         private void Clear()
         {
+            Dispose();
             foreach (var item in _shopSkinsItems)
                 item.gameObject.Destroy();
-            
+
             _shopSkinsItems.Clear();
         }
 
@@ -158,72 +148,72 @@ namespace UI.MainMenu.ShopSkinsScreen
             }
         }
 
-        private void OnClickeSkinItemView(SkinItemConfig itemView)
+        private void ChekSkinOnOpenAndSelect(ShopSkinItemView item)
         {
-            switch (View.ActiveSkinTab)
+            item.Item.Accept(_openSkinChecker);
+            
+            if (_openSkinChecker.IsOpen)
             {
-                case ShopSkinTabType.HeroTab:
-                    EventAggregator.Post(this, new TryOnSkinEvent() {Skin = itemView.Type});
-                    break;
-                case ShopSkinTabType.ShieldTab:
-                    EventAggregator.Post(this, new TryOnShieldSkinEvent() {Skin = itemView.Type});
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                item.Item.Accept(_skinSeletChecker);
+                if (_skinSeletChecker.IsSelect)
+                {
+                    item.Select();
+                    OnClickeSkinItemView(item.Item);
+                }
+                
+                item.Unlock();
             }
-
-            _previewSkin = itemView;
-            
-            if (_walletResource.HasEnoughResourceAmount(itemView.ResourceTypeByBuySkin, itemView.PriceCoin))
-                View.DefaultPriceColor();
-            else
-                View.RedPriceTextColor();
-            
-            switch (View.ActiveSkinTab)
-            {
-                case ShopSkinTabType.HeroTab:
-                    
-                    if (_selectSkin.CurrentHeroSkin == itemView.Type)
-                        View.ShowSelectedText();
-                    
-                    if (_unlockerSkins.UnlockSkins.Contains(itemView.Type) && (_selectSkin.CurrentHeroSkin != itemView.Type))
-                        View.ShowSelectButton();
-                    
-                    break;
-                case ShopSkinTabType.ShieldTab:
-                    
-                    if (_selectSkin.CurrentShieldSkin == itemView.Type)
-                        View.ShowSelectedText();
-                    
-                    if (_unlockerSkins.UnlockSkins.Contains(itemView.Type) && (_selectSkin.CurrentShieldSkin != itemView.Type))
-                        View.ShowSelectButton();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            
-            
-            
-            if (_unlockerSkins.UnlockSkins.Contains(itemView.Type) == false)
-                View.ShowBuyButton(itemView.PriceCoin);
-            
         }
+        
+        private void OnClickeSkinItemView(SkinItem item)
+        {
+            item.Accept(_clickSkinItem); 
 
+            _previewSkin = item;
+
+            item.Accept(_skinSeletChecker);
+            item.Accept(_openSkinChecker);
+            
+            if(_skinSeletChecker.IsSelect)
+                View.ShowSelectedText();
+            
+            if (_openSkinChecker.IsOpen && (_skinSeletChecker.IsSelect == false))
+                View.ShowSelectButton();
+            
+            if (_openSkinChecker.IsOpen == false)
+                View.ShowBuyButton(item.PriceCoin);
+
+        }
+        
         public void OnClickBuyButton()
         {
-            if (Model.TryBuySkin(_previewSkin, View.ActiveSkinTab))
+            if (Model.TryBuySkin(_previewSkin))
+            {
+                _persistentData.SavePlayerData();
                 GenerateShopContent();
+            }
         }
 
         public void OnClickSelectButton()
         {
-            Model.SelectSkin(_previewSkin.Type, View.ActiveSkinTab);
+            Model.SelectSkin(_previewSkin);
+            _persistentData.SavePlayerData();
             GenerateShopContent();
         }
 
         public void OnClickBackButton()
         {
-            EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() {CurrentSkin = _selectSkin.CurrentHeroSkin} );
+            if (_previewSkin == null)
+            {
+                ClickBackButton?.Invoke();
+                return;
+            }
+
+            _previewSkin.Accept(_skinSeletChecker);
+            
+            EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() {SelectedHeroSkin = _skinSeletChecker.CurrentHeroSkin} );
+            EventAggregator.Post(this, new ApplySelectedShieldSkinEvent() { SelectedShieldSkin = _skinSeletChecker.CurrentShieldSkin });
+            
             ClickBackButton?.Invoke();
         }
 

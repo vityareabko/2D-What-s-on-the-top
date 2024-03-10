@@ -1,5 +1,6 @@
-
 public class TryOnSkinEvent
 {
-    public ShopSkinType Skin;
+    // public ShopSkinType Skin;
+    
+    public HeroSkinType selectedHeroSkinTypeSkin;
 }

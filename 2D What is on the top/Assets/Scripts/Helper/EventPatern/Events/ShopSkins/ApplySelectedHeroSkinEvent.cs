@@ -1,6 +1,6 @@
-
 public class ApplySelectedHeroSkinEvent
 {
-    public ShopSkinType CurrentSkin;
-    public ShopSkinType currentShieldSkin;
+    // public ShopSkinType CurrentSkin;
+
+    public HeroSkinType SelectedHeroSkin;
 }
