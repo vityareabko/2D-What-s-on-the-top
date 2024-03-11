@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PersistentData;
 using Scriptable.Configs.ShopSkins.@base;
 using ShopSkinVisitor.Visitable;
@@ -126,6 +127,15 @@ namespace UI.MainMenu.ShopSkinsScreen
                 
                 _shopSkinsItems.Add(spawnedItem);
             }
+
+            SortItems();
+        }
+
+        private void SortItems()
+        {
+            _shopSkinsItems = _shopSkinsItems.OrderBy(item => item.IsLock).ToList();
+            for (int i = 0; i < _shopSkinsItems.Count; i++) 
+                _shopSkinsItems[i].transform.SetSiblingIndex(i);
         }
 
         private void Clear()

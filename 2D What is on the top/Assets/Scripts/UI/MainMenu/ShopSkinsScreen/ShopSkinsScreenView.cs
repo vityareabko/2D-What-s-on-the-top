@@ -142,6 +142,7 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         private void OnActivateShielTabButton()
         {
+            ResetView();
             EventAggregator.Post(this, new StartShowShieldSkinEvent());
             _currentActiveSkinTab = ShopSkinTabType.ShieldTab;
             Presentor.GenerateShopContent();
@@ -149,6 +150,7 @@ namespace UI.MainMenu.ShopSkinsScreen
 
         private void OnActivateHeroTabButton()
         {
+            ResetView();
             EventAggregator.Post(this, new EndShowShieldSkinEvent());
             _currentActiveSkinTab = ShopSkinTabType.HeroTab;
             Presentor.GenerateShopContent();

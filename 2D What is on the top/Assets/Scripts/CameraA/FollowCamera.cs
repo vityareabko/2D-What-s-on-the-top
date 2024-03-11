@@ -97,7 +97,7 @@ public class FollowCamera : MonoBehaviour
 
     private void HandleShopSkinsMenu()
     {
-        ZoomCamera(2f, new Vector3(.4f, 0, -15f));
+        ZoomCamera(3f, new Vector3(.7f, 0.02f, -15f));
     }
 
     // Дополнительные методы для работы с камерой
