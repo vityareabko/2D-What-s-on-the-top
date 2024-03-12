@@ -31,7 +31,7 @@ namespace UI.MainMenu
         
         public void Show() => View.Show();
         
-        public void Hide() => View.Hide();
+        public void Hide(Action callBack = null) => View.Hide();
 
         public void Init()
         {

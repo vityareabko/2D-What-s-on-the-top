@@ -97,7 +97,7 @@ public class FollowCamera : MonoBehaviour
 
     private void HandleShopSkinsMenu()
     {
-        ZoomCamera(3f, new Vector3(.7f, 0.02f, -15f));
+        ZoomCamera(2.5f, new Vector3(.5f, 0, -15f));
     }
 
     // Дополнительные методы для работы с камерой
@@ -117,7 +117,7 @@ public class FollowCamera : MonoBehaviour
 
     private void ZoomCamera(float targetOrthographicSize, Vector3 offset)
     {
-        float smoothTime = 0.88f ; // 0.1f;
+        float smoothTime = 0.38f ; // 0.1f;
         
         // Todo: - при переходе из ShopSkins в MainMenu - то быстро смещается камера нужно бы поисправить
         

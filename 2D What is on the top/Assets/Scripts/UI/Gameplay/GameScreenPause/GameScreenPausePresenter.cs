@@ -32,7 +32,7 @@ namespace UI.GameScreenPause
         }
 
         public void Show() => View.Show();
-        public void Hide() => View.Hide();
+        public void Hide(System.Action callBack = null) => View.Hide();
         
         public void Init()
         {

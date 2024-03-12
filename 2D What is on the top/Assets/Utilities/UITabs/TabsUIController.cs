@@ -1,22 +1,17 @@
-
-
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class TabsUIController : MonoBehaviour {
     
-    [Header("Tabs Customization")]
-    [SerializeField] private Color _deactiveCollor = Color.gray;
-    [SerializeField] private Color _activeTabCollor = Color.gray;
-    // [SerializeField] private Color _contentCollor = Color.gray;
-    [SerializeField] private Image _frameContent;
-    [SerializeField] private Image _uiTabPanel;
-    [Space]
+    [Header("Custimize")]
+    [SerializeField] private float _offsetXDeactivateTab = 0f;
+    [SerializeField] private float _offsetXActiveTab = -30f;
+    [Space] 
     
     [Header("Tabs Elements")]
-    [SerializeField] private TabButtonUI1[] _tabButtons; // Settable in Inspector
-    [SerializeField] private GameObject[] _tabContent; // Settable in Inspector
+    [SerializeField] private TabButtonUI1[] _tabButtons;
+    [SerializeField] private GameObject[] _tabContent; 
     [Space] 
     
     private int currentTabIndex = 0;
@@ -33,7 +28,7 @@ public class TabsUIController : MonoBehaviour {
 
         for (int i = 0; i < _tabButtons.Length; i++)
         {
-            int index = i; // Local copy for lambda capture
+            int index = i;
             _tabButtons[i].TabButton.onClick.AddListener(() => OnTabButtonClicked(index));
             _tabContent[i].SetActive(i == currentTabIndex);
         }
@@ -58,20 +53,17 @@ public class TabsUIController : MonoBehaviour {
         {
             _tabButtons[i].TabButton.interactable = (i != currentTabIndex);
             _tabButtons[i].ActiveTabArrow.gameObject.SetActive(i == currentTabIndex);
-            // Вызываем ActivateTabMover с правильным флагом активности для каждого таба.
-            ActivateTabMover(_tabButtons[i].gameObject.GetComponent<RectTransform>(), i == currentTabIndex);
+     
+            // ActivateTabMover(_tabButtons[i].gameObject.GetComponent<RectTransform>(), i == currentTabIndex);
         }
     }
 
     private void ActivateTabMover(RectTransform tabButton, bool isActive)
     {
-        // Если таб активен, его позиция должна быть (0, y, 0), иначе (56, y, 0).
-        float x = isActive ? 0f : 56f;
+        float x = isActive ? _offsetXActiveTab : _offsetXDeactivateTab;
 
-        // Новая позиция для RectTransform.
         Vector2 targetPosition = new Vector2(x, tabButton.anchoredPosition.y);
 
-        // Анимация движения таба с использованием DOTween.
         tabButton.DOAnchorPos(targetPosition, 0.3f).SetEase(Ease.InOutQuad);
     }
     

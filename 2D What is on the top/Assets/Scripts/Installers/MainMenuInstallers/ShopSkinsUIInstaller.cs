@@ -16,9 +16,9 @@ namespace Installers.MainMenuInstallers
 
         private void BindShopSkinsMVPInstaller()
         {
-            Container.Bind<IShopSkinsScreenModel>().To<ShopSkinsScreenModel>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<ShopSkinsScreenView>().FromComponentInNewPrefab(_shopSkinsScreenView).UnderTransform(_parent).AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<ShopSkinsScreenPresenter>().AsSingle().NonLazy();
+            Container.Bind<IShopSkinsScreenModel>().To<ShopSkinsScreenModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ShopSkinsScreenView>().FromComponentInNewPrefab(_shopSkinsScreenView).UnderTransform(_parent).AsSingle();
+            Container.BindInterfacesAndSelfTo<ShopSkinsScreenPresenter>().AsSingle();
         }
     }
 }

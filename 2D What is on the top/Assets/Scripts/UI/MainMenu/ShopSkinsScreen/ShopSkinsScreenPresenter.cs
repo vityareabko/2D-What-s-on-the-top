@@ -89,8 +89,8 @@ namespace UI.MainMenu.ShopSkinsScreen
             View.Show();
             GenerateShopContent();
         }
-
-        public void Hide() => View.Hide();
+        
+        public void Hide(Action callBack = null) => View.Hide(callBack);
 
         public void GenerateShopContent()
         {

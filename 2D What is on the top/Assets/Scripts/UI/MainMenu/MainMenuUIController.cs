@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UI.MainMenu.ShopSkinsScreen;
 using UI.MVP;
 using UnityEngine;
-using VHierarchy.Libs;
 using Zenject;
 
 namespace UI.MainMenu
@@ -65,7 +64,12 @@ namespace UI.MainMenu
 
         private void OnClickedShopSkinsBackButton()
         {
-            HideOtherViewsAndShow(_mainMenuPresenter);
+            _shopSkinsPresenter.Hide(() =>
+            {
+                Debug.Log("Почему не работает");
+                _mainMenuPresenter.Show();
+            });
+            
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
         }
 

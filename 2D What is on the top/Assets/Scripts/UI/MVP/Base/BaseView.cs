@@ -31,7 +31,7 @@ namespace UI.MVP
             OnShow();
         }
 
-        public void Hide()
+        public virtual void Hide(System.Action callBack = null)
         {
             gameObject.SetActive(false);
             OnHide();

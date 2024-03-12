@@ -1,9 +1,11 @@
+using System;
+
 namespace UI.MVP
 {
     public interface IView
     {
         public void Show();
-        public void Hide();
+        public void Hide(Action callBack = null);
     }
     
     public interface IView<TPresenter> : IView where TPresenter : IPresenter
