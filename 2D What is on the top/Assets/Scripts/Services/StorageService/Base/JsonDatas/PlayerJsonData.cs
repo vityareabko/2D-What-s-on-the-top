@@ -1,22 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using VHierarchy.Libs;
 
 namespace Services.StorageService.JsonDatas
 {
     public class PlayerJsonData
     {
-        // [JsonProperty(PropertyName = "open_skins")]
-        // public List<ShopSkinType> AvailableSkins = new();
-        //
-        //
-        // [JsonProperty(PropertyName = "slctd_hero_skin")]
-        // public ShopSkinType SelectedHeroSkin;// = ShopSkinType.DwellerArmor;
-        //
-        // [JsonProperty(PropertyName = "slctd_shield_skin")]
-        // public ShopSkinType SelectedShieldSkin;// = ShopSkinType.DwellerBucket;
-        
         [JsonProperty(PropertyName = "open_hero_skins")] private List<HeroSkinType> _availableHeroSkins = new();
         [JsonProperty(PropertyName = "open_shield_skins")] private List<ShieldSkinType> _availableShieldSkins = new();
 

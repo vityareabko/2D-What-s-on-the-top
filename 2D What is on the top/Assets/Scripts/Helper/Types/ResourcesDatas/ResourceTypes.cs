@@ -20,5 +20,6 @@ public enum ResourceTypes
     Spoon                   ,
     ToothBrushRed           ,
     ToothBrushWhithe        ,
-    Coin      
+    Coin                    ,
+    Gem,
 }

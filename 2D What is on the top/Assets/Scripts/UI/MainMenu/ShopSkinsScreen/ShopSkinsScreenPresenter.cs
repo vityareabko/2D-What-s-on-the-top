@@ -36,6 +36,7 @@ namespace UI.MainMenu.ShopSkinsScreen
         private ShopSkinDB _shopSkinDB;
 
         private IPersistentResourceData _walletResource;
+        private IPersistentPlayerData _persistentData;
 
         private SkinItem _previewSkin;
 
@@ -43,7 +44,6 @@ namespace UI.MainMenu.ShopSkinsScreen
         private SelectSkinChecher _skinSeletChecker;
         private ClickSkinItemView _clickSkinItem;
 
-        private IPersistentPlayerData _persistentData;
         
         private ShopSkinsScreenPresenter(
             IShopSkinsScreenModel model, 
@@ -72,7 +72,36 @@ namespace UI.MainMenu.ShopSkinsScreen
             _skinSeletChecker = skinSeletChecker;
             _clickSkinItem = clickSkinItem;
             
+            OnResourceChange(ResourceTypes.Coin);
+            OnResourceChange(ResourceTypes.Gem);
+
+            _walletResource.ResourcesJsonData.ResourceChange += OnResourceChange;
+            
             Init();
+        }
+        
+        public void Dispose()
+        {
+            foreach (var item in _shopSkinsItems)
+                item.ClickedOnView -= OnClickeSkinItemView;
+        }
+
+        private void OnResourceChange(ResourceTypes type)
+        {
+            var getAmountResource = _walletResource.ResourcesJsonData.GetResourcesAmountByType(type);
+            
+            switch (type)
+            {
+                case ResourceTypes.Coin:
+                    View.SetCoinsAmount(getAmountResource);
+                    break;
+                case ResourceTypes.Gem:
+                    View.SetCristtalAmount(getAmountResource);
+                    break;
+                default:
+                    Debug.Log("Don't need To Change View, couse the type resource not on the View");
+                    break;
+            }
         }
 
         public void Init()
@@ -90,7 +119,10 @@ namespace UI.MainMenu.ShopSkinsScreen
             GenerateShopContent();
         }
         
-        public void Hide(Action callBack = null) => View.Hide(callBack);
+        public void Hide(Action callBack = null)
+        {
+            View.Hide(callBack);
+        }
 
         public void GenerateShopContent()
         {
@@ -230,12 +262,6 @@ namespace UI.MainMenu.ShopSkinsScreen
             EventAggregator.Post(this, new ApplySelectedShieldSkinEvent() { SelectedShieldSkin = _skinSeletChecker.CurrentShieldSkin });
             
             ClickBackButton?.Invoke();
-        }
-
-        public void Dispose()
-        {
-            foreach (var item in _shopSkinsItems)
-                item.ClickedOnView -= OnClickeSkinItemView;
         }
     }
 }

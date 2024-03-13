@@ -66,8 +66,7 @@ namespace UI.MainMenu
         {
             _shopSkinsPresenter.Hide(() =>
             {
-                Debug.Log("Почему не работает");
-                _mainMenuPresenter.Show();
+                HideOtherViewsAndShow(_mainMenuPresenter);
             });
             
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
@@ -81,13 +80,20 @@ namespace UI.MainMenu
 
         private void OnSwitchToGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent eventData) 
         {
-            HideAllViewsInList();
-            EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
+            _mainMenuPresenter.Hide(() =>
+            {
+                HideAllViewsInList();
+                EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
+            });
         }
 
         private void OnClickedShopSkinsButton()
         {
-            HideOtherViewsAndShow(_shopSkinsPresenter);
+            _mainMenuPresenter.Hide(() => 
+            {
+                HideOtherViewsAndShow(_shopSkinsPresenter);
+            });
+            
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuShopSkins());
         }
         

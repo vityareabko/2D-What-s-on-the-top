@@ -32,7 +32,8 @@ namespace UI.GameScreenPause
         }
 
         public void Show() => View.Show();
-        public void Hide(System.Action callBack = null) => View.Hide();
+        
+        public void Hide(System.Action callBack = null) => View.Hide(callBack);
         
         public void Init()
         {
@@ -44,18 +45,9 @@ namespace UI.GameScreenPause
         }
 
 
-        public void OnMainMenuButtonClicked()
-        {
-            // снять паузу и продолжыть игру
-            OnMainMenuButtonIsClicked?.Invoke();
-            View.Hide();
-        }
-
-        public void OnResumeGameButtondClicked()
-        {
-            // начать игру заново
-            OnResumeGameButtonIsClicked?.Invoke();
-            View.Hide(); 
-        }
+        public void OnMainMenuButtonClicked() => OnMainMenuButtonIsClicked?.Invoke();
+        
+        public void OnResumeGameButtondClicked() => OnResumeGameButtonIsClicked?.Invoke();
+        
     }
 }

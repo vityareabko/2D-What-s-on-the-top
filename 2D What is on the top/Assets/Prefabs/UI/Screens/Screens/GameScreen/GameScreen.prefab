@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hideOnAwake: 1
+  _topPanel: {fileID: 3776344813232216025}
+  _bottomPanel: {fileID: 2696704839849585870}
   _heightScoreText: {fileID: 1732215596232606238}
   _pauseButton: {fileID: 1020679183542595631}
   _stamina: {fileID: 8121219736005404692}

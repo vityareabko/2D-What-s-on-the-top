@@ -16,7 +16,10 @@ namespace UI.MainMenu.ShopSkinsScreen
         public Transform ShieldSkinsContent { get; }
 
         public ShopSkinTabType ActiveSkinTab { get; }
-
+        
+        public void SetCristtalAmount(int amount);
+        public void SetCoinsAmount(int amount);
+        
         public void ShowSelectedText();
         public void ShowSelectButton();
         public void ShowBuyButton(int amount);
@@ -30,61 +33,81 @@ namespace UI.MainMenu.ShopSkinsScreen
         HeroTab,
         ShieldTab
     }
-
+    
     public class ShopSkinsScreenView : BaseScreenView, IShopSkinsScreenView
     {
         public override ScreenType ScreenType => ScreenType.ShopSkins;
         
+        [Header("RectTransforms")]
         [SerializeField] private RectTransform _topPanelRectTransform;
         [SerializeField] private RectTransform _buttonsRectTransform;
-        [SerializeField] private TabsUIController _tabsUIController;
         
+        [Header("Skin Category Content")]
         [SerializeField] private Transform _heroSkinsContent;
         [SerializeField] private Transform _shieldSkinsContetn;
 
+        [Header("Buttons")]
         [SerializeField] private Button _heroSkinsTabButton;
         [SerializeField] private Button _shieldSkinsTabButton;
-
         [SerializeField] private Button _selectSkinButton;
         [SerializeField] private Button _buySkinButton;
         [SerializeField] private Image _selectedText;
-
+        [SerializeField] private Button _backButton;
+        
+        [Header("Text")]
         [SerializeField] private TMP_Text _priceBuyButtonText;
+        [SerializeField] private TMP_Text _cristalAmount;
+        [SerializeField] private TMP_Text _coinsAmount;
+        
+        [Header("Color")]
         [SerializeField] private Color _colorDefault;
         [SerializeField] private Color _colorDosentEnoughMoney;
 
-        [SerializeField] private Button _backButton;
+        [Header("TabController")]
+        [SerializeField] private TabsUIController _tabsUIController;
+        
 
+        private RectTransform _tabPanelRectTransform;
         private ShopSkinTabType _currentActiveSkinTab = ShopSkinTabType.HeroTab;
-
-        public ShopSkinTabType ActiveSkinTab => _currentActiveSkinTab;
-
+        
         public IShopSkinsScreenPresenter Presentor { get; set; }
 
         public void InitPresentor(IShopSkinsScreenPresenter presentor) => Presentor = presentor;
 
+        public ShopSkinTabType ActiveSkinTab => _currentActiveSkinTab;
         public Transform HeroSkinsContent => _heroSkinsContent;
         public Transform ShieldSkinsContent => _shieldSkinsContetn;
+
+        protected override void OnAwake()
+        {
+            base.OnAwake();
+            _tabPanelRectTransform = _tabsUIController.GetComponent<RectTransform>();
+        }
 
         protected override void OnShow()
         {
             base.OnShow();
-
-            Vector2 showPositionButtons = new Vector2(0, _buttonsRectTransform.anchoredPosition.y * -1f); 
-            Vector2 showPositionTabPanel = new Vector2(_tabsUIController.GetComponent<RectTransform>().anchoredPosition.x * -1f, 0);
-            Vector2 showPostionTopPanel = new Vector2(0, _topPanelRectTransform.anchoredPosition.y * -1f);
             
-            AnimateElement(_buttonsRectTransform, showPositionButtons);
-            AnimateElement(_tabsUIController.GetComponent<RectTransform>(), showPositionTabPanel);
-            AnimateElement(_topPanelRectTransform, showPostionTopPanel);
+            // _tabPanelRectTransform.AnimateToPosition(_tabPanelRectTransform.anchoredPosition, flipY: false);
+            // _buttonsRectTransform.AnimateToPosition(_buttonsRectTransform.anchoredPosition, flipX: false);
+            // _topPanelRectTransform.AnimateToPosition(_topPanelRectTransform.anchoredPosition, flipX: false);
+            _tabPanelRectTransform.AnimateFromOutsideToPosition(_tabPanelRectTransform.anchoredPosition, RectTransformExtensions.Direction.Right);
+            _buttonsRectTransform.AnimateFromOutsideToPosition(_buttonsRectTransform.anchoredPosition, RectTransformExtensions.Direction.Down);
+            _topPanelRectTransform.AnimateFromOutsideToPosition(_topPanelRectTransform.anchoredPosition, RectTransformExtensions.Direction.Up);
         }
         
-        public override void Hide(Action callBack)
+        public override void Hide(Action callBack = null)
         {
+            if (callBack == null)
+            {
+                base.Hide();
+                return;
+            }
+            
             int completedAnimations = 0;
             int totalAnimations = 3; 
             
-            Action onAllAnimationsComplete = () =>
+            Action OnCompleted = () =>
             {
                 completedAnimations++;
                 if (completedAnimations == totalAnimations)
@@ -94,20 +117,14 @@ namespace UI.MainMenu.ShopSkinsScreen
                 }
             };
             
-            Vector2 hidePositionButtons = new Vector2(0, _buttonsRectTransform.anchoredPosition.y * -1f);
-            Vector2 hidePositionTabPanel = new Vector2(_tabsUIController.GetComponent<RectTransform>().anchoredPosition.x * -1f, 0);
-            Vector2 hidePositionTopPanel = new Vector2(0, _topPanelRectTransform.anchoredPosition.y * -1f);
-    
-            AnimateElementHide(_buttonsRectTransform, hidePositionButtons, onAllAnimationsComplete);
-            AnimateElementHide(_tabsUIController.GetComponent<RectTransform>(), hidePositionTabPanel, onAllAnimationsComplete);
-            AnimateElementHide(_topPanelRectTransform, hidePositionTopPanel, onAllAnimationsComplete);
+            // _buttonsRectTransform.AnimateToHidePosition(new Vector2(0, _buttonsRectTransform.anchoredPosition.y * -1f), flipX: false, callback: onAllAnimationsComplete);
+            // _tabPanelRectTransform.AnimateToHidePosition(new Vector2(_tabPanelRectTransform.anchoredPosition.x * -1f, 0), flipY: false, callback: onAllAnimationsComplete);
+            // _topPanelRectTransform.AnimateToHidePosition(new Vector2(0,_topPanelRectTransform.anchoredPosition.y * -1f), flipX: false, callback: onAllAnimationsComplete);
+            
+            _tabPanelRectTransform.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
+            _buttonsRectTransform.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Down, callback: OnCompleted);
+            _topPanelRectTransform.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Up, callback: OnCompleted);
         }
-        
-        private void AnimateElement(RectTransform rectTransform, Vector2 targetPosition, Action callback = null) =>
-            rectTransform.DOAnchorPos(targetPosition, 0.6f).SetEase(Ease.OutQuad).OnComplete(() => callback?.Invoke());
-        
-        private void AnimateElementHide(RectTransform rectTransform, Vector2 originalPosition, Action callback = null) =>
-            rectTransform.DOAnchorPos(originalPosition, 0.6f).SetEase(Ease.InQuad).OnComplete(() => callback?.Invoke());
 
         private void OnEnable()
         {
@@ -128,7 +145,15 @@ namespace UI.MainMenu.ShopSkinsScreen
             _heroSkinsTabButton.onClick.RemoveListener(OnActivateHeroTabButton);
             _shieldSkinsTabButton.onClick.RemoveListener(OnActivateShielTabButton);
         }
+        
+        public void SetCristtalAmount(int amount) => _cristalAmount.Show(amount);
 
+        public void SetCoinsAmount(int amount) => _coinsAmount.Show(amount);
+
+        public void DefaultPriceColor() => _priceBuyButtonText.color = _colorDefault;
+
+        public void RedPriceTextColor() => _priceBuyButtonText.color = _colorDosentEnoughMoney;
+        
         public void ShowSelectedText()
         {
             _selectedText.gameObject.SetActive(true);
@@ -150,10 +175,7 @@ namespace UI.MainMenu.ShopSkinsScreen
             _selectSkinButton.gameObject.SetActive(true);
             _buySkinButton.gameObject.SetActive(false);
         }
-
-        public void DefaultPriceColor() => _priceBuyButtonText.color = _colorDefault;
-
-        public void RedPriceTextColor() => _priceBuyButtonText.color = _colorDosentEnoughMoney;
+        
 
         private void ResetView()
         {

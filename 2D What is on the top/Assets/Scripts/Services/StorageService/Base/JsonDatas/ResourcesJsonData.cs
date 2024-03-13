@@ -7,6 +7,9 @@ namespace Services.StorageService.JsonDatas
 {
     public class ResourcesJsonData
     {
+        public event Action<ResourceTypes> ResourceChange;
+        
+        
         [JsonProperty(PropertyName = "resources")]
         public Dictionary<ResourceTypes, int> Resources = new();
         
@@ -19,7 +22,9 @@ namespace Services.StorageService.JsonDatas
             }
             
             Resources[type] -= amount;
-
+            Debug.LogWarning("kakogo huiz");
+            ResourceChange?.Invoke(type);
+            
             return true;
         }
 
@@ -33,6 +38,16 @@ namespace Services.StorageService.JsonDatas
                 Resources[type] += amount;
             else
                 Resources[type] = amount;
+            
+            ResourceChange?.Invoke(type);
+        }
+
+        public int GetResourcesAmountByType(ResourceTypes type)
+        {
+            if (Resources.ContainsKey(type) == false)
+                return 0;
+
+            return Resources[type];
         }
 
         public bool HasEnoughResourceAmount(ResourceTypes type, int amount)

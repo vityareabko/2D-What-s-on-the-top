@@ -117,22 +117,29 @@ namespace UI
 
         private void OnResumeGameButtonIs()
         {
-            EventAggregator.Post(_gameScreenPausePresenter, new ResumeGameEventHandler());
-            _gameScreenPausePresenter.Hide();
+            _gameScreenPausePresenter.Hide(() =>
+            {
+                EventAggregator.Post(_gameScreenPausePresenter, new ResumeGameEventHandler());
+            });
         }
         
         private void OnPauseGame()
         {
-            EventAggregator.Post(_gameScreenPausePresenter, new PauseGameEventHandler());
+            // EventAggregator.Post(_gameScreenPausePresenter, new PauseGameEventHandler());
             _gameScreenPausePresenter.Show();
         }
 
         private void OnMainMenuButtonClicked()
         {
-            OnResumeGameButtonIs();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchCameraStateOnMainMenuPlatform());
-            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
+            _gameScreenPausePresenter.Hide(() =>
+            {
+            
+                EventAggregator.Post(_gameScreenPausePresenter, new ResumeGameEventHandler());
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                EventAggregator.Post(_gameScreenHUDPresenter, new SwitchCameraStateOnMainMenuPlatform());
+                EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
+                
+            });
         }
 
         private void OnX2RewardButtonClicked()
@@ -160,7 +167,7 @@ namespace UI
         
         private void OnResourcesContainerChanged(Dictionary<ResourceTypes, int> data)
         {
-            foreach (var (key, value) in data)
+            foreach (var (key, value) in data) // # todo - поменять бы и сделать нормально а то это не дела P.S можно подсмотреть в MainMenuScreenPresenter
             {
                 switch (key)
                 {

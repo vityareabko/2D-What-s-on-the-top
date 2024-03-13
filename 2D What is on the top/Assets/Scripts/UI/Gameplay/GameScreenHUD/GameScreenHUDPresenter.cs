@@ -56,9 +56,14 @@ namespace UI
             Model.StaminaChange -= OnStaminaChange;
             EventAggregator.Unsubscribe<PopupTextDrainStaminEvent>(OnSpawnPopupTextStaminaDrain);
         }
+
+        public void Show()
+        {
+            PrepareData();
+            View.Show();
+        }
         
-        public void Show() { PrepareData(); View.Show(); }
-        public void Hide(System.Action callBack = null) => View.Hide();
+        public void Hide(System.Action callBack = null) => View.Hide(callBack);
 
         public void UpdateHeightScore(int score) => Model.Score = score;
 
