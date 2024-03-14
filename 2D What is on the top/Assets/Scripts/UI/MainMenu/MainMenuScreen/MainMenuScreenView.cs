@@ -1,8 +1,10 @@
 using System;
+using DG.Tweening;
 using Extensions;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI.MainMenu
@@ -20,6 +22,9 @@ namespace UI.MainMenu
         [Header("RectTransforms")]
         [SerializeField] private RectTransform _topPanel;
         [SerializeField] private RectTransform _bottomPanel;
+        [SerializeField] private RectTransform _resourceLevelPanel;
+        [SerializeField] private RectTransform _levelPanel;
+        [SerializeField] private RectTransform _levels;
         
         [Header("Text")]
         [SerializeField] private TMP_Text _cristalAmount;
@@ -28,6 +33,9 @@ namespace UI.MainMenu
         [Header("Buttons")]
         [SerializeField] private Button _playButton;
         [SerializeField] private Button _shopSkinButton;
+       
+        [Header("Toggle")]
+        [SerializeField] private Toggle _levelsShowToggle;
         
         public IMainMenuPresenter Presentor { get; private set; }
         
@@ -36,10 +44,10 @@ namespace UI.MainMenu
         protected override void OnShow()
         {
             base.OnShow();
-            // _topPanel.AnimateToPosition(_topPanel.anchoredPosition, flipX: false);
-            // _bottomPanel.AnimateToPosition(_bottomPanel.anchoredPosition, flipX: false);
             _topPanel.AnimateFromOutsideToPosition(_topPanel.anchoredPosition, RectTransformExtensions.Direction.Up);
             _bottomPanel.AnimateFromOutsideToPosition(_bottomPanel.anchoredPosition, RectTransformExtensions.Direction.Down);
+            _levelPanel.AnimateFromOutsideToPosition(_levelPanel.anchoredPosition, RectTransformExtensions.Direction.Right);
+            _resourceLevelPanel.AnimateFromOutsideToPosition(_resourceLevelPanel.anchoredPosition, RectTransformExtensions.Direction.Left);
         }
 
         public override void Hide(Action callBack = null)
@@ -50,7 +58,7 @@ namespace UI.MainMenu
                 return;
             }
             
-            int totalAnimations = 2;
+            int totalAnimations = 3;
             int countAnimationCompleted = 0;
             
             Action OnCompleted = () =>
@@ -66,21 +74,29 @@ namespace UI.MainMenu
             
             _topPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Up, callback: OnCompleted);
             _bottomPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Down, callback: OnCompleted);
-            // _topPanel.AnimateToHidePosition(new Vector2(0, _topPanel.anchoredPosition.y * -1f), flipX: false, callback: OnCompleted);
-            // _bottomPanel.AnimateToHidePosition(new Vector2(0, _bottomPanel.anchoredPosition.y * -1f), flipX: false, callback: OnCompleted);
+            _levels.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
+            _resourceLevelPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
         }
 
         private void OnEnable()
         {
             _playButton.onClick.AddListener(OnPlayButtonClicked);
             _shopSkinButton.onClick.AddListener(OnShopSkinButtonClicked);
+            _levelsShowToggle.onValueChanged.AddListener(OnClickShowLevelsButton);
         }
 
         private void OnDisable()
         {
             _playButton.onClick.RemoveListener(OnPlayButtonClicked);
             _shopSkinButton.onClick.RemoveListener(OnShopSkinButtonClicked);
+            _levelsShowToggle.onValueChanged.RemoveListener(OnClickShowLevelsButton);
         }
+
+        private void OnClickShowLevelsButton(bool isOn)
+        {
+            _levels.DOAnchorPos(_levels.anchoredPosition * -1f, 0.7f).SetEase(Ease.OutBounce);
+        }
+
 
         public void SetCristtalAmount(int amount) => _cristalAmount.Show(amount);
 

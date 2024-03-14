@@ -7,6 +7,8 @@ public class TabsUIController : MonoBehaviour {
     [Header("Custimize")]
     [SerializeField] private float _offsetXDeactivateTab = 0f;
     [SerializeField] private float _offsetXActiveTab = -30f;
+    [SerializeField] private Color _acitvateColor = Color.white;
+    [SerializeField] private Color _deactivateColor = Color.gray;
     [Space] 
     
     [Header("Tabs Elements")]
@@ -46,15 +48,16 @@ public class TabsUIController : MonoBehaviour {
             currentTabIndex = tabIndex;
             UpdateUIState();
         }
+
     }
 
     private void UpdateUIState() {
         for (int i = 0; i < _tabButtons.Length; i++)
         {
             _tabButtons[i].TabButton.interactable = (i != currentTabIndex);
-            _tabButtons[i].ActiveTabArrow.gameObject.SetActive(i == currentTabIndex);
-     
-            // ActivateTabMover(_tabButtons[i].gameObject.GetComponent<RectTransform>(), i == currentTabIndex);
+            _tabButtons[i].ActiveTabBlum.color = (i == currentTabIndex) ? _acitvateColor : _deactivateColor;
+            
+            ActivateTabMover(_tabButtons[i].GetComponent<RectTransform>(), currentTabIndex == i);
         }
     }
 

@@ -31,12 +31,14 @@ namespace UI.GameScreenPause
         {
             base.OnShow();
             
-            _rectTransformResumeButton.AnimateFromOutsideToPosition(_rectTransformResumeButton.anchoredPosition,  RectTransformExtensions.Direction.Up);
-            _rectTransformMainMenuButton.AnimateFromOutsideToPosition(_rectTransformMainMenuButton.anchoredPosition, RectTransformExtensions.Direction.Down);
+            _rectTransformResumeButton.AnimateFromOutsideToPosition(_rectTransformResumeButton.anchoredPosition,  RectTransformExtensions.Direction.Left, 0.5f, ease: Ease.OutExpo);
+            _rectTransformMainMenuButton.AnimateFromOutsideToPosition(_rectTransformMainMenuButton.anchoredPosition, RectTransformExtensions.Direction.Right,0.5f, ease: Ease.OutExpo);
         }
 
         public override void Hide(Action callBack)
         {
+            // # todo - возмодно стоит убрать анимацию снятия паузыы
+            
             if (callBack == null)
             {
                 base.Hide(callBack);
@@ -52,13 +54,12 @@ namespace UI.GameScreenPause
                 if (totalAnimations == countAnimationCompleted)
                 {
                     callBack?.Invoke();
-                    Debug.Log("@@@@Wtf");
                     base.Hide(callBack);
                 }
             };
             
-            _rectTransformResumeButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Up, callback: OnCompleteAnimation);
-            _rectTransformMainMenuButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Down, callback: OnCompleteAnimation);
+            _rectTransformResumeButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right,0.1f, callback: OnCompleteAnimation);
+            _rectTransformMainMenuButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Left,0.1f, callback: OnCompleteAnimation);
             
         }
 

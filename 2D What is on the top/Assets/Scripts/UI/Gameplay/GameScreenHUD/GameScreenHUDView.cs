@@ -53,8 +53,6 @@ namespace UI
             base.OnShow();
             _topPanel.AnimateFromOutsideToPosition(_topPanel.anchoredPosition, RectTransformExtensions.Direction.Up);
             _bottomPanel.AnimateFromOutsideToPosition(_bottomPanel.anchoredPosition, RectTransformExtensions.Direction.Down);
-            // _topPanel.AnimateToPosition(_topPanel.anchoredPosition, flipX: false, callback: () => Debug.Log("COCOCO"));
-            // _bottomPanel.AnimateToPosition(_bottomPanel.anchoredPosition, flipX: false);
         }
 
         public override void Hide(Action callBack = null)
@@ -81,8 +79,6 @@ namespace UI
             
             _topPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Up, callback: OnCompleted);
             _bottomPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Down, callback: OnCompleted);
-            // _topPanel.AnimateToHidePosition(new Vector2(0, _topPanel.anchoredPosition.y * -1f), flipX: false, callback: OnCompleted);
-            // _bottomPanel.AnimateToHidePosition(new Vector2(0, _bottomPanel.anchoredPosition.y * -1f), flipX: false, callback: OnCompleted);
         }
 
         private void OnEnable() => _pauseButton.onClick.AddListener(OnButtonPauseClick);

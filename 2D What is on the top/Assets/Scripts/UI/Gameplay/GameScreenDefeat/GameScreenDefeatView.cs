@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using DG.Tweening;
+using Extensions;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace UI
 {
@@ -15,23 +17,54 @@ namespace UI
     {
         public override ScreenType ScreenType { get; } = ScreenType.GameScreenDefeat;
 
+        [Header("RectTransforms")] 
+        [SerializeField] private RectTransform _defeatPanelContent;
+        
+        [Header("Text")]
         [SerializeField] private TMP_Text _amountConis;
         [SerializeField] private TMP_Text _descriptionText;
         
+        [Header("Buttons")]
         [SerializeField] private Button _x2WatchAdsButton;
         [SerializeField] private Button _homeButton;
         
         public IGameScreenDefeatPresenter Presentor { get; private set; }
-        
-        protected override void OnAwake()
+
+        protected override void OnShow()
         {
-            base.OnAwake();
-            _descriptionText.text = SelectRandomPhrace();
+            base.OnShow();
             
+            _defeatPanelContent.AnimateFromOutsideToPosition(_defeatPanelContent.anchoredPosition, RectTransformExtensions.Direction.Up, 0.6f);
+        }
+
+        public override void Hide(Action callBack = null)
+        {
+            if (callBack == null)
+            {
+                base.Hide(callBack);
+                return;
+            }
+            
+            _defeatPanelContent.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: () =>
+            {
+                callBack?.Invoke();
+                base.Hide(callBack);
+            });
+        }
+
+        private void OnEnable()
+        {
             _x2WatchAdsButton.onClick.AddListener(OnX2WatchAdsButton);
             _homeButton.onClick.AddListener(OnHomeButton);
+            _descriptionText.text = SelectRandomPhrace();
         }
-        
+
+        private void OnDisable()
+        {
+            _x2WatchAdsButton.onClick.RemoveListener(OnX2WatchAdsButton);
+            _homeButton.onClick.RemoveListener(OnHomeButton);
+        }
+
         public void InitPresentor(IGameScreenDefeatPresenter presentor) => Presentor = presentor;
 
         public void SetCoins(int amount) => _amountConis.text = amount.ToString();
@@ -53,7 +86,8 @@ namespace UI
                 "You might have slipped, but don't let it dampen your spirit!",
                 "The climb is tough, but so are you. Ready for another go?",
                 "This well can't contain you forever. Break free!",
-                "Gravity might have won this round, but the game isn't over yet."
+                "Gravity might have won this round, but the game isn't over yet.",
+                "Maybe you should upgrade yourself to conquer this peak?",
             };
 
             return phrases[Random.Range(0, phrases.Length - 1)];

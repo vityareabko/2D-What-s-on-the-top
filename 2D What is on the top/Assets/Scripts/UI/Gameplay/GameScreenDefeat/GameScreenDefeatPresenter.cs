@@ -37,7 +37,7 @@ namespace UI
         
         public void Show() => View.Show();
         
-        public void Hide(System.Action callBack = null) => View.Hide();
+        public void Hide(System.Action callBack = null) => View.Hide(callBack);
 
         public void OnHomeButtonClicked() => HomeButtonCliked?.Invoke();
         public void OnX2RewardWatchButton() => OnX2RewardButtonCliked?.Invoke();

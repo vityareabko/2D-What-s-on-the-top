@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ResourcesCollector;
-using UI.GameScreenLevelWinn;
 using UI.GameScreenPause;
 using UI.MVP;
 using UnityEngine;
@@ -20,23 +19,19 @@ namespace UI
         private IGameScreenPresenter _gameScreenHUDPresenter;
         private IGameScreenDefeatPresenter _gameScreenDefeatPresenter;
         private IGameScreenPausePresenter _gameScreenPausePresenter;
-        private IGameScreenLevelWinPresenter _gameScreenLevelWinPresenter;
 
         private IResourceCollector _resourceCollector;
                 
         [Inject] private void Construct(
             IResourceCollector resourceCollector,
-            
             IGameScreenPresenter gameScreenPresenter,
             IGameScreenDefeatPresenter gameScreenDefeatPresenter,
-            IGameScreenPausePresenter gameScreenPausePresenter,
-            IGameScreenLevelWinPresenter gameScreenLevelWinPresenter
+            IGameScreenPausePresenter gameScreenPausePresenter
             )
         { 
             _gameScreenHUDPresenter = gameScreenPresenter;
             _gameScreenDefeatPresenter = gameScreenDefeatPresenter;
             _gameScreenPausePresenter = gameScreenPausePresenter;
-            _gameScreenLevelWinPresenter = gameScreenLevelWinPresenter;
             
             _resourceCollector = resourceCollector;
         }
@@ -46,16 +41,13 @@ namespace UI
             _presenters.Add(_gameScreenHUDPresenter);
             _presenters.Add(_gameScreenDefeatPresenter);
             _presenters.Add(_gameScreenPausePresenter);
-            _presenters.Add(_gameScreenLevelWinPresenter);
         }
 
         private void OnEnable()
         {
-            _gameScreenDefeatPresenter.HomeButtonCliked += OnClaimRewardAndGoToMainMenuButtonClicked;
-            _gameScreenDefeatPresenter.OnX2RewardButtonCliked += OnX2RewardButtonClicked;
-
-            _gameScreenLevelWinPresenter.X2RewardButtonClicked += OnX2RewardButtonClicked;
-            _gameScreenLevelWinPresenter.ClaimButtonClicked += OnClaimRewardAndGoToMainMenuButtonClicked;
+            _gameScreenDefeatPresenter.HomeButtonCliked += OnClaimRewardAndGoToMainMenuButtonClickedFromLosePanel;
+            _gameScreenDefeatPresenter.OnX2RewardButtonCliked += OnX2RewardButtonClickedFromLosePanel;
+            
             
             _gameScreenHUDPresenter.OnPauseClicked += OnPauseGame;
             
@@ -70,8 +62,8 @@ namespace UI
 
         private void OnDisable()
         {
-            _gameScreenDefeatPresenter.HomeButtonCliked -= OnClaimRewardAndGoToMainMenuButtonClicked;
-            _gameScreenDefeatPresenter.OnX2RewardButtonCliked -= OnX2RewardButtonClicked;
+            _gameScreenDefeatPresenter.HomeButtonCliked -= OnClaimRewardAndGoToMainMenuButtonClickedFromLosePanel;
+            _gameScreenDefeatPresenter.OnX2RewardButtonCliked -= OnX2RewardButtonClickedFromLosePanel;
             
             _gameScreenHUDPresenter.OnPauseClicked -= OnPauseGame;
             
@@ -142,27 +134,29 @@ namespace UI
             });
         }
 
-        private void OnX2RewardButtonClicked()
+        private void OnX2RewardButtonClickedFromLosePanel()
         {
             
             // проверка просмотра рекламы ...
             // если игрок посмотрел дать x2 награду и снять с паузы
             // если человек не досмотрел до конца вывести окно что он не досмотрел рекламу и просто зачислить обычнуб x1 награду и снять с паузы 
             
-            Debug.Log("X2 Reward Button Clicked");
-            
-            EventAggregator.Post(this, new ClaimRewardEvent());
-            
-            HideAllViewsInList();
+            _gameScreenDefeatPresenter.Hide(() =>
+            {
+                Debug.Log("X2 Reward Button Clicked");
+                EventAggregator.Post(this, new ClaimRewardEvent());
+                HideAllViewsInList();
+            });
         }
 
-        private void OnClaimRewardAndGoToMainMenuButtonClicked()
+        private void OnClaimRewardAndGoToMainMenuButtonClickedFromLosePanel()
         {
-            Debug.Log("Claim Reward");
-            
-            EventAggregator.Post(this, new ClaimRewardEvent());
-
-            HideAllViewsInList();
+            _gameScreenDefeatPresenter.Hide(() =>
+            {
+                Debug.Log("Claim Reward");
+                EventAggregator.Post(this, new ClaimRewardEvent());
+                HideAllViewsInList();
+            });
         }
         
         private void OnResourcesContainerChanged(Dictionary<ResourceTypes, int> data)

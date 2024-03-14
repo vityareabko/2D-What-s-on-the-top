@@ -3,7 +3,6 @@ using Extensions;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
-using DG.Tweening;
 
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
@@ -87,10 +86,6 @@ namespace UI.MainMenu.ShopSkinsScreen
         protected override void OnShow()
         {
             base.OnShow();
-            
-            // _tabPanelRectTransform.AnimateToPosition(_tabPanelRectTransform.anchoredPosition, flipY: false);
-            // _buttonsRectTransform.AnimateToPosition(_buttonsRectTransform.anchoredPosition, flipX: false);
-            // _topPanelRectTransform.AnimateToPosition(_topPanelRectTransform.anchoredPosition, flipX: false);
             _tabPanelRectTransform.AnimateFromOutsideToPosition(_tabPanelRectTransform.anchoredPosition, RectTransformExtensions.Direction.Right);
             _buttonsRectTransform.AnimateFromOutsideToPosition(_buttonsRectTransform.anchoredPosition, RectTransformExtensions.Direction.Down);
             _topPanelRectTransform.AnimateFromOutsideToPosition(_topPanelRectTransform.anchoredPosition, RectTransformExtensions.Direction.Up);
@@ -105,21 +100,17 @@ namespace UI.MainMenu.ShopSkinsScreen
             }
             
             int completedAnimations = 0;
-            int totalAnimations = 3; 
-            
+            int totalAnimations = 3;
+
             Action OnCompleted = () =>
             {
                 completedAnimations++;
                 if (completedAnimations == totalAnimations)
                 {
                     callBack?.Invoke();
-                    base.Hide(); 
+                    base.Hide();
                 }
             };
-            
-            // _buttonsRectTransform.AnimateToHidePosition(new Vector2(0, _buttonsRectTransform.anchoredPosition.y * -1f), flipX: false, callback: onAllAnimationsComplete);
-            // _tabPanelRectTransform.AnimateToHidePosition(new Vector2(_tabPanelRectTransform.anchoredPosition.x * -1f, 0), flipY: false, callback: onAllAnimationsComplete);
-            // _topPanelRectTransform.AnimateToHidePosition(new Vector2(0,_topPanelRectTransform.anchoredPosition.y * -1f), flipX: false, callback: onAllAnimationsComplete);
             
             _tabPanelRectTransform.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
             _buttonsRectTransform.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Down, callback: OnCompleted);
