@@ -35,33 +35,33 @@ namespace UI.GameScreenPause
             _rectTransformMainMenuButton.AnimateFromOutsideToPosition(_rectTransformMainMenuButton.anchoredPosition, RectTransformExtensions.Direction.Right,0.5f, ease: Ease.OutExpo);
         }
 
-        public override void Hide(Action callBack)
-        {
-            // # todo - возмодно стоит убрать анимацию снятия паузыы
-            
-            if (callBack == null)
-            {
-                base.Hide(callBack);
-                return;
-            }
-            
-            int totalAnimations = 2;
-            int countAnimationCompleted = 0;
-            
-            Action OnCompleteAnimation = () =>
-            {
-                countAnimationCompleted++;
-                if (totalAnimations == countAnimationCompleted)
-                {
-                    callBack?.Invoke();
-                    base.Hide(callBack);
-                }
-            };
-            
-            _rectTransformResumeButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right,0.1f, callback: OnCompleteAnimation);
-            _rectTransformMainMenuButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Left,0.1f, callback: OnCompleteAnimation);
-            
-        }
+        // public override void Hide(Action callBack)
+        // {
+        //     // # todo - возмодно стоит убрать анимацию снятия паузыы
+        //     
+        //     if (callBack == null)
+        //     {
+        //         base.Hide(callBack);
+        //         return;
+        //     }
+        //     
+        //     int totalAnimations = 2;
+        //     int countAnimationCompleted = 0;
+        //     
+        //     Action OnCompleteAnimation = () =>
+        //     {
+        //         countAnimationCompleted++;
+        //         if (totalAnimations == countAnimationCompleted)
+        //         {
+        //             callBack?.Invoke();
+        //             base.Hide(callBack);
+        //         }
+        //     };
+        //     
+        //     _rectTransformResumeButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right,0.1f, callback: OnCompleteAnimation);
+        //     _rectTransformMainMenuButton.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Left,0.1f, callback: OnCompleteAnimation);
+        //     
+        // }
 
         private void OnEnable()
         {

@@ -13,7 +13,7 @@ namespace UI.MVP
         
         // ChooserLevel,
         //
-        // LoadingScreen,
+        // LoadingGameScreen,
         
     }
 }

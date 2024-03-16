@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Obstacles;
+using PersistentData;
 using ResourcesCollector;
+using Systems.SceneSystem;
 using UI.GameScreenPause;
 using UI.MVP;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace UI
@@ -21,12 +23,19 @@ namespace UI
         private IGameScreenPausePresenter _gameScreenPausePresenter;
 
         private IResourceCollector _resourceCollector;
+        private SceneController sceneController;
+
+        private IPersistentPlayerData _persistentPlayerData;
+        private LevelsDB _levelsDB;
                 
         [Inject] private void Construct(
             IResourceCollector resourceCollector,
             IGameScreenPresenter gameScreenPresenter,
             IGameScreenDefeatPresenter gameScreenDefeatPresenter,
-            IGameScreenPausePresenter gameScreenPausePresenter
+            IGameScreenPausePresenter gameScreenPausePresenter,
+            IPersistentPlayerData persistentPlayerData,
+            LevelsDB levelsDB,
+            SceneController sceneController
             )
         { 
             _gameScreenHUDPresenter = gameScreenPresenter;
@@ -34,6 +43,10 @@ namespace UI
             _gameScreenPausePresenter = gameScreenPausePresenter;
             
             _resourceCollector = resourceCollector;
+            this.sceneController = sceneController;
+
+            _persistentPlayerData = persistentPlayerData;
+            _levelsDB = levelsDB;
         }
 
         private void Awake()
@@ -58,6 +71,7 @@ namespace UI
 
             EventAggregator.Subscribe<SwitchGameStateToPlayGameEvent>(OnSwitchGameStateToPlay);
             EventAggregator.Subscribe<SwitchGameStateToLoseGameEvent>(OnSwitchGameStateToLoseGame);
+            EventAggregator.Subscribe<SwitchGameStateToWinGameEvent>(OnSwitchGameToMainMenu);
         }
 
         private void OnDisable()
@@ -75,6 +89,7 @@ namespace UI
 
             EventAggregator.Unsubscribe<SwitchGameStateToPlayGameEvent>(OnSwitchGameStateToPlay);
             EventAggregator.Unsubscribe<SwitchGameStateToLoseGameEvent>(OnSwitchGameStateToLoseGame);
+            EventAggregator.Unsubscribe<SwitchGameStateToWinGameEvent>(OnSwitchGameToMainMenu);
         }
 
         private void HideOtherViewsAndShow(IPresenter presenter)
@@ -92,6 +107,14 @@ namespace UI
         {
             foreach (var presenter in _presenters)
                 presenter.Hide();
+        }
+        
+        private void OnSwitchGameToMainMenu(object sender, SwitchGameStateToWinGameEvent eventData)
+        {
+            _gameScreenHUDPresenter.Hide(() =>
+            {
+                EventAggregator.Post(this, new SwitchCameraStateOnPlayerIsNotOnThePlatform());
+            });
         }
         
         private void OnSwitchGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent evenData)
@@ -123,15 +146,11 @@ namespace UI
 
         private void OnMainMenuButtonClicked()
         {
-            _gameScreenPausePresenter.Hide(() =>
-            {
-            
-                EventAggregator.Post(_gameScreenPausePresenter, new ResumeGameEventHandler());
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-                EventAggregator.Post(_gameScreenHUDPresenter, new SwitchCameraStateOnMainMenuPlatform());
-                EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
-                
-            });
+            sceneController.RestartCurrentScent();                                               
+            _persistentPlayerData.PlayerData.SetCurrentLevel(_levelsDB.CurrentLevel);
+            EventAggregator.Post(_gameScreenPausePresenter, new ResumeGameEventHandler());
+            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchCameraStateOnMainMenuPlatform());
+            EventAggregator.Post(_gameScreenHUDPresenter, new SwitchGameStateToMainMenuGameEvent());
         }
 
         private void OnX2RewardButtonClickedFromLosePanel()

@@ -10,15 +10,12 @@ namespace Installers
         public override void InstallBindings()
         {
             BindStorageService();
-            // BindWalletResource();
             BindPersistantPlayerData();
             BindPersistantWalletResourceData();
             BindShopSkinVisitor();
         }
 
         private void BindStorageService() => Container.Bind<IStorageService>().To<JsonToFileStorageService>().AsSingle();
-        // private void BindWalletResource() => Container.Bind<IWalletResource>().To<WalletResource>().AsSingle();
-        
         private void BindPersistantPlayerData() => Container.BindInterfacesAndSelfTo<PersistentPlayerData>().AsSingle();
         private void BindPersistantWalletResourceData() => Container.BindInterfacesAndSelfTo<PersistentWalletResourceData>().AsSingle();
 

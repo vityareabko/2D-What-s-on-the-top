@@ -8,18 +8,18 @@ using UnityEngine;
 [CreateAssetMenu (fileName = "ConfigLevel", menuName = "Config/LevelConfig")]
 public class LevelConfig : SerializedScriptableObject
 {
-    [field: SerializeField] public LevelType Type { get; private set; }
-        
+    [field: SerializeField] public LevelType Type{ get; private set; }
+    
     [FoldoutGroup("LevelDatas")] [field: SerializeField] public LevelConfigDatas LevelDatas;
     
-    
-    // # todo - эти два списка я пока удалять не буду может как нибуть сделаю что-то сними (например поп прохождения отдельного порога игроком к примеру 500м то уже будет добавлены в этот список новый рессурсы)
     [FoldoutGroup("Available To Spawn")] public Dictionary<ResourceCategory, List<FallingResourceConfig>> ResourcesByCategory;
+    
     [FoldoutGroup("Available To Spawn")] public Dictionary<ObstacleCategory, List<FallObstacleConfig>> ObstaclesByCategory;
-
+    
+    # region Validation
+    
     public void OnValidate()
     {
-        
         ValidateResources();
         ValidateObstacles();
     }
@@ -102,5 +102,8 @@ public class LevelConfig : SerializedScriptableObject
             }
         }
     }
+    
+
+    #endregion
 }
 

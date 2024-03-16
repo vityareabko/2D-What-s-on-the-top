@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Extensions;
+using LevelUI;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
@@ -11,8 +13,6 @@ namespace UI.MainMenu
 {
     public interface IIMainMenuView : IView <IMainMenuPresenter>
     {
-        public void SetCristtalAmount(int amount);
-        public void SetCoinsAmount(int amount);
     }
 
     public class MainMenuScreenView : BaseScreenView, IIMainMenuView
@@ -36,10 +36,16 @@ namespace UI.MainMenu
        
         [Header("Toggle")]
         [SerializeField] private Toggle _levelsShowToggle;
+
+        [FormerlySerializedAs("_levelButtons")]
+        [Header("LevelItems")] 
+        [SerializeField] private List<LevelUIItem> levelItems = new();
         
         public IMainMenuPresenter Presentor { get; private set; }
         
         public void InitPresentor(IMainMenuPresenter presentor) => Presentor = presentor;
+
+        public IEnumerable<LevelUIItem> LevelItems => levelItems;
 
         protected override void OnShow()
         {
@@ -83,6 +89,8 @@ namespace UI.MainMenu
             _playButton.onClick.AddListener(OnPlayButtonClicked);
             _shopSkinButton.onClick.AddListener(OnShopSkinButtonClicked);
             _levelsShowToggle.onValueChanged.AddListener(OnClickShowLevelsButton);
+
+            AddListenerLevelButtons();
         }
 
         private void OnDisable()
@@ -90,13 +98,35 @@ namespace UI.MainMenu
             _playButton.onClick.RemoveListener(OnPlayButtonClicked);
             _shopSkinButton.onClick.RemoveListener(OnShopSkinButtonClicked);
             _levelsShowToggle.onValueChanged.RemoveListener(OnClickShowLevelsButton);
+
+            RemoveListenerLevelButtons();
+        }
+
+        private void AddListenerLevelButtons()
+        {
+            foreach (var levelUIButton in levelItems)
+                levelUIButton.ClickedItem += OnLevelSelected;
+        }
+        
+        private void RemoveListenerLevelButtons()
+        {
+            foreach (var levelUIButton in levelItems)
+                levelUIButton.ClickedItem -= OnLevelSelected;
+        }
+
+        private void OnLevelSelected(LevelType type)
+        {
+            Presentor.OnLevelSelectedType(type);
+            Presentor.UpdateLevelsItems();
         }
 
         private void OnClickShowLevelsButton(bool isOn)
         {
+            if (isOn)
+                Presentor.UpdateLevelsItems();
+            
             _levels.DOAnchorPos(_levels.anchoredPosition * -1f, 0.7f).SetEase(Ease.OutBounce);
         }
-
 
         public void SetCristtalAmount(int amount) => _cristalAmount.Show(amount);
 

@@ -1,30 +1,6 @@
-
-
-using UnityEngine;
-using Zenject;
-
 namespace MyNamespace
 {
-    public class PlayerSpawnData : ScriptableObject
-    {
-        public Player Player;
-        public SpawnPointType SpawnPoint;
-        
-    }
-    
-    public class GameplayController11 : MonoBehaviour
-    {
-        
-        private PlayerSpawnData _playerSpawnData;
-        
-        [Inject] public void Construct(PlayerSpawnData playerSpawnData) => _playerSpawnData = playerSpawnData;
-        
-        
-    }
-
     // ReSharper disable once InvalidXmlDocComment
-
-    
     /// <summary>
     /// Как я хочу чтобы было : - Done
     /// я хочу чтобы при попадания в obstacle (или стамина заканчилось) игрок его кинуло немного вверх (с какой-то анимации)

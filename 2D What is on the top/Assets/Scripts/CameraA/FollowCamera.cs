@@ -32,13 +32,22 @@ public class FollowCamera : MonoBehaviour
         _target = player;
         _cameraStateMaschine = cameraStateMaschine;
     }
-
-    private void Awake() => _camera = GetComponent<Camera>();
+    
+    private void Awake()
+    {
+        _camera = GetComponent<Camera>();
+        _camera.transform.position = new Vector3(_target.Transform.position.x, _target.Transform.position.y);
+    }
 
     private void LateUpdate()
     {
         if (_target == null || _isStopFollowing || Time.deltaTime == 0) 
             return;
+
+        float yDifference = _target.Transform.position.y - _camera.transform.position.y;
+        
+        if (Mathf.Abs(yDifference) > 50) 
+            _camera.transform.position = new Vector3(_camera.transform.position.x, _target.Transform.position.y);
 
         HandleCameraState();
     }
@@ -72,7 +81,7 @@ public class FollowCamera : MonoBehaviour
 
     private void HandleMainMenuPlatform()
     {
-        ZoomCamera(5f, new Vector3(0,0,-15));
+        ZoomCamera(5f, new Vector3(0,_target.Transform.position.y,-15));
     }
 
     private void HandleLeftPlatform()
@@ -97,7 +106,7 @@ public class FollowCamera : MonoBehaviour
 
     private void HandleShopSkinsMenu()
     {
-        ZoomCamera(2.5f, new Vector3(.5f, 0, -15f));
+        ZoomCamera(2.5f, new Vector3(.5f, _target.Transform.position.y + 0.5f, -15f));
     }
 
     // Дополнительные методы для работы с камерой

@@ -8,20 +8,24 @@ namespace Services.StorageService.JsonDatas
     {
         [JsonProperty(PropertyName = "open_hero_skins")] private List<HeroSkinType> _availableHeroSkins = new();
         [JsonProperty(PropertyName = "open_shield_skins")] private List<ShieldSkinType> _availableShieldSkins = new();
-
+        [JsonProperty(PropertyName = "open_levels")] private List<LevelType> _availableLevels = new();
+        
         [JsonProperty(PropertyName = "selected_hero_skin")] private HeroSkinType _selectedHeroSkin;
         [JsonProperty(PropertyName = "selected_shield_skin")] private ShieldSkinType _selectedShieldSkin;
-
-        
+        [JsonProperty(PropertyName = "current_level")] private LevelType _currentLevelSelected;
         
         public PlayerJsonData(
             HeroSkinType selectedHeroSkin = HeroSkinType.GreenWarrior, 
-            ShieldSkinType selectedShieldSkin = ShieldSkinType.DwellerBucket)
+            ShieldSkinType selectedShieldSkin = ShieldSkinType.DwellerBucket, 
+            LevelType currentLevel = LevelType.Level1)
         {
             _selectedHeroSkin = selectedHeroSkin;
             _selectedShieldSkin = selectedShieldSkin;
+            _currentLevelSelected = currentLevel;
+            
             _availableHeroSkins.Add(_selectedHeroSkin);
             _availableShieldSkins.Add(_selectedShieldSkin);
+            _availableLevels.Add(_currentLevelSelected);
         }
 
         [JsonIgnore] public HeroSkinType SelectedHeroSkin
@@ -48,9 +52,13 @@ namespace Services.StorageService.JsonDatas
             }
         }
 
+        [JsonIgnore] public LevelType CurrentLevel => _currentLevelSelected;
+        
         [JsonIgnore] public IEnumerable<HeroSkinType> AvailableHeroSkins => _availableHeroSkins;
         
         [JsonIgnore] public IEnumerable<ShieldSkinType> AvailableShieldSkins => _availableShieldSkins;
+
+        [JsonIgnore] public IEnumerable<LevelType> AvailableLevels => _availableLevels;
 
         public void OpenHeroSkin(HeroSkinType type)
         {
@@ -67,7 +75,17 @@ namespace Services.StorageService.JsonDatas
 
             _availableShieldSkins.Add(type);
         }
-        
+
+        public void OpenLevel(LevelType type)
+        {
+            if (_availableLevels.Contains(type) == false)
+                _availableLevels.Add(type);
+
+            _currentLevelSelected = type;
+        }
+
+        public void SetCurrentLevel(LevelType type) => _currentLevelSelected = type;
+
     }
 }
 

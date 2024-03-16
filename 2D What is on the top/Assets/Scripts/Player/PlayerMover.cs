@@ -90,7 +90,8 @@ public class PlayerMover : IPlayerMover, IDisposable
     public void ProcessCheckingToPlayerAction()
     {
         CheckStaminaDepletion();
-        CheckOnPlatformOnPlatform();
+        CheckOnPlatform();
+        CheckOnMainPlatform();
     }
     
     public void ProcessJumpinp(bool isRightWall)
@@ -213,10 +214,16 @@ public class PlayerMover : IPlayerMover, IDisposable
     
     private bool ShouldMoveUpward() => _isPlatform && _isSlowdown == false && _isRoll == false;
     
-    private void CheckOnPlatformOnPlatform()
+    private void CheckOnPlatform()
     {
         _isPlatform = Physics2D.OverlapCircle(_transformDetection.position, RadiusDetectionPlatform, _plarformLayer) is not null;
         _animator.IsPlatform(_isPlatform);
+    }
+    
+    private void CheckOnMainPlatform()
+    {
+        _isFirstJump = Physics2D.OverlapCircle(_transformDetection.position, RadiusDetectionPlatform, ConstLayer.PlatformMainMenu.ToLayerMask()) is not null;
+        // _animator.IsPlatform(_isPlatform);
     }
     
     private IEnumerator RollCoroutine()

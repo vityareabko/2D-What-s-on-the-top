@@ -10,31 +10,39 @@ public class Player : MonoBehaviour, IPlayer
 {
     [field: SerializeField] public Transform TransformPlatformDetection { get; private set; }
     
-    public Transform Transform { get; private set; }
-    
-    private IGameCurrentState _gameCurrentState;
-
-    private SwipeListener _swipeListener;  
-    private IPlayerMover _playerMover;
+    public Transform Transform { get; set; }
+    public GameObject player { get; set; }
 
     private PlayerAnimationController _animatorController;
+    private IGameCurrentState _gameCurrentState;
+    private SwipeListener _swipeListener;  
+    private IPlayerMover _playerMover;
     
-    private bool _isBlockSpwipe;
     private bool _isBlockMovement;
+    private bool _isBlockSpwipe;
     
-    [Inject] private void Construct(SwipeListener swipeListener, IGameCurrentState gameCurrentState, IPlayerMover playerMover, IPersistentPlayerData persistentData)
+    [Inject] private void Construct(
+        SwipeListener swipeListener, 
+        IGameCurrentState gameCurrentState,
+        IPlayerMover playerMover,
+        IPersistentPlayerData persistentData
+        )
     {
         _playerMover = playerMover;
         _swipeListener = swipeListener;
         _gameCurrentState = gameCurrentState;
-        Transform = transform;
 
         EventAggregator.Post(this, new ApplySelectedHeroSkinEvent() { SelectedHeroSkin = persistentData.PlayerData.SelectedHeroSkin});
         EventAggregator.Post(this, new ApplySelectedShieldSkinEvent { SelectedShieldSkin = persistentData.PlayerData.SelectedShieldSkin});
     }
     
-    private void Awake() => _animatorController = new PlayerAnimationController(GetComponent<Animator>());
-    
+    private void Awake()
+    {
+        Transform = transform;
+        player = gameObject;
+        _animatorController = new PlayerAnimationController(GetComponent<Animator>());
+    }
+
     private void OnEnable()
     {
         _swipeListener.OnSwipe.AddListener(OnSwipeHandler);

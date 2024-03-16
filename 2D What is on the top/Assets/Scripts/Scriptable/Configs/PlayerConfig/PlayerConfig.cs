@@ -13,8 +13,8 @@ public class PlayerConfig : ScriptableObject
     [field: SerializeField] public float AccelerationRate { get; private set; } = 1f;
     
     [field: SerializeField] public StaminaData StaminaData { get; private set; }
-
-    [field: SerializeField] public SpawnPointType CurrentSpawnPoint { get; private set; }
-
-    public void SetCurrentSpawnPoint(SpawnPointType type) => CurrentSpawnPoint = type;
+    //
+    // [field: SerializeField] public LevelType CurrentLevelSpawnPoint { get; private set; }
+    //
+    // public void SetCurrentLevel(LevelType type) => CurrentLevelSpawnPoint = type;
 }

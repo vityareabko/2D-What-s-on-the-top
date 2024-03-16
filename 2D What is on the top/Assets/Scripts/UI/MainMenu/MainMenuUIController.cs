@@ -26,7 +26,6 @@ namespace UI.MainMenu
         {
             _mainMenuPresenter.ClickedPlayButton += OnClickedPlatButton;
             _mainMenuPresenter.ClickedShopSkinsButton += OnClickedShopSkinsButton;
-
             _shopSkinsPresenter.ClickBackButton += OnClickedShopSkinsBackButton;
             
             EventAggregator.Subscribe<SwitchGameStateToPlayGameEvent>(OnSwitchToGameStateToPlay);

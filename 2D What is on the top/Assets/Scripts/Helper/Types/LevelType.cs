@@ -1,4 +1,4 @@
-public enum SpawnPointType
+public enum LevelType
 {
     Level1,
     Level2,

@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using Game.Gameplay;
+using Obstacles;
 using PersistentData;
 using UI.MVP;
 using UnityEngine;
@@ -7,10 +10,14 @@ namespace UI.MainMenu
 {
     public interface IMainMenuPresenter : IPresenter < IMainMenuModel, MainMenuScreenView>
     {
-        public event System.Action ClickedPlayButton;
-        public event System.Action ClickedShopSkinsButton;
+        public event Action ClickedPlayButton;
+        public event Action ClickedShopSkinsButton;
+        
         public void OnClickedPlayButton();
         public void OnClickedShopSkinsButton();
+        public void OnLevelSelectedType(LevelType type);
+
+        public void UpdateLevelsItems();
     }
 
     public class MainMenuScreenPresenter : IMainMenuPresenter
@@ -21,16 +28,30 @@ namespace UI.MainMenu
         public IMainMenuModel Model { get; }
         public MainMenuScreenView View { get; }
 
-        private IPersistentResourceData _persistentResource;  
+        private IPersistentResourceData _persistentResource;
+        private IPersistentPlayerData _persistentPlayerData;
+        private GameplayController _gameplayController;
+        private LevelsDB _levelsDB;
         
         private bool _isInit = false; 
         
-        public MainMenuScreenPresenter(IMainMenuModel model, MainMenuScreenView view, IPersistentResourceData persistentResourceData)
+        public MainMenuScreenPresenter(
+            IMainMenuModel model, 
+            MainMenuScreenView view, 
+            IPersistentResourceData persistentResourceData, 
+            IPersistentPlayerData persistentPlayerData,
+            GameplayController gameplayController,
+            LevelsDB levelsDB
+            )
         {
             Model = model;
             View = view;
-            
+
+            _levelsDB = levelsDB;
+            _persistentPlayerData = persistentPlayerData;
             _persistentResource = persistentResourceData;
+            _gameplayController = gameplayController;
+            
             OnResourceChanges(ResourceTypes.Coin);
             OnResourceChanges(ResourceTypes.Gem);
             
@@ -38,7 +59,10 @@ namespace UI.MainMenu
             Init();
         }
         
-        public void Show() => View.Show();
+        public void Show()
+        {
+            View.Show();
+        }
 
         public void Hide(Action callBack = null) => View.Hide(callBack);
         
@@ -51,9 +75,36 @@ namespace UI.MainMenu
             View.InitPresentor(this);
         }
         
+        public void UpdateLevelsItems()
+        {
+            foreach (var viewLevelButton in View.LevelItems)
+            {
+                viewLevelButton.Lock();
+                viewLevelButton.Unselect();
+                
+                if (_persistentPlayerData.PlayerData.AvailableLevels.Contains(viewLevelButton.Type))
+                    viewLevelButton.Unlock();
+                
+                if (_levelsDB.CurrentLevel == viewLevelButton.Type)
+                    viewLevelButton.Select();
+            }
+        }
+        
         public void OnClickedPlayButton() => ClickedPlayButton?.Invoke();
 
         public void OnClickedShopSkinsButton() => ClickedShopSkinsButton?.Invoke();
+        
+        public void OnLevelSelectedType(LevelType type)
+        {
+            if (_persistentPlayerData.PlayerData.AvailableLevels.Contains(type) == false ||
+                _levelsDB.CurrentLevel == type) 
+                return;
+            
+            _levelsDB.SetCurrentLevel(type);
+            _persistentPlayerData.PlayerData.SetCurrentLevel(type);
+            _gameplayController.MovePlayerToLevelSpawnPoint(type);
+        }
+
 
         private void OnResourceChanges(ResourceTypes type)
         {
@@ -71,7 +122,6 @@ namespace UI.MainMenu
                     Debug.Log("Don't need To Change View, couse the type resource not on the View");
                     break;
             }
-            
         }
     }
 }
