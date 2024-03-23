@@ -1,25 +1,27 @@
 
 public enum ResourceTypes
 {
-    AdhesivePlaster         ,
-    CrumpledPlasticBootle   ,
-    CrumpledSodaCan         ,
-    Glasses                 ,
-    PieceOfFabricsGreen     ,
-    PieceOfFabricsYellow    ,
-    PieceOfFabricsOrange    ,
-    PlasticlBagYellow       ,
-    PlasticlBagBlue         ,
-    PlasticlBagGreen        ,
-    PlasticlBagRed          ,
-    PlasticlBagPurple       ,
-    PlateSimple             ,
-    PlateRed                ,
-    PlateFlowers            ,
-    PlateMixColored         ,
-    Spoon                   ,
-    ToothBrushRed           ,
-    ToothBrushWhithe        ,
-    Coin                    ,
+   
+    Coin,
     Gem,
+    
+    NormalAlichea,
+    NormalApple,
+    NormalCherry,
+    NormalDragonBarry,
+    NormalPumpkin,
+    NormalStrawberry,
+    
+    RareBucket,
+    RareDagger,
+    RareMuteWater,
+    
+    EpicDivineFire,
+    EpicMedal,
+    EpicShield,
+    
+    LegendaryBranch,
+    LegendaryLeaf,
+    LegendaryStone,
+    
 }

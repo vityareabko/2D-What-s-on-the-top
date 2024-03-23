@@ -26,7 +26,7 @@ public class PlayerMover : IPlayerMover, IDisposable
     private LayerMask _plarformLayer;
     private Rigidbody2D _rigidbody;
     
-    private PlayerConfig playerConfig;
+    private PlayerStats playerStats;
     private PlayerAnimationController _animator;
     private Stamina _stamina;
 
@@ -41,9 +41,9 @@ public class PlayerMover : IPlayerMover, IDisposable
     private bool _isPlatform = false;
     private bool _isRoll = false;
     
-    public PlayerMover(Stamina stamina, PlayerConfig playerConfig, Player player)
+    public PlayerMover(Stamina stamina, PlayerStats playerStats, Player player)
     {
-        this.playerConfig = playerConfig;
+        this.playerStats = playerStats;
         _stamina = stamina;
         _player = player;
         _rigidbody = player.GetComponent<Rigidbody2D>();
@@ -109,15 +109,16 @@ public class PlayerMover : IPlayerMover, IDisposable
         else
             EventAggregator.Post(this, new SwitchCameraStateOnPlayerLeftPlatform());
 
+        var jumpForce = playerStats.GetJumpPower();
 
         if (_jumpDirection != jumpDirection && _isPlatform || _isFirstJump)
                 _animator.JumpAnimationTrigger();
         
         
         if (_isPlatform || _isFirstJump)
-            _rigidbody.velocity = new Vector2(jumpDirection * playerConfig.JumpForce, Mathf.Max(_rigidbody.velocity.y, playerConfig.JumpForce));
+            _rigidbody.velocity = new Vector2(jumpDirection * jumpForce , Mathf.Max(_rigidbody.velocity.y, jumpForce));
         else 
-            _rigidbody.velocity = new Vector2(jumpDirection * playerConfig.JumpForce, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(jumpDirection * jumpForce, _rigidbody.velocity.y);
                 
         if(_isFirstJump)
             _isFirstJump = false;
@@ -158,16 +159,16 @@ public class PlayerMover : IPlayerMover, IDisposable
     private void UpwardRoll()
     {
         _animator.RollUpwardAnimationTrigger();
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, playerConfig.RollVerticalSpeed);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, playerStats.RollVerticalSpeed);
         _stamina.DrainRateStaminaUpwardRoll();
     }
 
     private void SlowDown()
     {
-        _animator.WalkAnimation(playerConfig.WalkVerticalSpeed);
+        _animator.WalkAnimation(playerStats.WalkVerticalSpeed);
         
-        float newVerticalSpeed = Mathf.Max(playerConfig.WalkVerticalSpeed, _rigidbody.velocity.y - playerConfig.DecelerationRate * Time.fixedDeltaTime);
-        newVerticalSpeed = Mathf.Max(newVerticalSpeed, playerConfig.WalkVerticalSpeed);
+        float newVerticalSpeed = Mathf.Max(playerStats.WalkVerticalSpeed, _rigidbody.velocity.y - 1f * Time.fixedDeltaTime);
+        newVerticalSpeed = Mathf.Max(newVerticalSpeed, playerStats.WalkVerticalSpeed);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, newVerticalSpeed);
         
         _stamina.DrainRateStaminaWalking(Time.deltaTime);
@@ -177,9 +178,10 @@ public class PlayerMover : IPlayerMover, IDisposable
     
     private void MoveUpward()
     {
-        _animator.RunAnimation(playerConfig.RunSpeed);
+        var runSpeed = playerStats.GetRunSpeed();
+        _animator.RunAnimation(runSpeed);
         
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, playerConfig.RunSpeed);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, runSpeed);
         
         _stamina.DrainRateStaminaRun(Time.deltaTime);
         

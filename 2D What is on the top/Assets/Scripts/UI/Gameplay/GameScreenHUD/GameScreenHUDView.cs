@@ -6,13 +6,12 @@ using TMPro;
 using UI.MVP;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace UI
 {
     public interface IGameSreenView : IView<IGameScreenPresenter>
     {
-        public void Initialize(StaminaData data);
+        public void Initialize(PlayerStats data);
         public void SetHightScore(int score);
         public void SetStaminaValue(float currentStamina);
         public void SetAmountCoins(int value);
@@ -39,10 +38,10 @@ namespace UI
         
         public void InitPresentor(IGameScreenPresenter presentor) => Presentor = presentor;
         
-        public void Initialize(StaminaData data)
+        public void Initialize(PlayerStats data)
         {
-            _stamina.minValue = data.MinStamina;
-            _stamina.maxValue = data.MaxStamina;
+            _stamina.minValue = 0;
+            _stamina.maxValue = data.GetMaxStamina();
             _stamina.value = _stamina.maxValue;
 
             _amountCoins.text = "0";

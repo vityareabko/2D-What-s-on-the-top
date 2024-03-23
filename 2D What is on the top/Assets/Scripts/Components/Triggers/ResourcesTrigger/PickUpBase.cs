@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace ResourcesCollector
 {
-    public abstract class PickUpBase : MonoBehaviour, IPickUp
+    public class PickUpBase : MonoBehaviour, IPickUp
     {
-        public abstract ResourceTypes Type { get; }
+        public ResourceTypes Type { get; }
 
         // public event Action<IPickUp> PickUP;
 
-        [field: SerializeField] public int AmountResources { get; private set; } = 1; // пока что через инспектор задаем кол-во рессурса
+        [field: SerializeField] public int AmountResources { get; private set; } = 1; 
 
         private void Hide() => gameObject.SetActive(false);
         

@@ -187,44 +187,6 @@ namespace UI
                     case ResourceTypes.Coin:
                         _gameScreenHUDPresenter.SetAmountCoins(value);
                         break;
-                    case ResourceTypes.AdhesivePlaster:
-                        break;
-                    case ResourceTypes.CrumpledPlasticBootle:
-                        break;
-                    case ResourceTypes.CrumpledSodaCan:
-                        break;
-                    case ResourceTypes.Glasses:
-                        break;
-                    case ResourceTypes.PieceOfFabricsGreen:
-                        break;
-                    case ResourceTypes.PieceOfFabricsYellow:
-                        break;
-                    case ResourceTypes.PieceOfFabricsOrange:
-                        break;
-                    case ResourceTypes.PlasticlBagYellow:
-                        break;
-                    case ResourceTypes.PlasticlBagBlue:
-                        break;
-                    case ResourceTypes.PlasticlBagGreen:
-                        break;
-                    case ResourceTypes.PlasticlBagRed:
-                        break;
-                    case ResourceTypes.PlasticlBagPurple:
-                        break;
-                    case ResourceTypes.PlateSimple:
-                        break;
-                    case ResourceTypes.PlateRed:
-                        break;
-                    case ResourceTypes.PlateFlowers:
-                        break;
-                    case ResourceTypes.PlateMixColored:
-                        break;
-                    case ResourceTypes.Spoon:
-                        break;
-                    case ResourceTypes.ToothBrushRed:
-                        break;
-                    case ResourceTypes.ToothBrushWhithe:
-                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

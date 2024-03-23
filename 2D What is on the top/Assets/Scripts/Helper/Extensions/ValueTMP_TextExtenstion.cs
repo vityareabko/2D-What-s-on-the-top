@@ -7,6 +7,8 @@ namespace Extensions
     {
         public static void Show<T>(this TMP_Text tmpText, T value) where T : IConvertible
         {
+            if (tmpText == null)
+                return;
             tmpText.gameObject.SetActive(true);
             tmpText.text = value.ToString();
         }

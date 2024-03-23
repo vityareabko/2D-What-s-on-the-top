@@ -18,18 +18,18 @@ namespace UI
         public IGameSreenView View { get; private set; }
         public IGameScreenModel Model { get; private set; }
         
-        private PlayerConfig playerConfig;
+        private PlayerStats playerStats;
         
         private bool _isInit = false;
 
         public GameScreenHUDPresenter(
             IGameScreenModel model, 
             IGameSreenView view, 
-            PlayerConfig playerConfig)
+            PlayerStats playerStats)
         {
             Model = model;
             View = view;
-            this.playerConfig = playerConfig;
+            this.playerStats = playerStats;
             
             Init();
         }
@@ -41,7 +41,7 @@ namespace UI
 
             _isInit = true;
 
-            View.Initialize(playerConfig.StaminaData);
+            View.Initialize(playerStats);
             View.InitPresentor(this);
 
             

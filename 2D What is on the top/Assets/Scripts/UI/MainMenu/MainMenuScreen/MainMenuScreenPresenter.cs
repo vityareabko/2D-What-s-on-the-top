@@ -5,10 +5,11 @@ using Obstacles;
 using PersistentData;
 using UI.MVP;
 using UnityEngine;
+using UpgradeStatsPanel;
 
 namespace UI.MainMenu
 {
-    public interface IMainMenuPresenter : IPresenter < IMainMenuModel, MainMenuScreenView>
+    public interface IMainMenuPresenter : IPresenter <IMainMenuModel, MainMenuScreenView>
     {
         public event Action ClickedPlayButton;
         public event Action ClickedShopSkinsButton;
@@ -24,12 +25,13 @@ namespace UI.MainMenu
     {
         public event Action ClickedPlayButton;
         public event Action ClickedShopSkinsButton;
-        
+
         public IMainMenuModel Model { get; }
         public MainMenuScreenView View { get; }
-
+        
         private IPersistentResourceData _persistentResource;
         private IPersistentPlayerData _persistentPlayerData;
+        private IUpgradeStatsPanelPresenter _upgradeStatsPanelPresenter;
         private GameplayController _gameplayController;
         private LevelsDB _levelsDB;
         
@@ -40,18 +42,20 @@ namespace UI.MainMenu
             MainMenuScreenView view, 
             IPersistentResourceData persistentResourceData, 
             IPersistentPlayerData persistentPlayerData,
+            IUpgradeStatsPanelPresenter upgradeStatsPanelPresenter,
             GameplayController gameplayController,
             LevelsDB levelsDB
             )
         {
             Model = model;
             View = view;
-
+            
             _levelsDB = levelsDB;
             _persistentPlayerData = persistentPlayerData;
             _persistentResource = persistentResourceData;
             _gameplayController = gameplayController;
-            
+
+            _upgradeStatsPanelPresenter = upgradeStatsPanelPresenter;
             OnResourceChanges(ResourceTypes.Coin);
             OnResourceChanges(ResourceTypes.Gem);
             
@@ -62,10 +66,16 @@ namespace UI.MainMenu
         public void Show()
         {
             View.Show();
+            _upgradeStatsPanelPresenter.Show();
         }
 
-        public void Hide(Action callBack = null) => View.Hide(callBack);
-        
+        public void Hide(Action callBack = null)
+        {
+            View.Hide(callBack);
+            _upgradeStatsPanelPresenter.Hide(callBack);
+        }
+
+
         public void Init()
         {
             if (_isInit)
@@ -74,7 +84,7 @@ namespace UI.MainMenu
             _isInit = true;
             View.InitPresentor(this);
         }
-        
+
         public void UpdateLevelsItems()
         {
             foreach (var viewLevelButton in View.LevelItems)
@@ -89,7 +99,7 @@ namespace UI.MainMenu
                     viewLevelButton.Select();
             }
         }
-        
+
         public void OnClickedPlayButton() => ClickedPlayButton?.Invoke();
 
         public void OnClickedShopSkinsButton() => ClickedShopSkinsButton?.Invoke();

@@ -13,12 +13,18 @@ namespace Services.StorageService.JsonDatas
         [JsonProperty(PropertyName = "selected_hero_skin")] private HeroSkinType _selectedHeroSkin;
         [JsonProperty(PropertyName = "selected_shield_skin")] private ShieldSkinType _selectedShieldSkin;
         [JsonProperty(PropertyName = "current_level")] private LevelType _currentLevelSelected;
+
+        [JsonProperty(PropertyName = "player_stat")] private Dictionary<PlayerStatType, LevelStatType> _currentPlayerStats;
         
         public PlayerJsonData(
+            Dictionary<PlayerStatType, LevelStatType> currentPlayerStats,
             HeroSkinType selectedHeroSkin = HeroSkinType.GreenWarrior, 
             ShieldSkinType selectedShieldSkin = ShieldSkinType.DwellerBucket, 
-            LevelType currentLevel = LevelType.Level1)
+            LevelType currentLevel = LevelType.Level1
+            )
         {
+            _currentPlayerStats = currentPlayerStats;
+            
             _selectedHeroSkin = selectedHeroSkin;
             _selectedShieldSkin = selectedShieldSkin;
             _currentLevelSelected = currentLevel;
@@ -85,6 +91,11 @@ namespace Services.StorageService.JsonDatas
         }
 
         public void SetCurrentLevel(LevelType type) => _currentLevelSelected = type;
+
+        public void SetCurrentStatLevel(Dictionary<PlayerStatType, LevelStatType> currentStats) =>
+            _currentPlayerStats = currentStats;
+        
+        public Dictionary<PlayerStatType, LevelStatType> GetCurrentStatLevel() => _currentPlayerStats;
 
     }
 }

@@ -1,0 +1,751 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d39c4df74b45af8c250db78e4d901d, type: 3}
+  m_Name: PlayerStats
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: BaseStateValues
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[PlayerStatType, Assembly-CSharp],[System.Single,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[PlayerStatType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 4
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 4
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: UpgradeStatsLevels
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[PlayerStatType, Assembly-CSharp],[System.Collections.Generic.List`1[[LevelStatUpgrade,
+        Assembly-CSharp]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[PlayerStatType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 4|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 5|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 0
+    - Name: Value
+      Entry: 4
+      Data: 5
+    - Name: priceAmount
+      Entry: 3
+      Data: 100
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 6|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 1
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 0
+    - Name: Value
+      Entry: 4
+      Data: 5
+    - Name: priceAmount
+      Entry: 3
+      Data: 1000
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 2
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 0
+    - Name: Value
+      Entry: 4
+      Data: 6
+    - Name: priceAmount
+      Entry: 3
+      Data: 3000
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 8|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 9|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 1
+    - Name: Value
+      Entry: 4
+      Data: 8
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 10|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 1
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 0
+    - Name: Value
+      Entry: 4
+      Data: 13
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: 11|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 12|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 2
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 7
+      Data: 13|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 14|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 3
+    - Name: Value
+      Entry: 4
+      Data: 50
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 7
+      Data: 15|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 16|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 4
+    - Name: Value
+      Entry: 4
+      Data: 1
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 7
+      Data: 17|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 18|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 5
+    - Name: Value
+      Entry: 4
+      Data: 1
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 7
+      Data: 19|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 9
+    - Name: 
+      Entry: 7
+      Data: 20|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 6
+    - Name: Value
+      Entry: 4
+      Data: 1
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 21|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 1
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 7
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 22|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 2
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 8
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 23|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 3
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 9
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 24|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 4
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 1
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 100
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 25|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 5
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 10
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 26|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 6
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 13
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 27|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 7
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 14
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 28|LevelStatUpgrade, Assembly-CSharp
+    - Name: Level
+      Entry: 3
+      Data: 8
+    - Name: ResourceTypes
+      Entry: 3
+      Data: 15
+    - Name: Value
+      Entry: 4
+      Data: 0
+    - Name: priceAmount
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: CurrentPlayerStats
+      Entry: 7
+      Data: 29|System.Collections.Generic.Dictionary`2[[PlayerStatType, Assembly-CSharp],[LevelStatType,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 30|System.Collections.Generic.EnumEqualityComparer`1[[PlayerStatType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  <RollVerticalSpeed>k__BackingField: 10
+  <WalkVerticalSpeed>k__BackingField: 2
+  <StaminaDrainRateWalking>k__BackingField: 75
+  <StaminaDrainObstacleCollision>k__BackingField: 0.1

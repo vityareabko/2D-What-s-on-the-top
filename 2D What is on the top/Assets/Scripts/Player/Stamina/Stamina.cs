@@ -2,14 +2,14 @@ using System;using UI;
 
 public class Stamina : IDisposable
 {
-    private StaminaData _staminaData;
+    private PlayerStats _playerData;
     private GameScreenHUDPresenter _gameScreenHUDPresenter;
     
     private float _currentStamin;
 
-    public Stamina(PlayerConfig playerConfig, GameScreenHUDPresenter gameScreenHUDPresenter)
+    public Stamina(PlayerStats playerStats, GameScreenHUDPresenter gameScreenHUDPresenter)
     {
-        _staminaData = playerConfig.StaminaData;
+        _playerData = playerStats;
         _gameScreenHUDPresenter = gameScreenHUDPresenter;
         Initialize();
         
@@ -20,20 +20,20 @@ public class Stamina : IDisposable
 
     public void Initialize()
     {
-        _currentStamin = _staminaData.MaxStamina;
+        _currentStamin = _playerData.GetMaxStamina();
         DrainRateStamina(0f);
     }
 
-    public void DrainRateStaminaRun(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateRunning * deltaTime);
-    public void DrainRateStaminaWalking(float deltaTime) => DrainRateStamina(_staminaData.StaminaDrainRateWalking * deltaTime);
-    public void DrainRateStaminaJump() => DrainRateStamina(_staminaData.StaminaDrainRateJumping);
-    public void DrainRateStaminaUpwardRoll() => DrainRateStamina(_staminaData.StaminaDrainRateRoll);
+    public void DrainRateStaminaRun(float deltaTime) => DrainRateStamina(_playerData.GetStaminaDrainRateRunning() * deltaTime);
+    public void DrainRateStaminaWalking(float deltaTime) => DrainRateStamina(_playerData.StaminaDrainRateWalking * deltaTime);
+    public void DrainRateStaminaJump() => DrainRateStamina(_playerData.GetStaminaDrainRateJumping());
+    public void DrainRateStaminaUpwardRoll() => DrainRateStamina(_playerData.GetStaminaDrainRateRoll());
     
-    public bool isEnough() => _currentStamin > _staminaData.MinStamina;
+    public bool isEnough() => _currentStamin > 0;
 
     private void DrainRateStamina(float amount)
     {
-        if (_currentStamin <= _staminaData.MinStamina) 
+        if (_currentStamin <= 0) 
             return;
         
         _currentStamin -= amount;
@@ -42,7 +42,7 @@ public class Stamina : IDisposable
 
     private void RegenerateStamina(float amount)
     {
-        if (_currentStamin >= _staminaData.MaxStamina)
+        if (_currentStamin >= _playerData.GetMaxStamina())
             return;
 
         _currentStamin += amount;

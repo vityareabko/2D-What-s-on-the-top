@@ -22,7 +22,6 @@ namespace Services.StorageService.JsonDatas
             }
             
             Resources[type] -= amount;
-            Debug.LogWarning("kakogo huiz");
             ResourceChange?.Invoke(type);
             
             return true;

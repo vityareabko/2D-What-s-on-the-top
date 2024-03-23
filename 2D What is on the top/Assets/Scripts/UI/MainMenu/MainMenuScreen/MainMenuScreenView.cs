@@ -6,7 +6,6 @@ using LevelUI;
 using TMPro;
 using UI.MVP;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI.MainMenu
@@ -36,8 +35,7 @@ namespace UI.MainMenu
        
         [Header("Toggle")]
         [SerializeField] private Toggle _levelsShowToggle;
-
-        [FormerlySerializedAs("_levelButtons")]
+        
         [Header("LevelItems")] 
         [SerializeField] private List<LevelUIItem> levelItems = new();
         
@@ -47,8 +45,20 @@ namespace UI.MainMenu
 
         public IEnumerable<LevelUIItem> LevelItems => levelItems;
 
+        protected override void OnAwake()
+        {
+            base.OnAwake();
+            _playButton.onClick.AddListener(OnPlayButtonClicked);
+            _shopSkinButton.onClick.AddListener(OnShopSkinButtonClicked);
+            _levelsShowToggle.onValueChanged.AddListener(OnClickShowLevelsButton);
+            
+            AddListenerLevelButtons();
+        }
+        
         protected override void OnShow()
         {
+            if (_levelPanel.anchoredPosition.x < 0)
+            
             base.OnShow();
             _topPanel.AnimateFromOutsideToPosition(_topPanel.anchoredPosition, RectTransformExtensions.Direction.Up);
             _bottomPanel.AnimateFromOutsideToPosition(_bottomPanel.anchoredPosition, RectTransformExtensions.Direction.Down);
@@ -84,24 +94,17 @@ namespace UI.MainMenu
             _resourceLevelPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
         }
 
-        private void OnEnable()
-        {
-            _playButton.onClick.AddListener(OnPlayButtonClicked);
-            _shopSkinButton.onClick.AddListener(OnShopSkinButtonClicked);
-            _levelsShowToggle.onValueChanged.AddListener(OnClickShowLevelsButton);
 
-            AddListenerLevelButtons();
-        }
-
-        private void OnDisable()
+        protected override void OnDestroyInner()
         {
+            base.OnDestroyInner();
             _playButton.onClick.RemoveListener(OnPlayButtonClicked);
             _shopSkinButton.onClick.RemoveListener(OnShopSkinButtonClicked);
             _levelsShowToggle.onValueChanged.RemoveListener(OnClickShowLevelsButton);
 
             RemoveListenerLevelButtons();
         }
-
+        
         private void AddListenerLevelButtons()
         {
             foreach (var levelUIButton in levelItems)
@@ -113,7 +116,8 @@ namespace UI.MainMenu
             foreach (var levelUIButton in levelItems)
                 levelUIButton.ClickedItem -= OnLevelSelected;
         }
-
+        
+        
         private void OnLevelSelected(LevelType type)
         {
             Presentor.OnLevelSelectedType(type);
@@ -125,7 +129,8 @@ namespace UI.MainMenu
             if (isOn)
                 Presentor.UpdateLevelsItems();
             
-            _levels.DOAnchorPos(_levels.anchoredPosition * -1f, 0.7f).SetEase(Ease.OutBounce);
+            _levelsShowToggle.interactable = false;
+            _levels.DOAnchorPos(_levels.anchoredPosition * -1f, 0.7f).SetEase(Ease.OutBounce).OnComplete(() => _levelsShowToggle.interactable = true);
         }
 
         public void SetCristtalAmount(int amount) => _cristalAmount.Show(amount);

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UI.MainMenu.ShopSkinsScreen;
 using UI.MVP;
 using UnityEngine;
+using UpgradeStatsPanel;
 using Zenject;
 
 namespace UI.MainMenu
@@ -13,7 +14,11 @@ namespace UI.MainMenu
 
         private List<IPresenter> _presenters = new();
         
-        [Inject] private void Construct(IMainMenuPresenter mainMenuPresenter, IShopSkinsScreenPresenter shopSkinsPresenter)
+        [Inject] private void Construct(
+            IMainMenuPresenter mainMenuPresenter,
+            IShopSkinsScreenPresenter shopSkinsPresenter,
+            IUpgradeStatsPanelPresenter upgradeStatsPanelPresenter
+            )
         {
             _mainMenuPresenter = mainMenuPresenter;
             _shopSkinsPresenter = shopSkinsPresenter;
@@ -26,6 +31,7 @@ namespace UI.MainMenu
         {
             _mainMenuPresenter.ClickedPlayButton += OnClickedPlatButton;
             _mainMenuPresenter.ClickedShopSkinsButton += OnClickedShopSkinsButton;
+            
             _shopSkinsPresenter.ClickBackButton += OnClickedShopSkinsBackButton;
             
             EventAggregator.Subscribe<SwitchGameStateToPlayGameEvent>(OnSwitchToGameStateToPlay);
@@ -44,6 +50,7 @@ namespace UI.MainMenu
             EventAggregator.Unsubscribe<SwitchGameStateToMainMenuGameEvent>(OnSwitchToGameStateMainMenu);
         }
         
+
         private void HideOtherViewsAndShow(IPresenter presenter)
         {
             foreach (var presntr in _presenters)

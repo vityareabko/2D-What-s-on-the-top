@@ -6,5 +6,6 @@ namespace UI.MVP
         // ScorePanel,
         // MiniMapPanel,
         ShopItem,
+        UpgradeStat
     }
 }
