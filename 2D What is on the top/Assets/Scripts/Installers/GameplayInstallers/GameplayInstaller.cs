@@ -36,7 +36,6 @@ namespace Installers.GameplayInstallers
         private void BindIPlayer()
         {
             var spawnPoint = _gameplayController.GetLevelSpawnPointByType(_levelsDB.CurrentLevel);
-            
             Container.BindInterfacesAndSelfTo<Player>().FromComponentInNewPrefab(_player).UnderTransform(spawnPoint).AsSingle();
         }
 

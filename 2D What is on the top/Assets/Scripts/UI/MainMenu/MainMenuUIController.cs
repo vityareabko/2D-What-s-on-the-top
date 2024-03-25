@@ -29,7 +29,7 @@ namespace UI.MainMenu
 
         private void OnEnable()
         {
-            _mainMenuPresenter.ClickedPlayButton += OnClickedPlatButton;
+            _mainMenuPresenter.ClickedPlayButton += OnClickedPlayButton;
             _mainMenuPresenter.ClickedShopSkinsButton += OnClickedShopSkinsButton;
             
             _shopSkinsPresenter.ClickBackButton += OnClickedShopSkinsBackButton;
@@ -41,7 +41,7 @@ namespace UI.MainMenu
 
         private void OnDisable()
         {
-            _mainMenuPresenter.ClickedPlayButton -= OnClickedPlatButton;
+            _mainMenuPresenter.ClickedPlayButton -= OnClickedPlayButton;
             _mainMenuPresenter.ClickedShopSkinsButton -= OnClickedShopSkinsButton;
             
             _shopSkinsPresenter.ClickBackButton -= OnClickedShopSkinsBackButton;
@@ -84,13 +84,14 @@ namespace UI.MainMenu
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
         }
 
-        private void OnSwitchToGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent eventData) 
+        private void OnSwitchToGameStateToPlay(object sender, SwitchGameStateToPlayGameEvent eventData)
         {
             _mainMenuPresenter.Hide(() =>
             {
                 HideAllViewsInList();
-                EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
             });
+         
+            // EventAggregator.Post(this, new SwitchCameraStateOnPlayerLeftPlatform());
         }
 
         private void OnClickedShopSkinsButton()
@@ -103,7 +104,7 @@ namespace UI.MainMenu
             EventAggregator.Post(this, new SwitchCameraStateOnMainMenuShopSkins());
         }
         
-        private void OnClickedPlatButton() => EventAggregator.Post(_mainMenuPresenter, new SwitchGameStateToPlayGameEvent());
-        
+        private void OnClickedPlayButton() => EventAggregator.Post(_mainMenuPresenter, new SwitchGameStateToPlayGameEvent());
+            
     }
 }

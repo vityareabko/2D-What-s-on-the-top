@@ -21,7 +21,7 @@ namespace UI.MainMenu
         [Header("RectTransforms")]
         [SerializeField] private RectTransform _topPanel;
         [SerializeField] private RectTransform _bottomPanel;
-        [SerializeField] private RectTransform _resourceLevelPanel;
+        // [SerializeField] private RectTransform _resourceLevelPanel;
         [SerializeField] private RectTransform _levelPanel;
         [SerializeField] private RectTransform _levels;
         
@@ -66,7 +66,7 @@ namespace UI.MainMenu
             _topPanel.AnimateFromOutsideToPosition(_topPanel.anchoredPosition, RectTransformExtensions.Direction.Up);
             _bottomPanel.AnimateFromOutsideToPosition(_bottomPanel.anchoredPosition, RectTransformExtensions.Direction.Down);
             _levelPanel.AnimateFromOutsideToPosition(_levelPanel.anchoredPosition, RectTransformExtensions.Direction.Right);
-            _resourceLevelPanel.AnimateFromOutsideToPosition(_resourceLevelPanel.anchoredPosition, RectTransformExtensions.Direction.Left);
+            // _resourceLevelPanel.AnimateFromOutsideToPosition(_resourceLevelPanel.anchoredPosition, RectTransformExtensions.Direction.Left);
         }
 
         public override void Hide(Action callBack = null)
@@ -94,7 +94,7 @@ namespace UI.MainMenu
             _topPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Up, callback: OnCompleted);
             _bottomPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Down, callback: OnCompleted);
             _levels.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
-            _resourceLevelPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
+            // _resourceLevelPanel.AnimateBackOutsideScreen(RectTransformExtensions.Direction.Right, callback: OnCompleted);
         }
 
 

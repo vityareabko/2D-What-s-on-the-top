@@ -73,14 +73,12 @@ namespace UI.MainMenu
         {
             View.Show();
             _upgradeStatsPanelPresenter.Show();
-            _inventoryPanelPresentor.Show();
         }
 
         public void Hide(Action callBack = null)
         {
             View.Hide(callBack);
             _upgradeStatsPanelPresenter.Hide(callBack);
-            _inventoryPanelPresentor.Hide(callBack);
         }
         
         public void Init()
@@ -111,7 +109,13 @@ namespace UI.MainMenu
 
         public void OnClickedShopSkinsButton() => ClickedShopSkinsButton?.Invoke();
 
-        public void OnInventoryButtonClicked() => _inventoryPanelPresentor.Show();
+        public void OnInventoryButtonClicked()
+        {
+            if (_inventoryPanelPresentor.IsHide)
+                _inventoryPanelPresentor.Show();
+            else
+                _inventoryPanelPresentor.Hide();
+        }
 
         public void OnLevelSelectedType(LevelType type)
         {

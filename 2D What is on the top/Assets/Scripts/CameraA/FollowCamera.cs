@@ -11,23 +11,22 @@ public class FollowCamera : MonoBehaviour
     private const float SmoothTime = 0.3f; 
     
     [SerializeField] private Vector3 _offset = new Vector3(0, 0, -15);
-    
-    [SerializeField] private float _maxPositionChangePerFrame = 0.5f;
 
     private Camera _camera;
     private IPlayer _target;
     private ICameraStateMachine _cameraStateMaschine;
     
-    private Vector3 positionVelocity = Vector3.zero;
-    private Vector3 positionChange = Vector3.zero;
+    private CameraState _previousCameraState = CameraState.PlayerOnMainMenuPlatform; 
+    
+    private Vector3 _positionVelocity = Vector3.zero;
+    private Vector3 _positionChange = Vector3.zero;
     private Vector2 _OffsetVelocity;
     private Vector2 _currentoffset;
-    private float _zoomVelocity = 0f;
+    private float _zoomVelocity;
     
     private bool _isStopFollowing = false;
 
-    [Inject]
-    private void Construct(IPlayer player, ICameraStateMachine cameraStateMaschine)
+    [Inject] private void Construct(IPlayer player, ICameraStateMachine cameraStateMaschine)
     {
         _target = player;
         _cameraStateMaschine = cameraStateMaschine;
@@ -43,13 +42,19 @@ public class FollowCamera : MonoBehaviour
     {
         if (_target == null || _isStopFollowing || Time.deltaTime == 0) 
             return;
+        
+        if (_cameraStateMaschine.CurrentCameraState != _previousCameraState) {
+            _previousCameraState = _cameraStateMaschine.CurrentCameraState;
+            ResetOffset(); // Сброс или обновление offset при смене состояния
+        }
 
         float yDifference = _target.Transform.position.y - _camera.transform.position.y;
         
         if (Mathf.Abs(yDifference) > 50) 
             _camera.transform.position = new Vector3(_camera.transform.position.x, _target.Transform.position.y);
 
-        HandleCameraState();
+        HandleCameraState(); 
+        Debug.Log(_cameraStateMaschine.CurrentCameraState);
     }
 
     private void HandleCameraState()
@@ -77,6 +82,12 @@ public class FollowCamera : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+    
+    private void ResetOffset() 
+    {
+        _currentoffset = Vector2.zero; 
+        _OffsetVelocity = Vector2.zero;
     }
 
     private void HandleMainMenuPlatform()
@@ -108,8 +119,7 @@ public class FollowCamera : MonoBehaviour
     {
         ZoomCamera(2.5f, new Vector3(.5f, _target.Transform.position.y + 0.5f, -15f));
     }
-
-    // Дополнительные методы для работы с камерой
+    
     private void SetSmoothlyOffset(float offsetX, float offsetY)
     {
         _currentoffset.x = Mathf.SmoothDamp(_currentoffset.x, offsetX, ref _OffsetVelocity.x, SmoothTime);
@@ -120,34 +130,30 @@ public class FollowCamera : MonoBehaviour
     private void ApplyCameraPosition()
     {
         Vector3 desiredPosition = _target.Transform.position + new Vector3(_currentoffset.x, _offset.y, _offset.z);
-        Vector3 newPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref positionChange, SmoothTime);
+        Vector3 newPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref _positionChange, SmoothTime);
         transform.position = StabilizeCameraPosition(newPosition);
     }
 
     private void ZoomCamera(float targetOrthographicSize, Vector3 offset)
     {
-        float smoothTime = 0.38f ; // 0.1f;
+        float smoothTime = 0.38f;
         
-        // Todo: - при переходе из ShopSkins в MainMenu - то быстро смещается камера нужно бы поисправить
-        
-        if(_camera.orthographicSize == targetOrthographicSize- 0.1f)
+        if(_camera.orthographicSize == targetOrthographicSize - 0.1f)
         {
             SetSmoothlyOffset(offset.x, offset.y);
             return;
         }
+        
         _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, targetOrthographicSize, ref _zoomVelocity, smoothTime);
-        transform.position = Vector3.SmoothDamp(transform.position, offset, ref positionVelocity, smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, offset, ref _positionVelocity, smoothTime);
     }
     
 
     private Vector3 StabilizeCameraPosition(Vector3 newPosition)
     {
-        Vector3 velocity = (newPosition - transform.position) / Time.deltaTime;
-        velocity = Vector3.ClampMagnitude(velocity, _maxPositionChangePerFrame);
-        
-        var newPos = transform.position + velocity * Time.deltaTime;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, newPosition, SmoothTime * Time.fixedDeltaTime);
+        smoothedPosition.y = _target.Transform.position.y + _currentoffset.y;
 
-        newPos.y = _target.Transform.position.y + _currentoffset.y;
-        return newPos;
+        return smoothedPosition;
     }
 }

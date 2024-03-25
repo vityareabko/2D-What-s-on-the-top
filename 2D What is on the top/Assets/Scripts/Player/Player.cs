@@ -139,12 +139,18 @@ public class Player : MonoBehaviour, IPlayer
     {
         if (_isBlockSpwipe)
             return;
-    
+
         if (swipe == DirectionId.ID_LEFT)
+        {
+            EventAggregator.Post(this, new SwitchCameraStateOnPlayerLeftPlatform());
             _playerMover.ProcessJumpinp(false);
+        }
 
         if (swipe == DirectionId.ID_RIGHT)
+        {
+            EventAggregator.Post(this, new SwitchCameraStateOnPlayerRightPlatform());
             _playerMover.ProcessJumpinp(true);
+        }
 
         if (swipe == DirectionId.ID_DOWN)
             _playerMover.ProcessSlowDown(true);
@@ -174,6 +180,7 @@ public class Player : MonoBehaviour, IPlayer
             {
                 _animatorController.LoseBounceLanding(true);
                 EventAggregator.Post(this, new SwitchGameStateToMainMenuGameEvent());
+                EventAggregator.Post(this, new SwitchCameraStateOnMainMenuPlatform());
             }
 
             if (_gameCurrentState.CurrentState == GameStateType.WinGame)

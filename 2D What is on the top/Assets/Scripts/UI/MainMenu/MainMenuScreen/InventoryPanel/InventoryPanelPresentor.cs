@@ -10,11 +10,13 @@ namespace UI.MainMenu.InventoryPanel
 {
     public interface IInventoryPanelPresentor : IPresenter<IInventoryPanelView>
     {
+        public bool IsHide { get; }
     }
 
     public class InventoryPanelPresentor : IInventoryPanelPresentor
     {
         public IInventoryPanelView View { get; }
+        public bool IsHide { get; set; } = false;
 
         private InventoryFactory _inventoryFactory;
         private IPersistentResourceData _resourceData;
@@ -36,9 +38,14 @@ namespace UI.MainMenu.InventoryPanel
         {
             View.Show();
             GenerateResourceItems();
+            IsHide = false;
         }
 
-        public void Hide(Action callBack = null) => Hide(callBack);
+        public void Hide(Action callBack = null)
+        {
+            View.Hide(callBack);
+            IsHide = true;
+        }
 
         public void Init()
         {
@@ -46,6 +53,7 @@ namespace UI.MainMenu.InventoryPanel
                 return;
             
             _isInit = true;
+            View.InitPresentor(this);
             GenerateResourceItems();
         }
 
@@ -88,5 +96,6 @@ namespace UI.MainMenu.InventoryPanel
             for (var i = 0; i < _inventoryItems.Count; i++)
                 _inventoryItems[i].transform.SetSiblingIndex(i);
         }
+
     }
 }

@@ -64,7 +64,7 @@ public class PlayerMover : IPlayerMover, IDisposable
     public void Dispose()
     {
         EventAggregator.Unsubscribe<SwitchGameStateToPlayGameEvent>(OnStartGame);
-        EventAggregator.Subscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
+        EventAggregator.Unsubscribe<ClaimRewardEvent>(OnStopCoroiteneLoseFall);
     }
 
     public void ProcessMovement(bool isBlockMovemnt)
@@ -104,11 +104,6 @@ public class PlayerMover : IPlayerMover, IDisposable
 
         int jumpDirection = isRightWall ? 1 : -1;
         
-        if (isRightWall)
-            EventAggregator.Post(this, new SwitchCameraStateOnPlayerRightPlatform());
-        else
-            EventAggregator.Post(this, new SwitchCameraStateOnPlayerLeftPlatform());
-
         var jumpForce = playerStats.GetJumpPower();
 
         if (_jumpDirection != jumpDirection && _isPlatform || _isFirstJump)

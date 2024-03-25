@@ -70,8 +70,7 @@ public class CameraStateMaschine : ICameraStateMachine, IDisposable
         }
     }
 
-    private void
-        OnSwitchCameraStateOnMainMenuShopSkins(object sender, SwitchCameraStateOnMainMenuShopSkins eventData) =>
+    private void OnSwitchCameraStateOnMainMenuShopSkins(object sender, SwitchCameraStateOnMainMenuShopSkins eventData) =>
         SwitchCameraState(CameraState.ShopSkinsMenu);
     
     private void OnSwitchToPlayerLoseIsNotOnPlatformState(object sender, SwitchCameraStateOnPlayerLoseIsNotOnPlatform eventData) =>

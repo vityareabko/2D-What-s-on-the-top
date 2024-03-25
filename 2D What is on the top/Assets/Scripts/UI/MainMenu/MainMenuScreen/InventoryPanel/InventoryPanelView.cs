@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI.MainMenu.InventoryPanel
 {
-    public interface IInventoryPanelView : IView
+    public interface IInventoryPanelView : IView<IInventoryPanelPresentor>
     {
         public Transform ParentResourceItems { get; }
     }
@@ -18,8 +18,14 @@ namespace UI.MainMenu.InventoryPanel
         
         public override PanelType PanelType => PanelType.Inventory;
 
+        public bool IsHide { get; set; }
+
         public Transform ParentResourceItems => _parentResourceItems;
 
+        public IInventoryPanelPresentor Presentor { get; private set; }
+        
+        public void InitPresentor(IInventoryPanelPresentor presentor) => Presentor = presentor;
+        
         protected override void OnAwake()
         {
             base.OnAwake();
@@ -30,6 +36,7 @@ namespace UI.MainMenu.InventoryPanel
         {
             base.OnShow();
             _rectTransform.AnimateFromOutsideToPosition(_rectTransform.anchoredPosition, RectTransformExtensions.Direction.Right, 0.1f);
+           
         }
 
         protected override void OnDestroyInner()
@@ -38,7 +45,8 @@ namespace UI.MainMenu.InventoryPanel
             _closeButton.onClick.RemoveListener(OnClickCloseButton);
         }
 
-        private void OnClickCloseButton() => Hide();
+        private void OnClickCloseButton() => Presentor.Hide();
         
+
     }
 }

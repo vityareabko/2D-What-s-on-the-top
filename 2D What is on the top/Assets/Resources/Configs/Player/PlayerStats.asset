@@ -49,7 +49,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 4
-      Data: 3
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
@@ -61,7 +61,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 4
-      Data: 5
+      Data: 6
     - Name: 
       Entry: 8
       Data: 
@@ -85,7 +85,7 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 4
-      Data: 0
+      Data: 50
     - Name: 
       Entry: 8
       Data: 
@@ -97,7 +97,7 @@ MonoBehaviour:
       Data: 4
     - Name: $v
       Entry: 4
-      Data: 0
+      Data: 0.5
     - Name: 
       Entry: 8
       Data: 
@@ -109,7 +109,7 @@ MonoBehaviour:
       Data: 5
     - Name: $v
       Entry: 4
-      Data: 0
+      Data: 0.2
     - Name: 
       Entry: 8
       Data: 
@@ -121,7 +121,7 @@ MonoBehaviour:
       Data: 6
     - Name: $v
       Entry: 4
-      Data: 0
+      Data: 0.2
     - Name: 
       Entry: 8
       Data: 
@@ -163,58 +163,22 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 1
     - Name: 
       Entry: 7
       Data: 5|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
+    - Name: <Level>k__BackingField
       Entry: 3
       Data: 0
-    - Name: ResourceTypes
+    - Name: <ResourceTypes>k__BackingField
       Entry: 3
       Data: 0
-    - Name: Value
+    - Name: <Value>k__BackingField
       Entry: 4
-      Data: 5
-    - Name: priceAmount
+      Data: 0.5
+    - Name: <priceAmount>k__BackingField
       Entry: 3
       Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 6|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 1
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 0
-    - Name: Value
-      Entry: 4
-      Data: 9
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 7|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 2
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 0
-    - Name: Value
-      Entry: 4
-      Data: 6
-    - Name: priceAmount
-      Entry: 3
-      Data: 3000
     - Name: 
       Entry: 8
       Data: 
@@ -233,44 +197,66 @@ MonoBehaviour:
     - Name: $k
       Entry: 3
       Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 7|LevelStatUpgrade, Assembly-CSharp
+    - Name: <Level>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: <ResourceTypes>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: <Value>k__BackingField
+      Entry: 4
+      Data: 0.5
+    - Name: <priceAmount>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
     - Name: $v
       Entry: 7
       Data: 8|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 1
     - Name: 
       Entry: 7
       Data: 9|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
+    - Name: <Level>k__BackingField
       Entry: 3
       Data: 0
-    - Name: ResourceTypes
+    - Name: <ResourceTypes>k__BackingField
       Entry: 3
-      Data: 1
-    - Name: Value
+      Data: 0
+    - Name: <Value>k__BackingField
       Entry: 4
-      Data: 8
-    - Name: priceAmount
-      Entry: 3
       Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 10|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 1
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 0
-    - Name: Value
-      Entry: 4
-      Data: 13
-    - Name: priceAmount
+    - Name: <priceAmount>k__BackingField
       Entry: 3
       Data: 0
     - Name: 
@@ -290,27 +276,107 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 2
+      Data: 4
     - Name: $v
       Entry: 7
-      Data: 11|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+      Data: 10|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 12|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
+      Data: 11|LevelStatUpgrade, Assembly-CSharp
+    - Name: <Level>k__BackingField
       Entry: 3
       Data: 0
-    - Name: ResourceTypes
+    - Name: <ResourceTypes>k__BackingField
       Entry: 3
-      Data: 2
-    - Name: Value
+      Data: 0
+    - Name: <Value>k__BackingField
       Entry: 4
+      Data: 0.005
+    - Name: <priceAmount>k__BackingField
+      Entry: 3
       Data: 0
-    - Name: priceAmount
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 7
+      Data: 12|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 13|LevelStatUpgrade, Assembly-CSharp
+    - Name: <Level>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: <ResourceTypes>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: <Value>k__BackingField
+      Entry: 4
+      Data: 0.005
+    - Name: <priceAmount>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 7
+      Data: 14|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 15|LevelStatUpgrade, Assembly-CSharp
+    - Name: <Level>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: <ResourceTypes>k__BackingField
+      Entry: 3
+      Data: 0
+    - Name: <Value>k__BackingField
+      Entry: 4
+      Data: 0.005
+    - Name: <priceAmount>k__BackingField
       Entry: 3
       Data: 0
     - Name: 
@@ -333,288 +399,24 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 7
-      Data: 13|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
+      Data: 16|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 14|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
+      Data: 17|LevelStatUpgrade, Assembly-CSharp
+    - Name: <Level>k__BackingField
       Entry: 3
       Data: 0
-    - Name: ResourceTypes
+    - Name: <ResourceTypes>k__BackingField
       Entry: 3
-      Data: 3
-    - Name: Value
+      Data: 0
+    - Name: <Value>k__BackingField
       Entry: 4
       Data: 50
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 4
-    - Name: $v
-      Entry: 7
-      Data: 15|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 16|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 0
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 4
-    - Name: Value
-      Entry: 4
-      Data: 1
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 5
-    - Name: $v
-      Entry: 7
-      Data: 17|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 18|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 0
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 5
-    - Name: Value
-      Entry: 4
-      Data: 1
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 6
-    - Name: $v
-      Entry: 7
-      Data: 19|System.Collections.Generic.List`1[[LevelStatUpgrade, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 9
-    - Name: 
-      Entry: 7
-      Data: 20|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 0
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 6
-    - Name: Value
-      Entry: 4
-      Data: 1
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 21|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 1
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 7
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 22|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 2
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 8
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 23|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 3
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 9
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 24|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 4
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 1
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
-      Entry: 3
-      Data: 100
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 25|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 5
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 10
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 26|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 6
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 13
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 27|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 7
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 14
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 28|LevelStatUpgrade, Assembly-CSharp
-    - Name: Level
-      Entry: 3
-      Data: 8
-    - Name: ResourceTypes
-      Entry: 3
-      Data: 15
-    - Name: Value
-      Entry: 4
-      Data: 0
-    - Name: priceAmount
+    - Name: <priceAmount>k__BackingField
       Entry: 3
       Data: 0
     - Name: 
@@ -637,11 +439,11 @@ MonoBehaviour:
       Data: 
     - Name: CurrentPlayerStats
       Entry: 7
-      Data: 29|System.Collections.Generic.Dictionary`2[[PlayerStatType, Assembly-CSharp],[LevelStatType,
+      Data: 18|System.Collections.Generic.Dictionary`2[[PlayerStatType, Assembly-CSharp],[LevelStatType,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 30|System.Collections.Generic.EnumEqualityComparer`1[[PlayerStatType,
+      Data: 19|System.Collections.Generic.EnumEqualityComparer`1[[PlayerStatType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -663,7 +465,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -735,7 +537,7 @@ MonoBehaviour:
       Data: 6
     - Name: $v
       Entry: 3
-      Data: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
