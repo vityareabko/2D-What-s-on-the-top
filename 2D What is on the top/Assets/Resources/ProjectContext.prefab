@@ -83,6 +83,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: bc3e01d872f35c045acb186e34a6f12a, type: 2}
   _shopSkinDB: {fileID: 11400000, guid: a83c1b4e611ef5940bb8b564826199e4, type: 2}
   _shopSkinFactory: {fileID: 11400000, guid: a164bccfa655f094a94dcdfd6184c2fb, type: 2}
+  _inventoryFactory: {fileID: 11400000, guid: 9ad078f3ef02b0944a69613bbcf3c7e6, type: 2}
 --- !u!114 &-3727844505535398464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,4 +121,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loadingGameScreen: {fileID: 8166254293080865310, guid: 8491e2a6ea9749e40a8c8de894343684, type: 3}
-  _playerStats: {fileID: 11400000, guid: bc3e01d872f35c045acb186e34a6f12a, type: 2}

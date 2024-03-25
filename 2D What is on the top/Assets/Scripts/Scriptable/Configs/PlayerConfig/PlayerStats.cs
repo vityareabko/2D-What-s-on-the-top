@@ -60,7 +60,6 @@ public class PlayerStats : SerializedScriptableObject
         var priceToUpgrade = currentStatLevel.priceAmount;
         var ResourceSprite = currentStatLevel.ResourceIcon;
         
-        Debug.Log(statType);
 
         return (IconResource: ResourceSprite, Amount: priceToUpgrade);
 

@@ -3,6 +3,7 @@ using System.Linq;
 using Game.Gameplay;
 using Obstacles;
 using PersistentData;
+using UI.MainMenu.InventoryPanel;
 using UI.MVP;
 using UnityEngine;
 using UpgradeStatsPanel;
@@ -16,6 +17,7 @@ namespace UI.MainMenu
         
         public void OnClickedPlayButton();
         public void OnClickedShopSkinsButton();
+        public void OnInventoryButtonClicked();
         public void OnLevelSelectedType(LevelType type);
 
         public void UpdateLevelsItems();
@@ -32,6 +34,7 @@ namespace UI.MainMenu
         private IPersistentResourceData _persistentResource;
         private IPersistentPlayerData _persistentPlayerData;
         private IUpgradeStatsPanelPresenter _upgradeStatsPanelPresenter;
+        private IInventoryPanelPresentor _inventoryPanelPresentor;
         private GameplayController _gameplayController;
         private LevelsDB _levelsDB;
         
@@ -43,6 +46,7 @@ namespace UI.MainMenu
             IPersistentResourceData persistentResourceData, 
             IPersistentPlayerData persistentPlayerData,
             IUpgradeStatsPanelPresenter upgradeStatsPanelPresenter,
+            IInventoryPanelPresentor inventoryPanelPresentor,
             GameplayController gameplayController,
             LevelsDB levelsDB
             )
@@ -56,6 +60,8 @@ namespace UI.MainMenu
             _gameplayController = gameplayController;
 
             _upgradeStatsPanelPresenter = upgradeStatsPanelPresenter;
+            _inventoryPanelPresentor = inventoryPanelPresentor;
+            
             OnResourceChanges(ResourceTypes.Coin);
             OnResourceChanges(ResourceTypes.Gem);
             
@@ -67,15 +73,16 @@ namespace UI.MainMenu
         {
             View.Show();
             _upgradeStatsPanelPresenter.Show();
+            _inventoryPanelPresentor.Show();
         }
 
         public void Hide(Action callBack = null)
         {
             View.Hide(callBack);
             _upgradeStatsPanelPresenter.Hide(callBack);
+            _inventoryPanelPresentor.Hide(callBack);
         }
-
-
+        
         public void Init()
         {
             if (_isInit)
@@ -103,7 +110,9 @@ namespace UI.MainMenu
         public void OnClickedPlayButton() => ClickedPlayButton?.Invoke();
 
         public void OnClickedShopSkinsButton() => ClickedShopSkinsButton?.Invoke();
-        
+
+        public void OnInventoryButtonClicked() => _inventoryPanelPresentor.Show();
+
         public void OnLevelSelectedType(LevelType type)
         {
             if (_persistentPlayerData.PlayerData.AvailableLevels.Contains(type) == false ||

@@ -29,7 +29,7 @@ namespace Game.SpawnFallingObjects
             { ResourceCategory.Rare , _rare} ,
             { ResourceCategory.Epic, _epic },
             { ResourceCategory.Legendary, _legendary },
-            { ResourceCategory.Coin , _coins},
+            { ResourceCategory.Common , _coins},
         };
 
 

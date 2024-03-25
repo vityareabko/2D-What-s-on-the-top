@@ -32,6 +32,7 @@ namespace UI.MainMenu
         [Header("Buttons")]
         [SerializeField] private Button _playButton;
         [SerializeField] private Button _shopSkinButton;
+        [SerializeField] private Button _inventoryButton;
        
         [Header("Toggle")]
         [SerializeField] private Toggle _levelsShowToggle;
@@ -50,7 +51,9 @@ namespace UI.MainMenu
             base.OnAwake();
             _playButton.onClick.AddListener(OnPlayButtonClicked);
             _shopSkinButton.onClick.AddListener(OnShopSkinButtonClicked);
+            _inventoryButton.onClick.AddListener(OnInventoryButtonClicked);
             _levelsShowToggle.onValueChanged.AddListener(OnClickShowLevelsButton);
+            
             
             AddListenerLevelButtons();
         }
@@ -100,11 +103,12 @@ namespace UI.MainMenu
             base.OnDestroyInner();
             _playButton.onClick.RemoveListener(OnPlayButtonClicked);
             _shopSkinButton.onClick.RemoveListener(OnShopSkinButtonClicked);
+            _inventoryButton.onClick.RemoveListener(OnInventoryButtonClicked);
             _levelsShowToggle.onValueChanged.RemoveListener(OnClickShowLevelsButton);
 
             RemoveListenerLevelButtons();
         }
-        
+
         private void AddListenerLevelButtons()
         {
             foreach (var levelUIButton in levelItems)
@@ -116,7 +120,8 @@ namespace UI.MainMenu
             foreach (var levelUIButton in levelItems)
                 levelUIButton.ClickedItem -= OnLevelSelected;
         }
-        
+
+        private void OnInventoryButtonClicked() => Presentor.OnInventoryButtonClicked();
         
         private void OnLevelSelected(LevelType type)
         {

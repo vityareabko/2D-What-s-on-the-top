@@ -70,7 +70,6 @@ public static class ResourceService
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
         
-        Debug.Log(path);
         return Load<Sprite>(path);
     }
     

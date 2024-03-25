@@ -1,9 +1,15 @@
 using UnityEngine;
 
-namespace MyNamespace.Scriptable.Factorys
+[CreateAssetMenu(fileName = "InventoryFactory", menuName = "Factory/InventoryFactory")]
+public class InventoryFactory : ScriptableObject
 {
-    public class InventoryFactory : MonoBehaviour
+    [field: SerializeField] public InventoryResourceItem Prefab { get; private set; }
+
+    public InventoryResourceItem Get(int amount, ResourceTypes type, Transform parent)
     {
-        
+        var instance = Instantiate(Prefab, parent);
+        instance.Initialize(amount, type);
+
+        return instance;
     }
 }

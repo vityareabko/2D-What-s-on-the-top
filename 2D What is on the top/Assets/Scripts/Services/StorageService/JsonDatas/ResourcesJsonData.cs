@@ -10,8 +10,7 @@ namespace Services.StorageService.JsonDatas
         public event Action<ResourceTypes> ResourceChange;
         
         
-        [JsonProperty(PropertyName = "resources")]
-        public Dictionary<ResourceTypes, int> Resources = new();
+        [JsonProperty(PropertyName = "resources")] public Dictionary<ResourceTypes, int> Resources = new();
         
         public bool Spend(ResourceTypes type, int amount)
         {
@@ -51,7 +50,7 @@ namespace Services.StorageService.JsonDatas
 
         public bool HasEnoughResourceAmount(ResourceTypes type, int amount)
         {
-            if (Resources.ContainsKey(type) == false) // сдесь проверяем если вообще есть в сохранения такой рессурс если его нету то он никогда небыл добовлен поэтому он 0
+            if (Resources.ContainsKey(type) == false)
                 return false;
 
             if (Resources[type] >= amount)
